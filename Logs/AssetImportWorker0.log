@@ -1,0 +1,415 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.4f1 (0abb6314276a) revision 703331'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10 Pro; OS build 19042.964; Version 2009; 64bit' Language: 'en' Physical Memory: 16323 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.4f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+D:/Windows/Unity Projects/Car-Game
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+57860
+Successfully changed project path to: D:/Windows/Unity Projects/Car-Game
+D:/Windows/Unity Projects/Car-Game
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 39.21 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.4f1 (0abb6314276a)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/Windows/Unity Projects/Car-Game/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Radeon (TM) RX 470 Graphics (ID=0x67df)
+    Vendor:   
+    VRAM:     3730 MB
+    Driver:   27.20.21003.1028
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56536
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.4f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.006057 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 41.38 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  3.946 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.018013 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 87.49 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.962 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
+Refreshing native plugins compatible for Editor in 0.55 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1808 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 84.8 MB.
+System memory in use after: 84.8 MB.
+
+Unloading 24 unused Assets to reduce memory usage. Loaded Objects now: 2250.
+Total: 2.380300 ms (FindLiveObjects: 0.251000 ms CreateObjectMapping: 0.168800 ms MarkObjects: 1.811400 ms  DeleteObjects: 0.147800 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/Scripts
+  artifactKey: Guid(ec780a62173999c49b94c48ace7ed189) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts using Guid(ec780a62173999c49b94c48ace7ed189) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a1b19f11b6c7d4ec6fb436f623c6343d') in 0.032816 seconds
+  Import took 0.070917 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000834 seconds.
+  path: Assets/Scenes
+  artifactKey: Guid(803e0480c97b9a04d8d572ec17916f24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes using Guid(803e0480c97b9a04d8d572ec17916f24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '989742ffea47af7ea9accb4ec80d36d8') in 0.035432 seconds
+  Import took 0.039795 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001234 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.65 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.169 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.63 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1816 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 85.1 MB.
+System memory in use after: 85.1 MB.
+
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 2267.
+Total: 3.272600 ms (FindLiveObjects: 0.509800 ms CreateObjectMapping: 0.086000 ms MarkObjects: 2.519900 ms  DeleteObjects: 0.155700 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.000937 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.59 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.063 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.53 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1839 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 86.5 MB.
+System memory in use after: 86.1 MB.
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 2291.
+Total: 3.240500 ms (FindLiveObjects: 0.352500 ms CreateObjectMapping: 0.243400 ms MarkObjects: 2.337500 ms  DeleteObjects: 0.305700 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.018456 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.79 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.155 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.82 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1842 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 86.7 MB.
+System memory in use after: 86.3 MB.
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 2298.
+Total: 3.266000 ms (FindLiveObjects: 0.378300 ms CreateObjectMapping: 0.120300 ms MarkObjects: 2.327500 ms  DeleteObjects: 0.420200 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.022811 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.63 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.117 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.63 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1993 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 91.0 MB.
+System memory in use after: 90.6 MB.
+
+Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 2450.
+Total: 2.981200 ms (FindLiveObjects: 0.365000 ms CreateObjectMapping: 0.104100 ms MarkObjects: 2.172700 ms  DeleteObjects: 0.337500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.037321 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 5.57 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.136 seconds
+Platform modules already initialized, skipping
+Script is not up to date after domain reload: guid(2b40c14fc6d3f894fa14ec4b6c180e7a) path("Assets/Lean/Touch+/Scripts/LeanFingerHeld.cs") state(2)
+Script is not up to date after domain reload: guid(ff6649ed30063c84689b98d9120911b4) path("Assets/Lean/Common+/Extras/LeanRevertTransform.cs") state(2)
+Script is not up to date after domain reload: guid(5e801af14bb6ff642a16a53be53348be) path("Assets/Lean/Touch/Examples/Scripts/LeanTouchEvents.cs") state(2)
+Script is not up to date after domain reload: guid(a41e9784aecc0a34292f9c3973ab916f) path("Assets/Lean/Touch+/Scripts/LeanPick.cs") state(2)
+Script is not up to date after domain reload: guid(96d33c3b6e94f02448281b1de8747e7e) path("Assets/Lean/Touch+/Scripts/LeanSelectableCount.cs") state(2)
+Script is not up to date after domain reload: guid(1982cc3eafa0cbe42948f8369e5dc52c) path("Assets/Lean/Common+/Extras/LeanConstrainScale.cs") state(2)
+Script is not up to date after domain reload: guid(471246cd6f1851e4eac17e12e5bf7fec) path("Assets/Lean/Touch/Extras/LeanFingerFilter.cs") state(2)
+Script is not up to date after domain reload: guid(a196e74982d33924e905db0ef17f015c) path("Assets/Lean/Touch+/Examples/Scripts/LeanSelectedText.cs") state(2)
+Script is not up to date after domain reload: guid(12159273ef4bc33449f73bb5dc046b03) path("Assets/Lean/Common+/Extras/LeanConstrainToDirection.cs") state(2)
+Script is not up to date after domain reload: guid(52d72cc6210cb7144a24acb7402222a6) path("Assets/Lean/Touch/Extras/LeanTwistRotate.cs") state(2)
+Script is not up to date after domain reload: guid(1f5574feebe021745b523266dd61bb9a) path("Assets/Lean/Common+/Extras/LeanSelectedRatio.cs") state(2)
+Script is not up to date after domain reload: guid(4b2ff10facb46e046abcee4e29a6c13f) path("Assets/Lean/Touch/Extras/LeanScreenDepth.cs") state(2)
+Script is not up to date after domain reload: guid(e278200a08f9b9f419a13f87e9559ab1) path("Assets/Lean/Touch/Extras/LeanDragCamera.cs") state(2)
+Script is not up to date after domain reload: guid(4cc4ffa09f886dc40a02871007517fdf) path("Assets/Lean/Touch+/Scripts/LeanShapeDetector.cs") state(2)
+Script is not up to date after domain reload: guid(ea7c15b8a8bca724b8540e2ca46f60a8) path("Assets/Lean/Touch+/Scripts/LeanSelectableDial.cs") state(2)
+Script is not up to date after domain reload: guid(5ca219fe20be97d458dde64fadddf91a) path("Assets/Lean/Common+/Extras/LeanChase.cs") state(2)
+Script is not up to date after domain reload: guid(5ca05b4057f181e4db28ff62498d46b1) path("Assets/Lean/Touch/Extras/LeanFingerUpdate.cs") state(2)
+Script is not up to date after domain reload: guid(e71bec5d6367f434db37d04b3a3dbee7) path("Assets/Lean/Touch+/Scripts/LeanShape.cs") state(2)
+Script is not up to date after domain reload: guid(805f29c0a3f1f4d4db5460110daacfed) path("Assets/Lean/Common+/Extras/LeanConstrainToBox.cs") state(2)
+Script is not up to date after domain reload: guid(479d695282ba6cf4ba3ab3c4848f05e8) path("Assets/Lean/Touch/Extras/LeanSelectByFinger.cs") state(2)
+Script is not up to date after domain reload: guid(280054e00ce72784fa3cd02aa3f40c9b) path("Assets/Lean/Touch+/Scripts/LeanPickable.cs") state(2)
+Script is not up to date after domain reload: guid(83dcd8dace8b7fe449d796b980cb121d) path("Assets/Lean/Touch/Extras/LeanSelectableByFinger.cs") state(2)
+Script is not up to date after domain reload: guid(dc8ce743d62975b4db5bbcd1987fce59) path("Assets/Lean/Touch+/Examples/Scripts/LeanRandomEvents.cs") state(2)
+Script is not up to date after domain reload: guid(b77c810e12dd11748b4646b9cb027bfd) path("Assets/Lean/Common+/Extras/LeanMaintainDistance.cs") state(2)
+Script is not up to date after domain reload: guid(bae6a9a0a06a6c64aa6c118e931b7788) path("Assets/Lean/Touch+/Scripts/LeanGestureToggle.cs") state(2)
+Script is not up to date after domain reload: guid(fbf437012cc0e3e4cbc4b0a9ed6eff21) path("Assets/Lean/Common+/Extras/LeanManualTranslate.cs") state(2)
+Script is not up to date after domain reload: guid(c9d610a04b296f644963255bbf60562d) path("Assets/Lean/Touch+/Scripts/LeanQuickTap.cs") state(2)
+Script is not up to date after domain reload: guid(0c6f41fb25ffc7b4a8308db03a8bfc41) path("Assets/Lean/Touch+/Scripts/LeanFingerFlick.cs") state(2)
+Script is not up to date after domain reload: guid(fcf737e95f8f88547a79f19cff908521) path("Assets/Lean/Touch+/Scripts/LeanDragTranslateRigidbody.cs") state(2)
+Script is not up to date after domain reload: guid(1fc98219a83dff145947365dc914d06e) path("Assets/Lean/Touch/Scripts/LeanTouch.cs") state(2)
+Script is not up to date after domain reload: guid(4f8b550b6ab1cae4caad6f9cce4a3593) path("Assets/Lean/Common+/Extras/LeanManualVelocity2D.cs") state(2)
+Script is not up to date after domain reload: guid(92dd75f91df6fb243932674323737fde) path("Assets/Lean/Common+/Extras/LeanSwap.cs") state(2)
+Script is not up to date after domain reload: guid(19a4dd604447dcf4f9666c40fe24452a) path("Assets/Lean/Touch+/Scripts/LeanTwistCamera.cs") state(2)
+Script is not up to date after domain reload: guid(36b5003ea3496b642bb917f8e8d96165) path("Assets/Lean/Touch+/Scripts/LeanDragColorMesh.cs") state(2)
+Script is not up to date after domain reload: guid(5b0917341a9b44242885bd7f0e234f27) path("Assets/Lean/Touch+/Scripts/LeanDragLine.cs") state(2)
+Script is not up to date after domain reload: guid(10d919f97076fc246874520f2c107de4) path("Assets/Lean/Common+/Extras/LeanManualVelocity.cs") state(2)
+Script is not up to date after domain reload: guid(2d6af6fa132bb314fa56a5d581280021) path("Assets/Lean/Touch+/Scripts/LeanManualSwipe.cs") state(2)
+Script is not up to date after domain reload: guid(ffe8256e66fd0614b8ade06ebff533b6) path("Assets/Lean/Touch+/Scripts/LeanFirstDown.cs") state(2)
+Script is not up to date after domain reload: guid(1441ab36fe0a6dc4299525cd235c0a1a) path("Assets/Lean/Touch/Extras/LeanSelect.cs") state(2)
+Script is not up to date after domain reload: guid(3dd98a842fb511a4c89c419df094e04f) path("Assets/Lean/Touch+/Scripts/LeanMultiPinch.cs") state(2)
+Script is not up to date after domain reload: guid(bbb097c07812299498915a0a3e793843) path("Assets/Lean/Touch/Extras/LeanFingerDown.cs") state(2)
+Script is not up to date after domain reload: guid(a22060729a0731c439aade1a7b41ea9d) path("Assets/Lean/Common+/Extras/LeanRandomEvents.cs") state(2)
+Script is not up to date after domain reload: guid(d9f5cf82f0fc48e4e83d544b5ca5d62f) path("Assets/Lean/Touch+/Scripts/LeanMultiSwipe.cs") state(2)
+Script is not up to date after domain reload: guid(0c4837ed3e698a6459d7a8aa81c6257d) path("Assets/Lean/Common+/Extras/LeanConstrainToOrthographic.cs") state(2)
+Script is not up to date after domain reload: guid(ebd67be3ce28da741870582e95ff8010) path("Assets/Lean/Touch+/Examples/Scripts/LeanFormatText.cs") state(2)
+Script is not up to date after domain reload: guid(fa8e207cd0603c8428167dd7b372a793) path("Assets/Lean/Common+/Extras/LeanConstrainToCollider.cs") state(2)
+Script is not up to date after domain reload: guid(b95a66c9fb79ca341bfb9ac40496f4d5) path("Assets/Lean/Touch+/Examples/Scripts/LeanSelectedRatio.cs") state(2)
+Script is not up to date after domain reload: guid(20dc6ef5625b0794d9fabab0056c9d0f) path("Assets/Lean/Touch+/Scripts/LeanDropCount.cs") state(2)
+Script is not up to date after domain reload: guid(b92c10e878e3c9b4ca650b0acee8aecc) path("Assets/Lean/Touch+/Scripts/LeanDrop.cs") state(2)
+Script is not up to date after domain reload: guid(c75b6c60763532742bef4ca52667a8c4) path("Assets/Lean/Touch/Examples/Scripts/LeanInfoText.cs") state(2)
+Script is not up to date after domain reload: guid(40d0f72d5ccccf4428f42b6bcd0bb03c) path("Assets/Lean/Common+/Extras/LeanRotateToRigidbody2D.cs") state(2)
+Script is not up to date after domain reload: guid(f363f0ff9dc1ca7449125eea91579859) path("Assets/Lean/Touch+/Scripts/LeanDragTranslateAlong.cs") state(2)
+Script is not up to date after domain reload: guid(5dfd1458af725bf45811f68b1c129433) path("Assets/Lean/Common+/Extras/LeanManualTranslateRigidbody2D.cs") state(2)
+Script is not up to date after domain reload: guid(d2cf6a4604a9b1c488ead15354d556b3) path("Assets/Lean/Touch/Examples/Scripts/LeanPulseScale.cs") state(2)
+Script is not up to date after domain reload: guid(812003e48aad50f469b236e61a6d25cc) path("Assets/Lean/Touch/Extras/LeanSelectableByFIngerBehaviour.cs") state(2)
+Script is not up to date after domain reload: guid(f0724ef97ea60df4f8fc04a39495ae61) path("Assets/Lean/Common+/Extras/LeanChaseRigidbody2D.cs") state(2)
+Script is not up to date after domain reload: guid(bba20bf23126c85468b88920f51992b8) path("Assets/Lean/Common+/Extras/LeanConstrainLocalPosition.cs") state(2)
+Script is not up to date after domain reload: guid(9b5443c9047ad584aa00e96cb8bbd8b6) path("Assets/Lean/Common+/Examples/Scripts/LeanSelectedString.cs") state(2)
+Script is not up to date after domain reload: guid(3c42c7dd2f21d0445811ae169009a018) path("Assets/Lean/Touch+/Scripts/LeanMultiUpdateCanvas.cs") state(2)
+Script is not up to date after domain reload: guid(f7c1c71d8ad5da9438de3b2e5990763f) path("Assets/Lean/Touch/Extras/LeanFingerTap.cs") state(2)
+Script is not up to date after domain reload: guid(3bb83013ca4ce10488cc341accf84fb4) path("Assets/Lean/Touch+/Scripts/LeanDragDeformMesh.cs") state(2)
+Script is not up to date after domain reload: guid(da60990a7a92dd748a8251609d58760e) path("Assets/Lean/Touch/Extras/LeanSelectable.cs") state(2)
+Script is not up to date after domain reload: guid(40ac23fac17ffd4448bca33f1a30da0f) path("Assets/Lean/Touch+/Scripts/IDropHandler.cs") state(2)
+Script is not up to date after domain reload: guid(da8a88708d8e3f349920ae0d6cc7e3c1) path("Assets/Lean/Touch/Scripts/LeanGesture.cs") state(2)
+Script is not up to date after domain reload: guid(14f5387747a98ad40a299167a08c7ab2) path("Assets/Lean/Touch+/Scripts/LeanMultiUp.cs") state(2)
+Script is not up to date after domain reload: guid(a832b4c75cdbb834281b3be9c666862d) path("Assets/Lean/Touch+/Scripts/LeanSelectableDrop.cs") state(2)
+Script is not up to date after domain reload: guid(1ed9f03d11f34ab44935c0dda96a907c) path("Assets/Lean/Common+/Extras/LeanOrbit.cs") state(2)
+Script is not up to date after domain reload: guid(f3f46c838df2a42498c962874a0fd298) path("Assets/Lean/Common+/Extras/LeanRotateToPosition.cs") state(2)
+Script is not up to date after domain reload: guid(e8bbf53dc2828d8479b52e61f419e9ad) path("Assets/Lean/Touch+/Scripts/LeanMultiHeld.cs") state(2)
+Script is not up to date after domain reload: guid(46449bab26be8564bac642ae687bfca3) path("Assets/Lean/Touch+/Examples/Scripts/LeanSelected.cs") state(2)
+Script is not up to date after domain reload: guid(3fdc6a91baa7cd24fa3e13df5013f802) path("Assets/Lean/Common+/Extras/LeanSelected.cs") state(2)
+Script is not up to date after domain reload: guid(571b065edc65a4f41b4ea02b27b6113a) path("Assets/Lean/Touch/Extras/LeanFingerUp.cs") state(2)
+Script is not up to date after domain reload: guid(37062aff1378bec4ab5eaa5e1310add9) path("Assets/Lean/Common+/Extras/LeanThresholdPosition.cs") state(2)
+Script is not up to date after domain reload: guid(62fa28ac3e47ca942954d252f791ec7e) path("Assets/Lean/Touch/Extras/LeanSelectBase.cs") state(2)
+Script is not up to date after domain reload: guid(4a02d09de4d378848a95de7a1d385234) path("Assets/Lean/Common+/Extras/LeanManualRotate.cs") state(2)
+Script is not up to date after domain reload: guid(8c50fba8c31ce564e8431fa13b810e63) path("Assets/Lean/Touch+/Scripts/LeanDragSelect.cs") state(2)
+Script is not up to date after domain reload: guid(9801240ba11bca94dafe52f90c30a1f5) path("Assets/Lean/Common+/Extras/LeanManualTorque.cs") state(2)
+Script is not up to date after domain reload: guid(1c9fb82a8f34f3442897b1687aa5bfae) path("Assets/Lean/Common+/Extras/LeanDelayedValue.cs") state(2)
+Script is not up to date after domain reload: guid(60c9feb64a7ce844cba1e82a3501618a) path("Assets/Lean/Touch+/Scripts/LeanSelectableBlock.cs") state(2)
+Script is not up to date after domain reload: guid(19fefbdc63197dd4d8528bab1962a4aa) path("Assets/Lean/Touch+/Examples/Scripts/LeanDeselected.cs") state(2)
+Script is not up to date after domain reload: guid(40377ff3752204044a81dc7a65d09e23) path("Assets/Lean/Common+/Extras/LeanRemapValue.cs") state(2)
+Script is not up to date after domain reload: guid(bb9e955a1f622504cbd6186a355b8a98) path("Assets/Lean/Touch+/Scripts/LeanMultiPull.cs") state(2)
+Script is not up to date after domain reload: guid(fd25c5ab823591543bab5400412461ba) path("Assets/Lean/Touch+/Scripts/LeanSwipeEdge.cs") state(2)
+Script is not up to date after domain reload: guid(5c0cbd9ee3916134ea5df4ed151122c9) path("Assets/Lean/Common+/Extras/LeanSelectedCount.cs") state(2)
+Script is not up to date after domain reload: guid(58e2d88c5894e3c42becf9b88d354fa7) path("Assets/Lean/Touch+/Scripts/LeanSelectableDragTorque.cs") state(2)
+Script is not up to date after domain reload: guid(795442111f4e336409c99b7c62afd6f9) path("Assets/Lean/Common+/Extras/LeanManualRescale.cs") state(2)
+Script is not up to date after domain reload: guid(10590237be80fec44848823b966da72d) path("Assets/Lean/Touch+/Scripts/LeanMultiTap.cs") state(2)
+Script is not up to date after domain reload: guid(db8d8b3ece124964189f4589473b0600) path("Assets/Lean/Common+/Extras/LeanThresholdDelta.cs") state(2)
+Script is not up to date after domain reload: guid(6f588f838a8316e45b313c2ed7d2ab38) path("Assets/Lean/Touch+/Scripts/LeanFingerTapQuick.cs") state(2)
+Script is not up to date after domain reload: guid(ebad781b271095d4e98f0041ab74cbfe) path("Assets/Lean/Common+/Examples/Scripts/LeanLoadScene.cs") state(2)
+Script is not up to date after domain reload: guid(7c73c1ab94e28d244827af556dca1ed2) path("Assets/Lean/Touch/Extras/LeanPinchScale.cs") state(2)
+Script is not up to date after domain reload: guid(1d7f352bc4450ba4cbdf7dab6d6c6887) path("Assets/Lean/Common+/Extras/LeanSmoothedValue.cs") state(2)
+Script is not up to date after domain reload: guid(37be4e47a44a65543acdbb911e0fbae2) path("Assets/Lean/Touch+/Scripts/LeanManualFlick.cs") state(2)
+Script is not up to date after domain reload: guid(b119df546c3b3ea45ae0f212a61b4531) path("Assets/Lean/Touch+/Scripts/LeanReplayFinger.cs") state(2)
+Script is not up to date after domain reload: guid(ad68f46a3a7b122439b5b7d372c27c5d) path("Assets/Lean/Common+/Extras/LeanConstrainToColliders.cs") state(2)
+Script is not up to date after domain reload: guid(dc7c91b26689a054d88448aba6dfe424) path("Assets/Lean/Touch/Extras/LeanTwistRotateAxis.cs") state(2)
+Script is not up to date after domain reload: guid(5726d77b04f1a53448ffb9873ac0e474) path("Assets/Lean/Touch+/Scripts/LeanMultiUpdate.cs") state(2)
+Script is not up to date after domain reload: guid(397a77494d64ceb4ba981b53b16f9a22) path("Assets/Lean/Touch+/Examples/Scripts/LeanSelectedCount.cs") state(2)
+Script is not up to date after domain reload: guid(fef9e03c4eb1f4f44894223de421c1b3) path("Assets/Lean/Touch/Scripts/LeanSnapshot.cs") state(2)
+Script is not up to date after domain reload: guid(272bc65dbf5cbca45840c32881688950) path("Assets/Lean/Touch+/Scripts/LeanPinchCamera.cs") state(2)
+Script is not up to date after domain reload: guid(9a3b471402792da4fa352bb20f645c26) path("Assets/Lean/Touch+/Scripts/LeanMouseWheel.cs") state(2)
+Script is not up to date after domain reload: guid(515d0604744d5564c810733d4ed6bb93) path("Assets/Lean/Touch+/Scripts/LeanSelectSelf.cs") state(2)
+Script is not up to date after domain reload: guid(9d71b10bcefcfe047b9ea4c92a92379d) path("Assets/Lean/Touch/Extras/LeanFingerOld.cs") state(2)
+Script is not up to date after domain reload: guid(f22370ad318397a4db51eee9f01555ff) path("Assets/Lean/Common+/Extras/LeanManualTranslateRigidbody.cs") state(2)
+Script is not up to date after domain reload: guid(801d0d506e4503f4cb8729e3868bb030) path("Assets/Lean/Touch/Extras/LeanTouchSimulator.cs") state(2)
+Script is not up to date after domain reload: guid(eb4a769187ec845479dedb6efa9d779b) path("Assets/Lean/Touch+/Scripts/LeanSelectableTime.cs") state(2)
+Script is not up to date after domain reload: guid(ddf9e1f446dd25145b68a7c74694e0b1) path("Assets/Lean/Common+/Extras/LeanFollow.cs") state(2)
+Script is not up to date after domain reload: guid(ccb7719577ee2df4f9d57e4689532994) path("Assets/Lean/Touch/Extras/LeanFingerData.cs") state(2)
+Script is not up to date after domain reload: guid(115e554e113513c4a8a1e7aac1758948) path("Assets/Lean/Touch+/Scripts/LeanSelectablePressureScale.cs") state(2)
+Script is not up to date after domain reload: guid(4a1d2e529e582824b85f299e72df70c3) path("Assets/Lean/Touch+/Scripts/LeanFingerTapExpired.cs") state(2)
+Script is not up to date after domain reload: guid(3d4c98034495cf849b3cbfbf2ae3bb8d) path("Assets/Lean/Touch+/Examples/Scripts/LeanModifyFloat.cs") state(2)
+Script is not up to date after domain reload: guid(a2b29544581cbff48a74923442363fb0) path("Assets/Lean/Touch/Extras/LeanFingerSwipe.cs") state(2)
+Script is not up to date after domain reload: guid(655352e4364cb9e4c8872991469c73da) path("Assets/Lean/Touch+/Scripts/LeanLastUp.cs") state(2)
+Script is not up to date after domain reload: guid(9f03abde3ceb8184da632ff83c420768) path("Assets/Lean/Touch/Extras/LeanDragTrail.cs") state(2)
+Script is not up to date after domain reload: guid(32b89e00d2c4fc34d913f48a883dc5d9) path("Assets/Lean/Common+/Examples/Scripts/LeanPongBall.cs") state(2)
+Script is not up to date after domain reload: guid(22768d541275ce04683441bd5d204b2b) path("Assets/Lean/Touch+/Scripts/LeanSelectableCenter.cs") state(2)
+Script is not up to date after domain reload: guid(b9c54a90257801841aacfd00960cdabf) path("Assets/Lean/Touch+/Scripts/LeanLastUpCanvas.cs") state(2)
+Script is not up to date after domain reload: guid(40f87ad54be913f4da48d82d38681f47) path("Assets/Lean/Common+/Extras/LeanChaseRigidbody.cs") state(2)
+Script is not up to date after domain reload: guid(84a1dd100c84f4c4cb7f33cb55d71264) path("Assets/Lean/Touch+/Scripts/LeanSpawnWithFinger.cs") state(2)
+Script is not up to date after domain reload: guid(ccbeb146a97fd79458dbfd62255e3348) path("Assets/Lean/Common+/Extras/LeanPitchYaw.cs") state(2)
+Script is not up to date after domain reload: guid(cb1cef63137cc754a978c6e1eab7c345) path("Assets/Lean/Common+/Extras/LeanSpawnBetween.cs") state(2)
+Script is not up to date after domain reload: guid(50319068f42e1ce43bde2574e73667d7) path("Assets/Lean/Touch+/Scripts/LeanFingerDownCanvas.cs") state(2)
+Script is not up to date after domain reload: guid(d6570a4c74d8dbf43b0d2152e0313001) path("Assets/Lean/Touch/Extras/LeanSwipeBase.cs") state(2)
+Script is not up to date after domain reload: guid(8bffd7fec0c0a594ab3caee3b81040f6) path("Assets/Lean/Touch+/Scripts/LeanFirstDownCanvas.cs") state(2)
+Script is not up to date after domain reload: guid(0991e6d1946d343449afb6600057d2f4) path("Assets/Lean/Touch/Scripts/LeanFinger.cs") state(2)
+Script is not up to date after domain reload: guid(6e771eb9ee479b7458abfd5f5aced089) path("Assets/Lean/Touch+/Scripts/LeanSelectableSelected.cs") state(2)
+Script is not up to date after domain reload: guid(6d4879872d634a242ab1f733c1fad33b) path("Assets/Lean/Common+/Extras/LeanPitchYawAutoRotate.cs") state(2)
+Script is not up to date after domain reload: guid(02b3fb1a9aa2b4e40b860ff42e6f2157) path("Assets/Lean/Common+/Extras/LeanConstrainToAxis.cs") state(2)
+Script is not up to date after domain reload: guid(4eda371e5375f454490a86f21559ee38) path("Assets/Lean/Touch/Extras/LeanDragTranslate.cs") state(2)
+Script is not up to date after domain reload: guid(ad98255435394d041a138dc514ae1d72) path("Assets/Lean/Common+/Extras/LeanValue.cs") state(2)
+Script is not up to date after domain reload: guid(ad7dc99ce51e599479fc327e22a8de27) path("Assets/Lean/Touch+/Scripts/LeanSelectionBox.cs") state(2)
+Script is not up to date after domain reload: guid(ff783507fd88dd644818c5d0952d5216) path("Assets/Lean/Touch+/Scripts/LeanMultiDirection.cs") state(2)
+Script is not up to date after domain reload: guid(9e6d5128d6db88b47955b4a4998f57b7) path("Assets/Lean/Touch+/Scripts/LeanDragTranslateRigidbody2D.cs") state(2)
+Script is not up to date after domain reload: guid(d34811ee9b0e9de47825182d135fe72c) path("Assets/Lean/Touch+/Scripts/LeanMultiTwist.cs") state(2)
+Script is not up to date after domain reload: guid(1b7c91a57f21f1a4197f6adf1d940c54) path("Assets/Lean/Touch+/Scripts/LeanMultiDown.cs") state(2)
+Script is not up to date after domain reload: guid(dbc952336e9734647a96862a703586aa) path("Assets/Lean/Common+/Extras/LeanDeselected.cs") state(2)
+Script is not up to date after domain reload: guid(bebe214b343962245875722341016be2) path("Assets/Lean/Touch/Extras/LeanScreenQuery.cs") state(2)
+Script is not up to date after domain reload: guid(5bdf632e15ef34c438ae3d2fcc8fefae) path("Assets/Lean/Touch+/Examples/Scripts/LeanModifyVector2.cs") state(2)
+Refreshing native plugins compatible for Editor in 1.15 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2000 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 93.2 MB.
+System memory in use after: 92.7 MB.
+
+Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 2461.
+Total: 3.414000 ms (FindLiveObjects: 0.303700 ms CreateObjectMapping: 0.206400 ms MarkObjects: 2.240200 ms  DeleteObjects: 0.662300 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001337 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 1.09 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.211 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.62 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2138 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 96.8 MB.
+System memory in use after: 96.4 MB.
+
+Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 2603.
+Total: 2.917100 ms (FindLiveObjects: 0.312900 ms CreateObjectMapping: 0.244900 ms MarkObjects: 1.988700 ms  DeleteObjects: 0.369200 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001301 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.69 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.465 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.67 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2173 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 98.1 MB.
+System memory in use after: 97.6 MB.
+
+Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 2641.
+Total: 3.225900 ms (FindLiveObjects: 0.365600 ms CreateObjectMapping: 0.241500 ms MarkObjects: 2.201800 ms  DeleteObjects: 0.415500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001096 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.63 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.045 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.08 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2176 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 98.4 MB.
+System memory in use after: 97.9 MB.
+
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 2646.
+Total: 3.823000 ms (FindLiveObjects: 0.297700 ms CreateObjectMapping: 0.151700 ms MarkObjects: 2.751800 ms  DeleteObjects: 0.620100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.001103 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.66 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.032 seconds
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.63 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2191 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 99.0 MB.
+System memory in use after: 98.5 MB.
+
+Unloading 22 unused Assets to reduce memory usage. Loaded Objects now: 2664.
+Total: 3.102800 ms (FindLiveObjects: 0.263400 ms CreateObjectMapping: 0.163900 ms MarkObjects: 2.178600 ms  DeleteObjects: 0.495600 ms)
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
