@@ -20,14 +20,19 @@ public class Car : MonoBehaviour
     [SerializeField] private Vector2Int currentTileID;
     [SerializeField] private Vector2Int nextTileID;
 
-    [Header("Move")] 
-    private bool isMoving = false;
+
+    [Header("Move")] [SerializeField] private bool isMoving = false;
     private Coroutine move;
     private List<Vector2Int> path;
     [SerializeField] private float carSpeed;
     private int moveTweenID;
+
     private IEnumerator moveCoroutine;
-    private float tweenTimeRemaining = 0;
+    [Header("Turn")] [SerializeField] private bool isTurning = false;
+    private int turnTweenID;
+    [SerializeField] private float currentRotation;
+    [SerializeField] private float nextRotation;
+
     #endregion
 
     #region Mono
@@ -49,11 +54,17 @@ public class Car : MonoBehaviour
     {
         path = new List<Vector2Int>();
         SetUpCar();
-        AddPointToPath(carID,new Vector2Int(10,5));
-        AddPointToPath(carID,new Vector2Int(9,5));
-        AddPointToPath(carID,new Vector2Int(8,5));
-        AddPointToPath(carID,new Vector2Int(7,5));
-        AddPointToPath(carID,new Vector2Int(6,5));
+        AddPointToPath(carID, new Vector2Int(10, 5));
+        AddPointToPath(carID, new Vector2Int(9, 5));
+        AddPointToPath(carID, new Vector2Int(8, 5));
+        AddPointToPath(carID, new Vector2Int(7, 5));
+        AddPointToPath(carID, new Vector2Int(6, 5));
+        AddPointToPath(carID, new Vector2Int(6, 4));
+        AddPointToPath(carID, new Vector2Int(7, 4));
+        AddPointToPath(carID, new Vector2Int(8, 4));
+        AddPointToPath(carID, new Vector2Int(9, 4));
+        AddPointToPath(carID, new Vector2Int(10, 4));
+        AddPointToPath(carID, new Vector2Int(10, 3));
     }
 
     #endregion
@@ -63,7 +74,9 @@ public class Car : MonoBehaviour
     private void SetUpCar()
     {
         TilesManager.Instance.SetTileStatus(currentTileID, false);
+        currentRotation = transform.rotation.z;
     }
+
     private void AddPointToPath(int carID, Vector2Int tilePos)
     {
         if (carID == this.carID)
@@ -76,21 +89,25 @@ public class Car : MonoBehaviour
     {
         if (carID == this.carID)
         {
-            path.RemoveRange(pointIndex,path.Count-pointIndex);
+            path.RemoveRange(pointIndex, path.Count - pointIndex);
         }
     }
+
     private void StartMoving()
     {
         isMoving = true;
         moveCoroutine = Move();
         StartCoroutine(moveCoroutine);
     }
+
     private void StopMoving()
     {
         isMoving = false;
+        isTurning = false;
         LeanTween.pause(moveTweenID);
         StopCoroutine(moveCoroutine);
     }
+
     IEnumerator Move()
     {
         int numOfPoints = path.Count;
@@ -100,43 +117,55 @@ public class Car : MonoBehaviour
             nextTileID = path[0];
             if (!TilesManager.Instance.IsTileAvailable(nextTileID))
             {
-                isMoving = false;
+                StopMoving();
                 yield break;
             }
+
+            if (HaveToTurn(CheckNextDirection()))
+            {
+                CarTurn(CheckNextDirection());
+                yield return new WaitForSeconds(EffectData.Instance.carTurnTweenTime);
+            }
+
             canContinue = false;
-            moveTweenID = LeanTween.move(gameObject, TilesManager.Instance.GetTileCurrentTransform(path[0]).position, carSpeed)
-            .setEase
-            (EffectData.Instance.carMoveTween).setSpeed(carSpeed)
-            .setOnComplete(
-                () =>
-                {
-                    canContinue = true;
-                    TilesManager.Instance.SetTileStatus(currentTileID,true);
-                    currentTileID = nextTileID;
-                    TilesManager.Instance.SetTileStatus(currentTileID,false);
-                    path.RemoveAt(0);
-                }).id;
+            moveTweenID = LeanTween.move(gameObject, TilesManager.Instance.GetTileCurrentTransform(path[0]).position,
+                    carSpeed)
+                .setEase
+                    (EffectData.Instance.carMoveTween).setSpeed(carSpeed)
+                .setOnComplete(
+                    () =>
+                    {
+                        canContinue = true;
+                        TilesManager.Instance.SetTileStatus(currentTileID, true);
+                        currentTileID = nextTileID;
+                        TilesManager.Instance.SetTileStatus(currentTileID, false);
+                        path.RemoveAt(0);
+                    }).id;
             yield return new WaitUntil(() => canContinue);
         }
+
         isMoving = false;
         yield return null;
     }
 
-    private string CheckDirection()
+    private string CheckNextDirection()
     {
         if (currentTileID.x - nextTileID.x < 0)
         {
             return "Right";
         }
+
         if (currentTileID.x - nextTileID.x > 0)
         {
             return "Left";
         }
+
         if (currentTileID.y - nextTileID.y < 0)
         {
             return "Up";
         }
-        if (currentTileID.x - nextTileID.x > 0)
+
+        if (currentTileID.y - nextTileID.y > 0)
         {
             return "Down";
         }
@@ -144,30 +173,114 @@ public class Car : MonoBehaviour
         return null;
     }
 
+    private bool HaveToTurn(string nextDirection)
+    {
+        if ((currentDirection == Direction.Left || currentDirection == Direction.Right) &&
+            (nextDirection == "Up" || nextDirection == "Down"))
+        {
+            return true;
+        }
+
+        if ((currentDirection == Direction.Up || currentDirection == Direction.Down) &&
+            (nextDirection == "Left" || nextDirection == "Right"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     private void CarTurn(string direction)
     {
-        if (direction == "Up")
+        isTurning = true;
+        float turnDelay = 0;
+
+        if (LeanTween.isPaused(turnTweenID))
         {
-            
+            turnDelay = EffectData.Instance.carTurnTweenTime;
+            turnTweenID = LeanTween.rotateZ(gameObject, currentRotation, EffectData.Instance.carTurnTweenTime)
+                .setEase(EffectData.Instance.carTurnTween).id;
         }
-        if (direction == "Down")
+
+        if (currentDirection == Direction.Left)
         {
-            
+            if (direction == "Up")
+            {
+                TurnRight(turnDelay, Direction.Up);
+            }
+
+            if (direction == "Down")
+            {
+                TurnLeft(turnDelay, Direction.Down);
+            }
         }
-        if (direction == "Left")
+
+        if (currentDirection == Direction.Right)
         {
-            
+            if (direction == "Up")
+            {
+                TurnLeft(turnDelay, Direction.Up);
+            }
+
+            if (direction == "Down")
+            {
+                TurnRight(turnDelay, Direction.Down);
+            }
         }
-        if (direction == "Right")
+
+        if (currentDirection == Direction.Up)
         {
-            
+            if (direction == "Left")
+            {
+                TurnLeft(turnDelay, Direction.Left);
+            }
+
+            if (direction == "Right")
+            {
+                TurnRight(turnDelay, Direction.Right);
+            }
         }
-        if (direction == null)
+
+        if (currentDirection == Direction.Down)
         {
-            
+            if (direction == "Left")
+            {
+                TurnRight(turnDelay, Direction.Left);
+            }
+
+            if (direction == "Right")
+            {
+                TurnLeft(turnDelay, Direction.Right);
+            }
         }
     }
-   
+
+    private void TurnLeft(float delay, Direction nextDirection)
+    {
+        //currentRotation = transform.rotation.z;
+        nextRotation = currentRotation + 90;
+        turnTweenID = LeanTween.rotateZ(gameObject, nextRotation, EffectData.Instance.carTurnTweenTime)
+            .setEase(EffectData.Instance.carTurnTween).setDelay(delay).setOnComplete(() =>
+            {
+                isTurning = false;
+                currentRotation = nextRotation;
+                currentDirection = nextDirection;
+            }).id;
+    }
+
+    private void TurnRight(float delay, Direction nextDirection)
+    {
+        //currentRotation = transform.rotation.z;
+        nextRotation = currentRotation - 90;
+        turnTweenID = LeanTween.rotateZ(gameObject, gameObject.transform.rotation.z - 90,
+                EffectData.Instance.carTurnTweenTime)
+            .setEase(EffectData.Instance.carMoveTween).setDelay(delay).setOnComplete(() =>
+            {
+                isTurning = false;
+                currentRotation = nextRotation;
+                currentDirection = nextDirection;
+            }).id;
+    }
 
     #endregion
 }

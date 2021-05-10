@@ -30,7 +30,8 @@ public class EffectData : MonoBehaviour
     #region Car
 
     [Header("Car")] public LeanTweenType carMoveTween;
-
+    public float carTurnTweenTime;
+    public LeanTweenType carTurnTween;
 
     #endregion
 }
