@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
    #region Variables
 
    [Header("Pos")] 
-   [SerializeField] private Vector2Int pos;
+   [SerializeField] private Vector2Int id;
    [Header("Stats")]
    [SerializeField] private bool isAvailable;
    [SerializeField] private bool isGate;
@@ -25,11 +25,10 @@ public class Tile : MonoBehaviour
    #endregion
 
    #region Methods
-
    public void AssignPos(int x, int y)
    {
-      pos.x = x;
-      pos.y = y;
+      id.x = x;
+      id.y = y;
    }
    public bool CanMoveDirection(string dir)
    {
@@ -56,6 +55,16 @@ public class Tile : MonoBehaviour
    public Transform GetCurrentTransform()
    {
       return gameObject.transform;
+   }
+
+   public void SetTileStatus(bool isAvailable)
+   {
+      this.isAvailable = isAvailable;
+   }
+
+   public bool IsAvailable()
+   {
+      return isAvailable;
    }
    #endregion
 }

@@ -61,6 +61,19 @@ public class TilesManager : MonoBehaviour
         
     }
 
+    public Transform GetTileCurrentTransform(Vector2Int tilePosID)
+    {
+        return tileScripts[tilePosID.x, tilePosID.y].GetCurrentTransform();
+    }
+
+    public bool IsTileAvailable(Vector2Int tileID)
+    {
+        return tileScripts[tileID.x, tileID.y].IsAvailable();
+    }
+    public void SetTileStatus(Vector2Int tileID, bool isAvailable)
+    {
+        tileScripts[tileID.x, tileID.y].SetTileStatus(isAvailable);
+    }
 
     #endregion
 }
