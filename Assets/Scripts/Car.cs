@@ -20,20 +20,40 @@ public class Car : MonoBehaviour
     [SerializeField] private Vector2Int currentTileID;
     [SerializeField] private Vector2Int nextTileID;
 
-    [Header("Move")] private bool isMoving = false;
+    [Header("Move")] 
+    private bool isMoving = false;
     private Coroutine move;
     private List<Vector2Int> path;
     [SerializeField] private float carSpeed;
     private int moveTweenID;
     private IEnumerator moveCoroutine;
-
+    private float tweenTimeRemaining = 0;
     #endregion
 
     #region Mono
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            StartMoving();
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            StopMoving();
+        }
+    }
+
     private void Start()
     {
+        path = new List<Vector2Int>();
         SetUpCar();
+        AddPointToPath(carID,new Vector2Int(10,5));
+        AddPointToPath(carID,new Vector2Int(9,5));
+        AddPointToPath(carID,new Vector2Int(8,5));
+        AddPointToPath(carID,new Vector2Int(7,5));
+        AddPointToPath(carID,new Vector2Int(6,5));
     }
 
     #endregion
@@ -65,7 +85,7 @@ public class Car : MonoBehaviour
         moveCoroutine = Move();
         StartCoroutine(moveCoroutine);
     }
-    private void PauseMoving()
+    private void StopMoving()
     {
         isMoving = false;
         LeanTween.pause(moveTweenID);
@@ -74,6 +94,7 @@ public class Car : MonoBehaviour
     IEnumerator Move()
     {
         int numOfPoints = path.Count;
+        bool canContinue = true;
         for (int i = 0; i < numOfPoints; i++)
         {
             nextTileID = path[0];
@@ -82,22 +103,70 @@ public class Car : MonoBehaviour
                 isMoving = false;
                 yield break;
             }
-            LeanTween.move(gameObject, TilesManager.Instance.GetTileCurrentTransform(path[0]).position, carSpeed).setEase
-            (EffectData.Instance.carMoveTween)
+            canContinue = false;
+            moveTweenID = LeanTween.move(gameObject, TilesManager.Instance.GetTileCurrentTransform(path[0]).position, carSpeed)
+            .setEase
+            (EffectData.Instance.carMoveTween).setSpeed(carSpeed)
             .setOnComplete(
                 () =>
                 {
+                    canContinue = true;
                     TilesManager.Instance.SetTileStatus(currentTileID,true);
                     currentTileID = nextTileID;
                     TilesManager.Instance.SetTileStatus(currentTileID,false);
                     path.RemoveAt(0);
-                });
-            yield return new WaitForSeconds(carSpeed);
+                }).id;
+            yield return new WaitUntil(() => canContinue);
         }
         isMoving = false;
         yield return null;
     }
-    
+
+    private string CheckDirection()
+    {
+        if (currentTileID.x - nextTileID.x < 0)
+        {
+            return "Right";
+        }
+        if (currentTileID.x - nextTileID.x > 0)
+        {
+            return "Left";
+        }
+        if (currentTileID.y - nextTileID.y < 0)
+        {
+            return "Up";
+        }
+        if (currentTileID.x - nextTileID.x > 0)
+        {
+            return "Down";
+        }
+
+        return null;
+    }
+
+    private void CarTurn(string direction)
+    {
+        if (direction == "Up")
+        {
+            
+        }
+        if (direction == "Down")
+        {
+            
+        }
+        if (direction == "Left")
+        {
+            
+        }
+        if (direction == "Right")
+        {
+            
+        }
+        if (direction == null)
+        {
+            
+        }
+    }
    
 
     #endregion
