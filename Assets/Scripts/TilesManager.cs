@@ -70,9 +70,14 @@ public class TilesManager : MonoBehaviour
     {
         return tileScripts[tileID.x, tileID.y].IsAvailable();
     }
-    public void SetTileStatus(Vector2Int tileID, bool isAvailable)
+    public void SetTileAvailable(Vector2Int tileID, bool isAvailable)
     {
-        tileScripts[tileID.x, tileID.y].SetTileStatus(isAvailable);
+        tileScripts[tileID.x, tileID.y].SetTileAvailable(isAvailable);
+    }
+
+    public void SetTileSelected(Vector2Int tileID, bool isSelected)
+    {
+        tileScripts[tileID.x, tileID.y].SetTileIsSelected(isSelected);
     }
 
     #endregion

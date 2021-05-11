@@ -154,3 +154,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76a534393d6c574cb282cd244d75352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: {x: 0, y: 0}
+  isAvailable: 0
+  isSelected: 0
+  isGate: 0
+  canMoveLeft: 0
+  canMoveRight: 0
+  canMoveUp: 0
+  canMoveDown: 0
+  shape: {fileID: 1913462300302314698}

@@ -73,7 +73,8 @@ public class Car : MonoBehaviour
 
     private void SetUpCar()
     {
-        TilesManager.Instance.SetTileStatus(currentTileID, false);
+        TilesManager.Instance.SetTileAvailable(currentTileID, false);
+        TilesManager.Instance.SetTileSelected(currentTileID,true);
         currentRotation = transform.rotation.z;
     }
 
@@ -136,9 +137,12 @@ public class Car : MonoBehaviour
                     () =>
                     {
                         canContinue = true;
-                        TilesManager.Instance.SetTileStatus(currentTileID, true);
+                        TilesManager.Instance.SetTileSelected(currentTileID,false);
+                        TilesManager.Instance.SetTileAvailable(currentTileID, true);
                         currentTileID = nextTileID;
-                        TilesManager.Instance.SetTileStatus(currentTileID, false);
+                        TilesManager.Instance.SetTileSelected(currentTileID,true);
+                        TilesManager.Instance.SetTileAvailable(currentTileID, false);
+                        GameEvent.Instance.UnHighlightAssignedTile(path[0]);
                         path.RemoveAt(0);
                     }).id;
             yield return new WaitUntil(() => canContinue);
@@ -273,7 +277,6 @@ public class Car : MonoBehaviour
     {
         //currentRotation = transform.rotation.z;
         nextRotation = currentRotation - 90;
-        Debug.Log(nextRotation);
         turnTweenID = LeanTween.rotateZ(gameObject, nextRotation, EffectData.Instance.carTurnTweenTime)
             .setEase(EffectData.Instance.carMoveTween).setDelay(delay).setOnComplete(() =>
             {
@@ -283,5 +286,10 @@ public class Car : MonoBehaviour
             }).id;
     }
 
+    public void ShowAssignedPath()
+    {
+        if (path.Count <= 0) return;
+        PathPicker.Instance.ShowAssignedPath(path);
+    }
     #endregion
 }

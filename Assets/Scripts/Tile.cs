@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Shapes2D;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -10,17 +12,32 @@ public class Tile : MonoBehaviour
    [SerializeField] private Vector2Int id;
    [Header("Stats")]
    [SerializeField] private bool isAvailable;
+
+   [SerializeField] private bool isSelected;
    [SerializeField] private bool isGate;
+   [SerializeField] private bool isParkingSlot;
    [SerializeField] private bool canMoveLeft;
    [SerializeField] private bool canMoveRight;
    [SerializeField] private bool canMoveUp;
    [SerializeField] private bool canMoveDown;
 
+   [Header("Visual")] 
+   [SerializeField] private Shape shape;
    #endregion
 
    #region Mono
 
+   private void OnEnable()
+   {
+      GameEvent.Instance.OnHighlightAssignedTile += HightlightTile;
+      GameEvent.Instance.OnUnHighlightAssignedTile += UnHighlightTile;
+   }
 
+   private void OnDisable()
+   {
+      GameEvent.Instance.OnHighlightAssignedTile -= HightlightTile;
+      GameEvent.Instance.OnUnHighlightAssignedTile -= UnHighlightTile;
+   }
 
    #endregion
 
@@ -57,14 +74,43 @@ public class Tile : MonoBehaviour
       return gameObject.transform;
    }
 
-   public void SetTileStatus(bool isAvailable)
+   public void SetTileAvailable(bool isAvailable)
    {
       this.isAvailable = isAvailable;
    }
-
+   public void SetTileIsSelected(bool isSelected)
+   {
+      this.isSelected = isSelected;
+   }
    public bool IsAvailable()
    {
       return isAvailable;
+   }
+
+   private void HightlightTile(Vector2Int tileID)
+   {
+      if (tileID != id) return;
+      if(isSelected) return;
+      ChangeColor(EffectData.Instance.tileHighlightColor);
+   }
+
+   private void UnHighlightTile(Vector2Int tileID)
+   {
+      if (tileID != id) return;
+      if (!isSelected) return;
+      if (isParkingSlot)
+      {
+         ChangeColor(EffectData.Instance.tileParkingSlotColor);
+      }
+      else
+      {
+         ChangeColor(EffectData.Instance.tileNormalColor);
+      }
+   }
+
+   private void ChangeColor(Color32 color)
+   {
+      shape.settings.fillColor = color;
    }
    #endregion
 }

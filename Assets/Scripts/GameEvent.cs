@@ -27,12 +27,20 @@ public class GameEvent : MonoBehaviour
 
     #region Tile
 
-    public event Action<Vector2, int, bool> OnSpawnNewBlock;
+    public event Action<Vector2Int> OnHighlightAssignedTile;
 
-    public void SpawnNewBlock(Vector2 pos, int blockType, bool isRainbow)
+    public void HighlightAssignedTile(Vector2Int tileID)
     {
-        OnSpawnNewBlock?.Invoke(pos, blockType, isRainbow);
+        OnHighlightAssignedTile?.Invoke(tileID);
     }
+    
+    public event Action<Vector2Int> OnUnHighlightAssignedTile;
+
+    public void UnHighlightAssignedTile(Vector2Int tileID)
+    {
+        OnUnHighlightAssignedTile?.Invoke(tileID);
+    }
+    
 
     #endregion
 }

@@ -29,10 +29,19 @@ public class EffectData : MonoBehaviour
 
     #region Car
 
-    [Header("Car")] public LeanTweenType carMoveTween;
+    [Header("Car")] 
+    public LeanTweenType carMoveTween;
     public float carTurnTweenTime;
     public LeanTweenType carTurnTween;
 
+    #endregion
+
+    #region Tile
+
+    [Header("Tile")] 
+    public Color32 tileHighlightColor;
+    public Color32 tileNormalColor;
+    public Color32 tileParkingSlotColor;
     #endregion
 }
 
