@@ -197,6 +197,7 @@ public class Car : MonoBehaviour
 
         if (LeanTween.isPaused(turnTweenID))
         {
+            Debug.Log("Delay");
             turnDelay = EffectData.Instance.carTurnTweenTime;
             turnTweenID = LeanTween.rotateZ(gameObject, currentRotation, EffectData.Instance.carTurnTweenTime)
                 .setEase(EffectData.Instance.carTurnTween).id;
@@ -272,8 +273,8 @@ public class Car : MonoBehaviour
     {
         //currentRotation = transform.rotation.z;
         nextRotation = currentRotation - 90;
-        turnTweenID = LeanTween.rotateZ(gameObject, gameObject.transform.rotation.z - 90,
-                EffectData.Instance.carTurnTweenTime)
+        Debug.Log(nextRotation);
+        turnTweenID = LeanTween.rotateZ(gameObject, nextRotation, EffectData.Instance.carTurnTweenTime)
             .setEase(EffectData.Instance.carMoveTween).setDelay(delay).setOnComplete(() =>
             {
                 isTurning = false;
