@@ -60,8 +60,6 @@ namespace Lean.Common.Editor
 
 			if (updateColor == true)
 			{
-				serializedObject.ApplyModifiedProperties();
-
 				Each(tgts, t => t.UpdateColor(), true);
 			}
 		}

@@ -42,6 +42,9 @@ public class EffectData : MonoBehaviour
     public Color32 tileHighlightColor;
     public Color32 tileNormalColor;
     public Color32 tileParkingSlotColor;
+
+    [Header("Path Picker")] public float tileHighlightGradualSpeed;
+
     #endregion
 }
 

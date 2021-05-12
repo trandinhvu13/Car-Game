@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class CarManager : MonoBehaviour
 {
     #region Singleton
 
-    private static UIManager _instance;
+    private static CarManager _instance;
 
-    public static UIManager Instance
+    public static CarManager Instance
     {
         get { return _instance; }
     }
@@ -23,30 +23,20 @@ public class UIManager : MonoBehaviour
         {
             _instance = this;
         }
-        
     }
 
     #endregion
+
     #region Variables
+    [SerializeField] private int carAmount = 0;
+    private List<Car> cars;
 
-    [SerializeField] private GameObject controllingPanel;
-    
-
-    #endregion
-
-    #region Methods
-
-    #region Path Picker
-    public void ShowControllerPanel()
-    {
-        
-    }
-    
-    
 
     #endregion
-   
 
-    
+    #region Method
+
+
+
     #endregion
 }

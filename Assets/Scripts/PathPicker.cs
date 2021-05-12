@@ -2,56 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class  PathPicker : MonoBehaviour
+public class PathPicker : MonoBehaviour
 {
-  #region Singleton
+    #region Singleton
 
-  private static PathPicker _instance;
+    private static PathPicker _instance;
 
-  public static PathPicker Instance
-  {
-    get { return _instance; }
-  }
-
-  private void Awake()
-  {
-    if (_instance != null && _instance != this)
+    public static PathPicker Instance
     {
-      Destroy(gameObject);
+        get { return _instance; }
     }
-    else
+
+    private void Awake()
     {
-      _instance = this;
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
     }
-  }
 
-  #endregion
-  #region Variables
+    #endregion
 
-  
-  #endregion
+    #region Variables
 
-  #region Methods
+    [SerializeField] private int currentSelectedCar;
 
-  public void ShowAssignedPath(List<Vector2Int> path)
-  {
-    for (int tileID = 0; tileID < path.Count; tileID++)
+    #endregion
+
+    #region Methods
+
+    public void ShowAssignedPath(List<Vector2Int> path)
     {
-      GameEvent.Instance.HighlightAssignedTile(path[tileID]);
-    }
-  }
+        StartCoroutine(GraduallyShowPath());
 
-  public void ResetAllHighlight()
-  {
-    for (int x = 0; x < 23; x++)
+        IEnumerator GraduallyShowPath()
+        {
+            for (int tileID = 0; tileID < path.Count; tileID++)
+            {
+                GameEvent.Instance.HighlightAssignedTile(path[tileID]);
+                yield return new WaitForSeconds(EffectData.Instance.tileHighlightGradualSpeed);
+            }
+        }
+    }
+
+    public void ResetAllHighlight()
     {
-      for (int y = 0; y < 11; y++)
-      {
-        Vector2Int tileID = new Vector2Int(x, y);
-        GameEvent.Instance.UnHighlightAssignedTile(tileID);
-      }
+        for (int x = 0; x < 23; x++)
+        {
+            for (int y = 0; y < 11; y++)
+            {
+                Vector2Int tileID = new Vector2Int(x, y);
+                GameEvent.Instance.UnHighlightAssignedTile(tileID);
+            }
+        }
     }
-  }
 
-  #endregion
+    public void SetCurrentSelectedCar(int carID)
+    {
+        currentSelectedCar = carID;
+    }
+
+    #endregion
 }
