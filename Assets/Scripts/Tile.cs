@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Shapes2D;
+using UnityEditor;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -23,6 +24,11 @@ public class Tile : MonoBehaviour
 
    [Header("Visual")] 
    [SerializeField] private Shape shape;
+
+   [SerializeField] private GameObject upArrow;
+   [SerializeField] private GameObject downArrow;
+   [SerializeField] private GameObject leftArrow;
+   [SerializeField] private GameObject rightArrow;
    #endregion
 
    #region Mono
@@ -31,12 +37,14 @@ public class Tile : MonoBehaviour
    {
       GameEvent.Instance.OnHighlightAssignedTile += HightlightTile;
       GameEvent.Instance.OnUnHighlightAssignedTile += UnHighlightTile;
+      GameEvent.Instance.OnShowDirectionArrow += ShowAvailablePathArrow;
    }
 
    private void OnDisable()
    {
       GameEvent.Instance.OnHighlightAssignedTile -= HightlightTile;
       GameEvent.Instance.OnUnHighlightAssignedTile -= UnHighlightTile;
+      GameEvent.Instance.OnShowDirectionArrow -= ShowAvailablePathArrow;
    }
 
    #endregion
@@ -111,6 +119,25 @@ public class Tile : MonoBehaviour
    private void ChangeColor(Color32 color)
    {
       shape.settings.fillColor = color;
+   }
+
+   private void ShowAvailablePathArrow(Vector2Int id)
+   {
+      if (id != this.id) return;
+      HideAvailablePathArrow(this.id);
+      if(canMoveDown) downArrow.SetActive(true);
+      if(canMoveUp) upArrow.SetActive(true);
+      if(leftArrow) leftArrow.SetActive(true);
+      if(rightArrow) rightArrow.SetActive(false);
+   }
+
+   private void HideAvailablePathArrow(Vector2Int id)
+   {
+      if (id != this.id) return;
+      upArrow.SetActive(false);
+      downArrow.SetActive(false);
+      leftArrow.SetActive(false);
+      rightArrow.SetActive(false);
    }
    #endregion
 }

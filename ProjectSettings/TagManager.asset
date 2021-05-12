@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Tile
+    uniqueID: 2739546739
+    locked: 0
+  - name: Car
+    uniqueID: 1010391861
+    locked: 0
+  - name: Ui
+    uniqueID: 3359785977
+    locked: 0

@@ -28,15 +28,23 @@ public class CarManager : MonoBehaviour
     #endregion
 
     #region Variables
+
     [SerializeField] private int carAmount = 0;
     private List<Car> cars;
-
 
     #endregion
 
     #region Method
 
+    public void StartSelectedCar(int carID)
+    {
+        GameEvent.Instance.StartMoving(carID);
+    }
 
+    public void StopSelectedCar(int carID)
+    {
+        GameEvent.Instance.StopMoving(carID);
+    }
 
     #endregion
 }

@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     #endregion
     #region Variables
 
-    [SerializeField] private GameObject controllingPanel;
+    [SerializeField] private GameObject controllerPanel;
     
 
     #endregion
@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
     #region Path Picker
     public void ShowControllerPanel()
     {
-        
+        controllerPanel.SetActive(true);
     }
     
     

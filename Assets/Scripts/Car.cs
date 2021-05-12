@@ -37,17 +37,21 @@ public class Car : MonoBehaviour
 
     #region Mono
 
+    private void OnEnable()
+    {
+        GameEvent.Instance.OnStartMoving += StartMoving;
+        GameEvent.Instance.OnStopMoving += StopMoving;
+    }
+
+    private void OnDisable()
+    {
+        GameEvent.Instance.OnStartMoving -= StartMoving;
+        GameEvent.Instance.OnStopMoving -= StopMoving;
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StartMoving();
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            StopMoving();
-        }
+       
     }
 
     private void Start()
@@ -74,7 +78,7 @@ public class Car : MonoBehaviour
     private void SetUpCar()
     {
         TilesManager.Instance.SetTileAvailable(currentTileID, false);
-        TilesManager.Instance.SetTileSelected(currentTileID,true);
+        TilesManager.Instance.SetTileSelected(currentTileID, true);
         currentRotation = transform.rotation.z;
     }
 
@@ -94,15 +98,17 @@ public class Car : MonoBehaviour
         }
     }
 
-    private void StartMoving()
+    private void StartMoving(int carID)
     {
+        if (carID != this.carID) return;
         isMoving = true;
         moveCoroutine = Move();
         StartCoroutine(moveCoroutine);
     }
 
-    private void StopMoving()
+    private void StopMoving(int carID)
     {
+        if (carID != this.carID) return;
         isMoving = false;
         isTurning = false;
         LeanTween.pause(moveTweenID);
@@ -118,7 +124,7 @@ public class Car : MonoBehaviour
             nextTileID = path[0];
             if (!TilesManager.Instance.IsTileAvailable(nextTileID))
             {
-                StopMoving();
+                StopMoving(carID);
                 yield break;
             }
 
@@ -137,10 +143,10 @@ public class Car : MonoBehaviour
                     () =>
                     {
                         canContinue = true;
-                        TilesManager.Instance.SetTileSelected(currentTileID,false);
+                        TilesManager.Instance.SetTileSelected(currentTileID, false);
                         TilesManager.Instance.SetTileAvailable(currentTileID, true);
                         currentTileID = nextTileID;
-                        TilesManager.Instance.SetTileSelected(currentTileID,true);
+                        TilesManager.Instance.SetTileSelected(currentTileID, true);
                         TilesManager.Instance.SetTileAvailable(currentTileID, false);
                         GameEvent.Instance.UnHighlightAssignedTile(path[0]);
                         path.RemoveAt(0);
@@ -291,5 +297,6 @@ public class Car : MonoBehaviour
         if (path.Count <= 0) return;
         PathPicker.Instance.ShowAssignedPath(path);
     }
+
     #endregion
 }

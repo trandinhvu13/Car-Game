@@ -35,6 +35,8 @@ public class PathPicker : MonoBehaviour
 
     #region Methods
 
+    #region Path
+
     public void ShowAssignedPath(List<Vector2Int> path)
     {
         StartCoroutine(GraduallyShowPath());
@@ -61,10 +63,27 @@ public class PathPicker : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Car
+
     public void SetCurrentSelectedCar(int carID)
     {
         currentSelectedCar = carID;
     }
+
+    public void StartSelectedCar()
+    {
+        CarManager.Instance.StartSelectedCar(currentSelectedCar);
+    }
+
+    public void StopSelectedCar()
+    {
+        CarManager.Instance.StopSelectedCar(currentSelectedCar);
+    }
+
+    #endregion
+   
 
     #endregion
 }
