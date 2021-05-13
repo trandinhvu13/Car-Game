@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Shapes2D;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class Tile : MonoBehaviour
 {
@@ -47,6 +49,9 @@ public class Tile : MonoBehaviour
       GameEvent.Instance.OnShowDirectionArrow += ShowAvailablePathArrow;
       GameEvent.Instance.OnChangeCanBeAddedToPath += ChangeCanBeAddedToPath;
       GameEvent.Instance.OnHideDirectionArrow += HideAvailablePathArrow;
+      GameEvent.Instance.OnResetTilePathStatus += ResetTilePathStatus;
+      GameEvent.Instance.OnChangeCanBeSelected += ChangeCanBeSelected;
+      GameEvent.Instance.OnChangeCanBeRemovedFromPath += ChangeCanBeRemovedFromPath;
    }
 
    private void OnDisable()
@@ -56,6 +61,9 @@ public class Tile : MonoBehaviour
       GameEvent.Instance.OnShowDirectionArrow -= ShowAvailablePathArrow;
       GameEvent.Instance.OnChangeCanBeAddedToPath -= ChangeCanBeAddedToPath;
       GameEvent.Instance.OnHideDirectionArrow -= HideAvailablePathArrow;
+      GameEvent.Instance.OnResetTilePathStatus -= ResetTilePathStatus;
+      GameEvent.Instance.OnChangeCanBeSelected -= ChangeCanBeSelected;
+      GameEvent.Instance.OnChangeCanBeRemovedFromPath -= ChangeCanBeRemovedFromPath;
    }
 
    #endregion
@@ -91,14 +99,15 @@ public class Tile : MonoBehaviour
    private void HightlightTile(Vector2Int tileID)
    {
       if (tileID != id) return;
-      if(isSelected) return;
+      //if(isSelected) return;
       ChangeColor(EffectData.Instance.tileHighlightColor);
    }
 
    private void UnHighlightTile(Vector2Int tileID)
    {
       if (tileID != id) return;
-      if (!isSelected) return;
+     // if (!isSelected) return;
+     
       if (isParkingSlot)
       {
          ChangeColor(EffectData.Instance.tileParkingSlotColor);
@@ -138,15 +147,37 @@ public class Tile : MonoBehaviour
       if (id != this.id) return;
       this.canBeAddedToPath = canBeAddedToPath;
    }
-
-   private void ChangeCanBeSelected(bool canBeSelected)
+   private void ChangeCanBeRemovedFromPath(Vector2Int id, bool canBeRemovedFromPath)
    {
+      if (id != this.id) return;
+      this.canBeRemovedFromPath = canBeRemovedFromPath;
+   }
+   private void ChangeCanBeSelected(Vector2Int id, bool canBeSelected)
+   {
+      if (id != this.id) return;
+      this.canBeSelected = canBeSelected;
       col.enabled = canBeSelected;
    }
 
-   private void OnSelectedPathPicker()
+   public void OnSelectedPathPicker()
    {
-      if(canbesel)
+      if (!canBeSelected) return;
+      if (canBeAddedToPath)
+      {
+         PathPicker.Instance.AddToPath(id);
+         return;
+      }
+      if (canBeRemovedFromPath)
+      {
+         PathPicker.Instance.RemoveFromPath(id);
+      }
+   }
+
+   private void ResetTilePathStatus()
+   {
+      canBeSelected = false;
+      canBeAddedToPath = false;
+      canBeRemovedFromPath = false;
    }
    #endregion
 
@@ -166,6 +197,23 @@ public class Tile : MonoBehaviour
    public bool IsAvailable()
    {
       return isAvailable;
+   }
+
+   public bool GetCanMoveLeft()
+   {
+      return canMoveLeft;
+   }
+   public bool GetCanMoveRight()
+   {
+      return canMoveRight;
+   }
+   public bool GetCanMoveUp()
+   {
+      return canMoveUp;
+   }
+   public bool GetCanMoveDown()
+   {
+      return canMoveDown;
    }
    
    #endregion

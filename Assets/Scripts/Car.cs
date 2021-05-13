@@ -23,7 +23,7 @@ public class Car : MonoBehaviour
 
     [Header("Move")] [SerializeField] private bool isMoving = false;
     private Coroutine move;
-    public List<Vector2Int> path;
+    private List<Vector2Int> path;
     [SerializeField] private float carSpeed;
     private int moveTweenID;
 
@@ -51,7 +51,7 @@ public class Car : MonoBehaviour
 
     private void Awake()
     {
-        CarManager.Instance.cars.Add(this);
+        CarManager.Instance.cars[carID] = this;
     }
 
     private void Update()
@@ -72,7 +72,6 @@ public class Car : MonoBehaviour
         // AddPointToPath(carID, new Vector2Int(8, 4));
         // AddPointToPath(carID, new Vector2Int(9, 4));
         // AddPointToPath(carID, new Vector2Int(10, 4));
-    
     }
 
     #endregion
@@ -209,9 +208,8 @@ public class Car : MonoBehaviour
         isTurning = true;
         float turnDelay = 0;
 
-        if (LeanTween.isPaused(turnTweenID))
+        if (turnTweenID != 0 && LeanTween.isPaused(turnTweenID))
         {
-            Debug.Log("Delay");
             turnDelay = EffectData.Instance.carTurnTweenTime;
             turnTweenID = LeanTween.rotateZ(gameObject, currentRotation, EffectData.Instance.carTurnTweenTime)
                 .setEase(EffectData.Instance.carTurnTween).id;
@@ -329,10 +327,28 @@ public class Car : MonoBehaviour
             }).id;
     }
 
-    public void ShowAssignedPath()
+    public void AddToPath(Vector2Int tileID)
     {
-        if (path.Count <= 0) return;
-        PathPicker.Instance.ShowAssignedPath(path);
+        path.Add(tileID);
+    }
+
+    public void RemoveFromPath(Vector2Int tileID)
+    {
+        int startIndex = path.Count;
+        for (int i = 0; i < path.Count; i++)
+        {
+            if (path[i] == tileID)
+            {
+                startIndex = i;
+            }
+        }
+
+        int timeHaveToRemove = path.Count - startIndex;
+        for (int i = 0; i < timeHaveToRemove; i++)
+        {
+            TilesManager.Instance.UnHighlightTile(path[path.Count - 1]);
+            path.RemoveAt(path.Count - 1);
+        }
     }
 
     #endregion
@@ -342,6 +358,11 @@ public class Car : MonoBehaviour
     public Vector2Int GetCurrentTileID()
     {
         return currentTileID;
+    }
+
+    public List<Vector2Int> GetCurrentPath()
+    {
+        return path;
     }
 
     #endregion

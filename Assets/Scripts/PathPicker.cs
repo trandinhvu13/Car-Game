@@ -30,7 +30,8 @@ public class PathPicker : MonoBehaviour
     #region Variables
 
     [SerializeField] private int currentSelectedCar;
-    private Vector2Int currentTileHasArrow = new Vector2Int(-1,-1);
+    private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
+    private List<Vector2Int> selectedCarPath;
 
     #endregion
 
@@ -38,17 +39,37 @@ public class PathPicker : MonoBehaviour
 
     #region Path
 
-    public void ShowAssignedPath(List<Vector2Int> path)
+    public void UpdateTileStatus()
     {
-        StartCoroutine(GraduallyShowPath());
-
-        IEnumerator GraduallyShowPath()
+        selectedCarPath = CarManager.Instance.cars[currentSelectedCar].GetCurrentPath();
+        ShowAssignedPath();
+        ShowAvailablePathArrow();
+        if (selectedCarPath.Count <= 0)
         {
-            for (int tileID = 0; tileID < path.Count; tileID++)
+            TilesManager.Instance.MakeTilesAddableToPath(
+                CarManager.Instance.cars[currentSelectedCar].GetCurrentTileID());
+        }
+        else
+        {
+            TilesManager.Instance.MakeTilesAddableToPath(selectedCarPath[selectedCarPath.Count - 1]);
+            foreach (Vector2Int tileID in selectedCarPath)
             {
-                GameEvent.Instance.HighlightAssignedTile(path[tileID]);
-                yield return new WaitForSeconds(EffectData.Instance.tileHighlightGradualSpeed);
+                TilesManager.Instance.MakeTilesRemovableFromPath(tileID);
             }
+        }
+    }
+
+    public void OnChangeToPath()
+    {
+        TilesManager.Instance.ResetTilePathStatus();
+        UpdateTileStatus();
+    }
+
+    public void ShowAssignedPath()
+    {
+        for (int tileID = 0; tileID < selectedCarPath.Count; tileID++)
+        {
+            GameEvent.Instance.HighlightAssignedTile(selectedCarPath[tileID]);
         }
     }
 
@@ -68,7 +89,7 @@ public class PathPicker : MonoBehaviour
     {
         HideCurrentAvailablePathArrow();
         Car selectedCar = CarManager.Instance.cars[currentSelectedCar];
-        List<Vector2Int> path = selectedCar.path;
+        List<Vector2Int> path = selectedCar.GetCurrentPath();
         if (path.Count <= 0)
         {
             currentTileHasArrow = selectedCar.GetCurrentTileID();
@@ -85,6 +106,19 @@ public class PathPicker : MonoBehaviour
     {
         GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
     }
+
+    public void AddToPath(Vector2Int tileID)
+    {
+        CarManager.Instance.cars[currentSelectedCar].AddToPath(tileID);
+        OnChangeToPath();
+    }
+
+    public void RemoveFromPath(Vector2Int tileID)
+    {
+        CarManager.Instance.cars[currentSelectedCar].RemoveFromPath(tileID);
+        OnChangeToPath();
+    }
+
     #endregion
 
     #region Car
@@ -105,7 +139,6 @@ public class PathPicker : MonoBehaviour
     }
 
     #endregion
-   
 
     #endregion
 }

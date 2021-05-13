@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Shapes2D;
 using UnityEngine;
 
 public class TilesManager : MonoBehaviour
 {
     #region Variables
-    [Header("Initialize")]
-    [SerializeField] private Transform grid;
+
+    [Header("Initialize")] [SerializeField]
+    private Transform grid;
+
     private Tile[,] tileScripts;
-    
+
     #endregion
+
     #region Singleton
 
     private static TilesManager _instance;
@@ -34,9 +38,8 @@ public class TilesManager : MonoBehaviour
     }
 
     #endregion
+
     #region Mono
-
-
 
     #endregion
 
@@ -54,11 +57,12 @@ public class TilesManager : MonoBehaviour
                 y++;
                 x = 0;
             }
+
             tileScripts[x, y] = Child.GetComponent<Tile>();
-            tileScripts[x, y].AssignPos(x,y);
+            tileScripts[x, y].AssignPos(x, y);
             x++;
         }
-        
+        GameEvent.Instance.ResetTilePathStatus();
     }
 
     public Transform GetTileCurrentTransform(Vector2Int tilePosID)
@@ -70,6 +74,7 @@ public class TilesManager : MonoBehaviour
     {
         return tileScripts[tileID.x, tileID.y].IsAvailable();
     }
+
     public void SetTileAvailable(Vector2Int tileID, bool isAvailable)
     {
         tileScripts[tileID.x, tileID.y].SetTileAvailable(isAvailable);
@@ -80,5 +85,57 @@ public class TilesManager : MonoBehaviour
         tileScripts[tileID.x, tileID.y].SetTileIsSelected(isSelected);
     }
 
+    public void ResetTilePathStatus()
+    {
+        GameEvent.Instance.ResetTilePathStatus();
+    }
+
+    public void MakeTilesSelectable(Vector2Int tileID)
+    {
+        GameEvent.Instance.ChangeCanBeSelected(tileID, true);
+    }
+
+    public void MakeTilesAddableToPath(Vector2Int selectedTileID)
+    {
+        Tile selectedTileScript = tileScripts[selectedTileID.x, selectedTileID.y];
+        if (selectedTileScript.GetCanMoveDown())
+        {
+            GameEvent.Instance.ChangeCanBeAddedToPath(new Vector2Int(selectedTileID.x, selectedTileID.y - 1), true);
+            MakeTilesSelectable(new Vector2Int(selectedTileID.x, selectedTileID.y - 1));
+        }
+
+        if (selectedTileScript.GetCanMoveUp())
+        {
+            GameEvent.Instance.ChangeCanBeAddedToPath(new Vector2Int(selectedTileID.x,
+                selectedTileID.y + 1), true);
+            MakeTilesSelectable(new Vector2Int(selectedTileID.x, selectedTileID.y + 1));
+        }
+
+        if (selectedTileScript.GetCanMoveLeft())
+        {
+            GameEvent.Instance.ChangeCanBeAddedToPath(new Vector2Int(selectedTileID.x - 1,
+                selectedTileID.y), true);
+            MakeTilesSelectable(new Vector2Int(selectedTileID.x-1, selectedTileID.y));
+        }
+
+        if (selectedTileScript.GetCanMoveRight())
+        {
+            GameEvent.Instance.ChangeCanBeAddedToPath(new Vector2Int(selectedTileID.x + 1,
+                selectedTileID.y), true);
+            MakeTilesSelectable(new Vector2Int(selectedTileID.x+1, selectedTileID.y));
+        }
+    }
+
+    public void MakeTilesRemovableFromPath(Vector2Int tileID)
+    {
+        GameEvent.Instance.ChangeCanBeRemovedFromPath(tileID, true);
+        MakeTilesSelectable(tileID);
+    }
+
+    public void UnHighlightTile(Vector2Int tileID)
+    {
+      GameEvent.Instance.UnHighlightAssignedTile(tileID);
+        
+    }
     #endregion
 }

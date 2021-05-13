@@ -52,14 +52,30 @@ public class GameEvent : MonoBehaviour
     {
         OnHideDirectionArrow?.Invoke(tileID);
     }
-    
+    public event Action<Vector2Int,bool> OnChangeCanBeSelected;
+
+    public void ChangeCanBeSelected(Vector2Int tileID,bool canBeSelected)
+    {
+        OnChangeCanBeSelected?.Invoke(tileID,canBeSelected);
+    }
     public event Action<Vector2Int,bool> OnChangeCanBeAddedToPath;
 
     public void ChangeCanBeAddedToPath(Vector2Int tileID,bool canBeAddedToPath)
     {
         OnChangeCanBeAddedToPath?.Invoke(tileID,canBeAddedToPath);
     }
+    public event Action<Vector2Int,bool> OnChangeCanBeRemovedFromPath;
 
+    public void ChangeCanBeRemovedFromPath(Vector2Int tileID,bool canBeRemovedFromPath)
+    {
+        OnChangeCanBeRemovedFromPath?.Invoke(tileID,canBeRemovedFromPath);
+    }
+    public event Action OnResetTilePathStatus;
+
+    public void ResetTilePathStatus()
+    {
+        OnResetTilePathStatus?.Invoke();
+    }
     #endregion
 
     #region Car
