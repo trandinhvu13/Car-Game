@@ -30,6 +30,7 @@ public class PathPicker : MonoBehaviour
     #region Variables
 
     [SerializeField] private int currentSelectedCar;
+    private Vector2Int currentTileHasArrow = new Vector2Int(-1,-1);
 
     #endregion
 
@@ -63,6 +64,27 @@ public class PathPicker : MonoBehaviour
         }
     }
 
+    public void ShowAvailablePathArrow()
+    {
+        HideCurrentAvailablePathArrow();
+        Car selectedCar = CarManager.Instance.cars[currentSelectedCar];
+        List<Vector2Int> path = selectedCar.path;
+        if (path.Count <= 0)
+        {
+            currentTileHasArrow = selectedCar.GetCurrentTileID();
+            GameEvent.Instance.ShowDirectionArrow(currentTileHasArrow);
+        }
+        else
+        {
+            currentTileHasArrow = path[path.Count - 1];
+            GameEvent.Instance.ShowDirectionArrow(currentTileHasArrow);
+        }
+    }
+
+    public void HideCurrentAvailablePathArrow()
+    {
+        GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
+    }
     #endregion
 
     #region Car

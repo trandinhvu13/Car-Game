@@ -30,7 +30,7 @@ public class CarManager : MonoBehaviour
     #region Variables
 
     [SerializeField] private int carAmount = 0;
-    private List<Car> cars;
+    public List<Car> cars = new List<Car>(95);
 
     #endregion
 
@@ -46,5 +46,9 @@ public class CarManager : MonoBehaviour
         GameEvent.Instance.StopMoving(carID);
     }
 
+    public void AddPointToPath()
+    {
+        
+    }
     #endregion
 }

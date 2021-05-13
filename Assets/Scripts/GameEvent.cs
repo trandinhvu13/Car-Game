@@ -46,6 +46,19 @@ public class GameEvent : MonoBehaviour
     {
         OnShowDirectionArrow?.Invoke(tileID);
     }
+    public event Action<Vector2Int> OnHideDirectionArrow;
+
+    public void HideDirectionArrow(Vector2Int tileID)
+    {
+        OnHideDirectionArrow?.Invoke(tileID);
+    }
+    
+    public event Action<Vector2Int,bool> OnChangeCanBeAddedToPath;
+
+    public void ChangeCanBeAddedToPath(Vector2Int tileID,bool canBeAddedToPath)
+    {
+        OnChangeCanBeAddedToPath?.Invoke(tileID,canBeAddedToPath);
+    }
 
     #endregion
 

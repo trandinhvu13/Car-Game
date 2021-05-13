@@ -23,7 +23,7 @@ public class Car : MonoBehaviour
 
     [Header("Move")] [SerializeField] private bool isMoving = false;
     private Coroutine move;
-    private List<Vector2Int> path;
+    public List<Vector2Int> path;
     [SerializeField] private float carSpeed;
     private int moveTweenID;
 
@@ -49,26 +49,30 @@ public class Car : MonoBehaviour
         GameEvent.Instance.OnStopMoving -= StopMoving;
     }
 
+    private void Awake()
+    {
+        CarManager.Instance.cars.Add(this);
+    }
+
     private void Update()
     {
-       
     }
 
     private void Start()
     {
         path = new List<Vector2Int>();
         SetUpCar();
-        AddPointToPath(carID, new Vector2Int(10, 5));
-        AddPointToPath(carID, new Vector2Int(9, 5));
-        AddPointToPath(carID, new Vector2Int(8, 5));
-        AddPointToPath(carID, new Vector2Int(7, 5));
-        AddPointToPath(carID, new Vector2Int(6, 5));
-        AddPointToPath(carID, new Vector2Int(6, 4));
-        AddPointToPath(carID, new Vector2Int(7, 4));
-        AddPointToPath(carID, new Vector2Int(8, 4));
-        AddPointToPath(carID, new Vector2Int(9, 4));
-        AddPointToPath(carID, new Vector2Int(10, 4));
-        AddPointToPath(carID, new Vector2Int(10, 3));
+        // AddPointToPath(carID, new Vector2Int(10, 5));
+        // AddPointToPath(carID, new Vector2Int(9, 5));
+        // AddPointToPath(carID, new Vector2Int(8, 5));
+        // AddPointToPath(carID, new Vector2Int(7, 5));
+        // AddPointToPath(carID, new Vector2Int(6, 5));
+        // AddPointToPath(carID, new Vector2Int(6, 4));
+        // AddPointToPath(carID, new Vector2Int(7, 4));
+        // AddPointToPath(carID, new Vector2Int(8, 4));
+        // AddPointToPath(carID, new Vector2Int(9, 4));
+        // AddPointToPath(carID, new Vector2Int(10, 4));
+    
     }
 
     #endregion
@@ -185,19 +189,19 @@ public class Car : MonoBehaviour
 
     private bool HaveToTurn(string nextDirection)
     {
-        if ((currentDirection == Direction.Left || currentDirection == Direction.Right) &&
-            (nextDirection == "Up" || nextDirection == "Down"))
-        {
-            return true;
-        }
-
-        if ((currentDirection == Direction.Up || currentDirection == Direction.Down) &&
-            (nextDirection == "Left" || nextDirection == "Right"))
-        {
-            return true;
-        }
-
-        return false;
+        if (currentDirection.ToString() == nextDirection) return false;
+        // if ((currentDirection == Direction.Left || currentDirection == Direction.Right) &&
+        //     (nextDirection == "Up" || nextDirection == "Down")) return true;
+        //
+        //
+        // if ((currentDirection == Direction.Up || currentDirection == Direction.Down) &&
+        //     (nextDirection == "Left" || nextDirection == "Right")) return true;
+        //
+        // if (currentDirection == Direction.Down && nextDirection == "Up") return true;
+        // if (currentDirection == Direction.Up && nextDirection == "Down") return true;
+        // if (currentDirection == Direction.Left && nextDirection == "Right") return true;
+        // if (currentDirection == Direction.Right && nextDirection == "left") return true;
+        return true;
     }
 
     private void CarTurn(string direction)
@@ -224,6 +228,11 @@ public class Car : MonoBehaviour
             {
                 TurnLeft(turnDelay, Direction.Down);
             }
+
+            if (direction == "Right")
+            {
+                TurnAround(turnDelay, Direction.Right);
+            }
         }
 
         if (currentDirection == Direction.Right)
@@ -236,6 +245,11 @@ public class Car : MonoBehaviour
             if (direction == "Down")
             {
                 TurnRight(turnDelay, Direction.Down);
+            }
+
+            if (direction == "Left")
+            {
+                TurnAround(turnDelay, Direction.Left);
             }
         }
 
@@ -250,6 +264,11 @@ public class Car : MonoBehaviour
             {
                 TurnRight(turnDelay, Direction.Right);
             }
+
+            if (direction == "Down")
+            {
+                TurnAround(turnDelay, Direction.Down);
+            }
         }
 
         if (currentDirection == Direction.Down)
@@ -262,6 +281,11 @@ public class Car : MonoBehaviour
             if (direction == "Right")
             {
                 TurnLeft(turnDelay, Direction.Right);
+            }
+
+            if (direction == "Up")
+            {
+                TurnAround(turnDelay, Direction.Up);
             }
         }
     }
@@ -292,10 +316,32 @@ public class Car : MonoBehaviour
             }).id;
     }
 
+    private void TurnAround(float delay, Direction nextDirection)
+    {
+        //currentRotation = transform.rotation.z;
+        nextRotation = currentRotation - 180;
+        turnTweenID = LeanTween.rotateZ(gameObject, nextRotation, EffectData.Instance.carTurnTweenTime)
+            .setEase(EffectData.Instance.carMoveTween).setDelay(delay).setOnComplete(() =>
+            {
+                isTurning = false;
+                currentRotation = nextRotation;
+                currentDirection = nextDirection;
+            }).id;
+    }
+
     public void ShowAssignedPath()
     {
         if (path.Count <= 0) return;
         PathPicker.Instance.ShowAssignedPath(path);
+    }
+
+    #endregion
+
+    #region Getter/Setter
+
+    public Vector2Int GetCurrentTileID()
+    {
+        return currentTileID;
     }
 
     #endregion

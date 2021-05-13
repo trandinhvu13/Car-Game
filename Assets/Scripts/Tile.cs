@@ -13,7 +13,7 @@ public class Tile : MonoBehaviour
    [SerializeField] private Vector2Int id;
    [Header("Stats")]
    [SerializeField] private bool isAvailable;
-
+   
    [SerializeField] private bool isSelected;
    [SerializeField] private bool isGate;
    [SerializeField] private bool isParkingSlot;
@@ -22,6 +22,10 @@ public class Tile : MonoBehaviour
    [SerializeField] private bool canMoveUp;
    [SerializeField] private bool canMoveDown;
 
+   [SerializeField] private bool canBeAddedToPath;
+   [SerializeField] private bool canBeRemovedFromPath;
+   [SerializeField] private bool canBeSelected;
+
    [Header("Visual")] 
    [SerializeField] private Shape shape;
 
@@ -29,6 +33,9 @@ public class Tile : MonoBehaviour
    [SerializeField] private GameObject downArrow;
    [SerializeField] private GameObject leftArrow;
    [SerializeField] private GameObject rightArrow;
+
+   [Header("Other Components")] [SerializeField]
+   private BoxCollider2D col;
    #endregion
 
    #region Mono
@@ -38,6 +45,8 @@ public class Tile : MonoBehaviour
       GameEvent.Instance.OnHighlightAssignedTile += HightlightTile;
       GameEvent.Instance.OnUnHighlightAssignedTile += UnHighlightTile;
       GameEvent.Instance.OnShowDirectionArrow += ShowAvailablePathArrow;
+      GameEvent.Instance.OnChangeCanBeAddedToPath += ChangeCanBeAddedToPath;
+      GameEvent.Instance.OnHideDirectionArrow += HideAvailablePathArrow;
    }
 
    private void OnDisable()
@@ -45,6 +54,8 @@ public class Tile : MonoBehaviour
       GameEvent.Instance.OnHighlightAssignedTile -= HightlightTile;
       GameEvent.Instance.OnUnHighlightAssignedTile -= UnHighlightTile;
       GameEvent.Instance.OnShowDirectionArrow -= ShowAvailablePathArrow;
+      GameEvent.Instance.OnChangeCanBeAddedToPath -= ChangeCanBeAddedToPath;
+      GameEvent.Instance.OnHideDirectionArrow -= HideAvailablePathArrow;
    }
 
    #endregion
@@ -76,25 +87,7 @@ public class Tile : MonoBehaviour
 
       return false;
    }
-
-   public Transform GetCurrentTransform()
-   {
-      return gameObject.transform;
-   }
-
-   public void SetTileAvailable(bool isAvailable)
-   {
-      this.isAvailable = isAvailable;
-   }
-   public void SetTileIsSelected(bool isSelected)
-   {
-      this.isSelected = isSelected;
-   }
-   public bool IsAvailable()
-   {
-      return isAvailable;
-   }
-
+   
    private void HightlightTile(Vector2Int tileID)
    {
       if (tileID != id) return;
@@ -127,8 +120,8 @@ public class Tile : MonoBehaviour
       HideAvailablePathArrow(this.id);
       if(canMoveDown) downArrow.SetActive(true);
       if(canMoveUp) upArrow.SetActive(true);
-      if(leftArrow) leftArrow.SetActive(true);
-      if(rightArrow) rightArrow.SetActive(false);
+      if(canMoveLeft) leftArrow.SetActive(true);
+      if(canMoveRight) rightArrow.SetActive(true);
    }
 
    private void HideAvailablePathArrow(Vector2Int id)
@@ -139,5 +132,41 @@ public class Tile : MonoBehaviour
       leftArrow.SetActive(false);
       rightArrow.SetActive(false);
    }
+
+   private void ChangeCanBeAddedToPath(Vector2Int id, bool canBeAddedToPath)
+   {
+      if (id != this.id) return;
+      this.canBeAddedToPath = canBeAddedToPath;
+   }
+
+   private void ChangeCanBeSelected(bool canBeSelected)
+   {
+      col.enabled = canBeSelected;
+   }
+
+   private void OnSelectedPathPicker()
+   {
+      if(canbesel)
+   }
+   #endregion
+
+   #region Getter/Setter
+   public Transform GetCurrentTransform()
+   {
+      return gameObject.transform;
+   }
+   public void SetTileAvailable(bool isAvailable)
+   {
+      this.isAvailable = isAvailable;
+   }
+   public void SetTileIsSelected(bool isSelected)
+   {
+      this.isSelected = isSelected;
+   }
+   public bool IsAvailable()
+   {
+      return isAvailable;
+   }
+   
    #endregion
 }
