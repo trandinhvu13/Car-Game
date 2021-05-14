@@ -54,7 +54,7 @@ public class Tile : MonoBehaviour
         GameEvent.Instance.OnChangeCanBeAddedToPath += ChangeCanBeAddedToPath;
         GameEvent.Instance.OnHideDirectionArrow += HideAvailablePathArrow;
         GameEvent.Instance.OnResetTilePathStatus += ResetTilePathStatus;
-        GameEvent.Instance.OnChangeCanBeSelected += ChangeCanBeSelected;
+        GameEvent.Instance.OnChangeCanBeSelected += SetCanBeSelected;
         GameEvent.Instance.OnChangeCanBeRemovedFromPath += ChangeCanBeRemovedFromPath;
         GameEvent.Instance.OnSpawnCar += SpawnCar;
     }
@@ -67,7 +67,7 @@ public class Tile : MonoBehaviour
         GameEvent.Instance.OnChangeCanBeAddedToPath -= ChangeCanBeAddedToPath;
         GameEvent.Instance.OnHideDirectionArrow -= HideAvailablePathArrow;
         GameEvent.Instance.OnResetTilePathStatus -= ResetTilePathStatus;
-        GameEvent.Instance.OnChangeCanBeSelected -= ChangeCanBeSelected;
+        GameEvent.Instance.OnChangeCanBeSelected -= SetCanBeSelected;
         GameEvent.Instance.OnChangeCanBeRemovedFromPath -= ChangeCanBeRemovedFromPath;
         GameEvent.Instance.OnSpawnCar -= SpawnCar;
     }
@@ -110,32 +110,23 @@ public class Tile : MonoBehaviour
     public void SpawnCar()
     {
         if (!isParkingSlot) return;
-        //Quaternion rotation = new Quaternion();
+        Quaternion rotation = new Quaternion();
+        float currentRotation = 0;
 
-        /*if (carSpawnDir == "Up")
-        {
-            rotation = Quaternion.Euler(0, 0, -90);
-        }
+        if (carSpawnDir == "Up") currentRotation = -90;
+        if (carSpawnDir == "Down") currentRotation = 90;
+        if (carSpawnDir == "Left") currentRotation = 0;
+        if (carSpawnDir == "Right") currentRotation = 180;
 
-        if (carSpawnDir == "Down")
-        {
-            rotation = Quaternion.Euler(0, 0, 90);
-        }
-
-        if (carSpawnDir == "Left")
-        {
-            rotation = Quaternion.Euler(0, 0, 0);
-        }
-
-        if (carSpawnDir == "Right")
-        {
-            rotation = Quaternion.Euler(0, 0, 180);
-        }*/
-
-        GameObject spawnedCar = LeanPool.Spawn(car, transform.position, Quaternion.Euler(0, 0, -90), carParent);
+        rotation = Quaternion.Euler(0, 0, currentRotation);
+        GameObject spawnedCar = LeanPool.Spawn(car, transform.position, rotation, carParent);
         Car carScript = spawnedCar.GetComponent<Car>();
         carScript.SetCurrentTileID(id);
-        carScript.SetCurrentDirection("Up");
+        carScript.SetCurrentDirection(carSpawnDir);
+        carScript.SetCurrentRotation(currentRotation);
+        carScript.SetUpCar();
+        SetTileAvailable(false);
+        SetCanBeSelected(id, false);
     }
 
     private void HightlightTile(Vector2Int tileID)
@@ -148,7 +139,7 @@ public class Tile : MonoBehaviour
     private void UnHighlightTile(Vector2Int tileID)
     {
         if (tileID != id) return;
-        // if (!isSelected) return;
+        //if (!isSelected) return;
 
         if (isParkingSlot)
         {
@@ -165,14 +156,43 @@ public class Tile : MonoBehaviour
         shape.settings.fillColor = color;
     }
 
-    private void ShowAvailablePathArrow(Vector2Int id)
+    private void ShowAvailablePathArrow(Vector2Int id,string[] arrows)
     {
         if (id != this.id) return;
+   
         HideAvailablePathArrow(this.id);
-        if (canMoveDown) downArrow.SetActive(true);
-        if (canMoveUp) upArrow.SetActive(true);
-        if (canMoveLeft) leftArrow.SetActive(true);
-        if (canMoveRight) rightArrow.SetActive(true);
+        for (int i = 0; i < arrows.Length; i++)
+        {
+            if (arrows[i] == "Left")
+            {
+                if (!canMoveLeft) continue;
+                leftArrow.SetActive(true);
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x-1,id.y));
+                continue;
+            }
+            if (arrows[i] == "Right")
+            {
+                if (!canMoveRight) continue;
+                rightArrow.SetActive(true);
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x+1,id.y));
+                continue;
+            }
+            if (arrows[i] == "Up")
+            {
+                if (!canMoveUp) continue;
+                upArrow.SetActive(true);
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x,id.y+1));
+                continue;
+            }
+
+            if (arrows[i] == "Down")
+            {
+                if (!canMoveDown) continue;
+                downArrow.SetActive(true);
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x,id.y-1));
+                continue;
+            }
+        }
     }
 
     private void HideAvailablePathArrow(Vector2Int id)
@@ -187,6 +207,7 @@ public class Tile : MonoBehaviour
     private void ChangeCanBeAddedToPath(Vector2Int id, bool canBeAddedToPath)
     {
         if (id != this.id) return;
+        if (!isAvailable) return;
         this.canBeAddedToPath = canBeAddedToPath;
     }
 
@@ -196,16 +217,19 @@ public class Tile : MonoBehaviour
         this.canBeRemovedFromPath = canBeRemovedFromPath;
     }
 
-    private void ChangeCanBeSelected(Vector2Int id, bool canBeSelected)
+    private void SetCanBeSelected(Vector2Int id, bool canBeSelected)
     {
         if (id != this.id) return;
+        if (!isAvailable) return;
         this.canBeSelected = canBeSelected;
         col.enabled = canBeSelected;
     }
 
     public void OnSelectedPathPicker()
     {
-        if (!canBeSelected) return;
+       
+       // if (!canBeSelected) return;
+        if (!isAvailable) return;
         if (canBeAddedToPath)
         {
             PathPicker.Instance.AddToPath(id);
@@ -216,6 +240,7 @@ public class Tile : MonoBehaviour
         {
             PathPicker.Instance.RemoveFromPath(id);
         }
+       
     }
 
     private void ResetTilePathStatus()
@@ -237,6 +262,7 @@ public class Tile : MonoBehaviour
     public void SetTileAvailable(bool isAvailable)
     {
         this.isAvailable = isAvailable;
+    
     }
 
     public void SetTileIsSelected(bool isSelected)
@@ -244,7 +270,7 @@ public class Tile : MonoBehaviour
         this.isSelected = isSelected;
     }
 
-    public bool IsAvailable()
+    public bool GetIsAvailable()
     {
         return isAvailable;
     }

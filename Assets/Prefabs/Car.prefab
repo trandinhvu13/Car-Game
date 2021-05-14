@@ -189,7 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carID: 0
   currentDirection: 0
-  currentTileID: {x: 11, y: 5}
+  currentTileID: {x: -1, y: -1}
   nextTileID: {x: 0, y: 0}
   isMoving: 0
   carSpeed: 2

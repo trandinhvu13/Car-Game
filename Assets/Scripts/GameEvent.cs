@@ -46,11 +46,11 @@ public class GameEvent : MonoBehaviour
     {
         OnUnHighlightAssignedTile?.Invoke(tileID);
     }
-    public event Action<Vector2Int> OnShowDirectionArrow;
+    public event Action<Vector2Int,string[]> OnShowDirectionArrow;
 
-    public void ShowDirectionArrow(Vector2Int tileID)
+    public void ShowDirectionArrow(Vector2Int tileID, string[] arrows)
     {
-        OnShowDirectionArrow?.Invoke(tileID);
+        OnShowDirectionArrow?.Invoke(tileID,arrows);
     }
     public event Action<Vector2Int> OnHideDirectionArrow;
 

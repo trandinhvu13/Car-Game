@@ -43,8 +43,8 @@ public class Car : MonoBehaviour, IPoolable
         GameEvent.Instance.OnStartMoving += StartMoving;
         GameEvent.Instance.OnStopMoving += StopMoving;
         
-        SetUpCar();
-        currentRotation = -90;
+   
+       
     }
 
     public void OnDespawn()
@@ -72,11 +72,10 @@ public class Car : MonoBehaviour, IPoolable
 
     #region Methods
 
-    private void SetUpCar()
+    public void SetUpCar()
     {
         TilesManager.Instance.SetTileAvailable(currentTileID, false);
         TilesManager.Instance.SetTileSelected(currentTileID, true);
-        currentRotation = transform.rotation.z;
     }
 
     private void AddPointToPath(int carID, Vector2Int tilePos)
@@ -368,7 +367,11 @@ public class Car : MonoBehaviour, IPoolable
         if (dir == "Right") currentDirection = Direction.Right;
         if (dir == "Down") currentDirection = Direction.Down;
         if (dir == "Up") currentDirection = Direction.Up;
+    }
 
+    public void SetCurrentRotation(float rotation)
+    {
+        currentRotation = rotation;
     }
     #endregion
 }
