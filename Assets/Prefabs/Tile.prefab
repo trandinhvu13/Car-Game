@@ -454,6 +454,9 @@ MonoBehaviour:
   downArrow: {fileID: 7031518061723698816}
   leftArrow: {fileID: 8681034890706070029}
   rightArrow: {fileID: 5150555797545226884}
+  car: {fileID: 0}
+  carSpawnDir: 
+  carParent: {fileID: 0}
   col: {fileID: 6758976072633248918}
 --- !u!114 &5136283029127896102
 MonoBehaviour:

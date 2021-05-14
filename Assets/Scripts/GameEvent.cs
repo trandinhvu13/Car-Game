@@ -26,7 +26,13 @@ public class GameEvent : MonoBehaviour
     #endregion
 
     #region Tile
+    public event Action OnSpawnCar;
 
+    public void SpawnCar()
+    {
+        OnSpawnCar?.Invoke();
+    }
+    
     public event Action<Vector2Int> OnHighlightAssignedTile;
 
     public void HighlightAssignedTile(Vector2Int tileID)

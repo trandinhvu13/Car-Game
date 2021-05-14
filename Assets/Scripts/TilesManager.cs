@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Shapes2D;
@@ -40,6 +41,12 @@ public class TilesManager : MonoBehaviour
     #endregion
 
     #region Mono
+
+    private void Start()
+    {
+        GameEvent.Instance.SpawnCar();
+    }
+    
 
     #endregion
 

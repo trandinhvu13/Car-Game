@@ -93,6 +93,7 @@ public class PathPicker : MonoBehaviour
         if (path.Count <= 0)
         {
             currentTileHasArrow = selectedCar.GetCurrentTileID();
+            Debug.Log($"current tile la {currentTileHasArrow}");
             GameEvent.Instance.ShowDirectionArrow(currentTileHasArrow);
         }
         else

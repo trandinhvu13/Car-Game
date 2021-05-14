@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Lean.Pool;
 using UnityEngine;
 
-public class Car : MonoBehaviour
+public class Car : MonoBehaviour, IPoolable
 {
     #region Variables
 
@@ -37,41 +38,34 @@ public class Car : MonoBehaviour
 
     #region Mono
 
-    private void OnEnable()
+    public void OnSpawn()
     {
         GameEvent.Instance.OnStartMoving += StartMoving;
         GameEvent.Instance.OnStopMoving += StopMoving;
+        
+        SetUpCar();
+        currentRotation = -90;
     }
 
-    private void OnDisable()
+    public void OnDespawn()
     {
         GameEvent.Instance.OnStartMoving -= StartMoving;
         GameEvent.Instance.OnStopMoving -= StopMoving;
+        
+        //reset car stats
     }
 
     private void Awake()
     {
+        CarManager.Instance.ChangeCarAmount(1);
+        carID = CarManager.Instance.GetCarAmount();
         CarManager.Instance.cars[carID] = this;
+        
+        path = new List<Vector2Int>();
     }
 
     private void Update()
     {
-    }
-
-    private void Start()
-    {
-        path = new List<Vector2Int>();
-        SetUpCar();
-        // AddPointToPath(carID, new Vector2Int(10, 5));
-        // AddPointToPath(carID, new Vector2Int(9, 5));
-        // AddPointToPath(carID, new Vector2Int(8, 5));
-        // AddPointToPath(carID, new Vector2Int(7, 5));
-        // AddPointToPath(carID, new Vector2Int(6, 5));
-        // AddPointToPath(carID, new Vector2Int(6, 4));
-        // AddPointToPath(carID, new Vector2Int(7, 4));
-        // AddPointToPath(carID, new Vector2Int(8, 4));
-        // AddPointToPath(carID, new Vector2Int(9, 4));
-        // AddPointToPath(carID, new Vector2Int(10, 4));
     }
 
     #endregion
@@ -189,17 +183,6 @@ public class Car : MonoBehaviour
     private bool HaveToTurn(string nextDirection)
     {
         if (currentDirection.ToString() == nextDirection) return false;
-        // if ((currentDirection == Direction.Left || currentDirection == Direction.Right) &&
-        //     (nextDirection == "Up" || nextDirection == "Down")) return true;
-        //
-        //
-        // if ((currentDirection == Direction.Up || currentDirection == Direction.Down) &&
-        //     (nextDirection == "Left" || nextDirection == "Right")) return true;
-        //
-        // if (currentDirection == Direction.Down && nextDirection == "Up") return true;
-        // if (currentDirection == Direction.Up && nextDirection == "Down") return true;
-        // if (currentDirection == Direction.Left && nextDirection == "Right") return true;
-        // if (currentDirection == Direction.Right && nextDirection == "left") return true;
         return true;
     }
 
@@ -351,6 +334,15 @@ public class Car : MonoBehaviour
         }
     }
 
+    public void SetCurrentSelectedCar()
+    {
+        PathPicker.Instance.SetCurrentSelectedCar(carID);
+    }
+
+    public void ShowControllerPanel()
+    {
+        UIManager.Instance.ShowControllerPanel();
+    }
     #endregion
 
     #region Getter/Setter
@@ -359,11 +351,24 @@ public class Car : MonoBehaviour
     {
         return currentTileID;
     }
+    
+    public void SetCurrentTileID(Vector2Int currentTileID)
+    {
+        this.currentTileID = currentTileID;
+    }
 
     public List<Vector2Int> GetCurrentPath()
     {
         return path;
     }
 
+    public void SetCurrentDirection(string dir)
+    {
+        if (dir == "Left") currentDirection = Direction.Left;
+        if (dir == "Right") currentDirection = Direction.Right;
+        if (dir == "Down") currentDirection = Direction.Down;
+        if (dir == "Up") currentDirection = Direction.Up;
+
+    }
     #endregion
 }

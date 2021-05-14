@@ -166,7 +166,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7494954884086153497}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -174,7 +174,7 @@ Transform:
   - {fileID: 7494954883636812548}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!114 &7494954884086153496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,7 +192,6 @@ MonoBehaviour:
   currentTileID: {x: 11, y: 5}
   nextTileID: {x: 0, y: 0}
   isMoving: 0
-  path: []
   carSpeed: 2
   isTurning: 0
   currentRotation: 0
@@ -241,7 +240,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7494954884086153496}
         m_TargetAssemblyTypeName: Car, Assembly-CSharp
-        m_MethodName: ShowAssignedPath
+        m_MethodName: SetCurrentSelectedCar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -251,20 +250,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PathPicker, Assembly-CSharp
-        m_MethodName: SetCurrentSelectedCar
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 7494954884086153496}
+        m_TargetAssemblyTypeName: Car, Assembly-CSharp
         m_MethodName: ShowControllerPanel
         m_Mode: 1
         m_Arguments:

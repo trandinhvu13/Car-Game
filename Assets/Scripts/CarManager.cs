@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,10 +31,14 @@ public class CarManager : MonoBehaviour
     #region Variables
 
     [SerializeField] private int carAmount = 0;
-    public Car[] cars = new Car[95];
+    public Car[] cars = new Car[96];
 
     #endregion
 
+    #region Mono
+
+ 
+    #endregion
     #region Method
 
     public void StartSelectedCar(int carID)
@@ -46,5 +51,19 @@ public class CarManager : MonoBehaviour
         GameEvent.Instance.StopMoving(carID);
     }
     
+    #endregion
+
+    #region Getter/Setter
+
+    public int GetCarAmount()
+    {
+        return carAmount;
+    }
+
+    public void ChangeCarAmount(int amount)
+    {
+        carAmount += amount;
+    }
+
     #endregion
 }
