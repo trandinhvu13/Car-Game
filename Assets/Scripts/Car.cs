@@ -321,7 +321,7 @@ public class Car : MonoBehaviour, IPoolable
         {
             if (path[i] == tileID)
             {
-                startIndex = i;
+                startIndex = i+1;
             }
         }
 

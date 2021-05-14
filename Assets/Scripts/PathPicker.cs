@@ -135,7 +135,7 @@ public class PathPicker : MonoBehaviour
     public void RemoveFromPath(Vector2Int tileID)
     {
         CarManager.Instance.cars[currentSelectedCar].RemoveFromPath(tileID);
-        TilesManager.Instance.SetTileCanBeSelected(tileID, true);
+        //TilesManager.Instance.SetTileCanBeSelected(tileID, true);
         OnChangeToPath();
     }
 
