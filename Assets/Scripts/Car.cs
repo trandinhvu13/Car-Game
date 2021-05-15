@@ -98,6 +98,8 @@ public class Car : MonoBehaviour, IPoolable
     {
         if (carID != this.carID) return;
         if (path.Count <= 0) return;
+        if (isMoving) return;
+        if(path.Count<=0) return;
         isMoving = true;
         moveCoroutine = Move();
         StartCoroutine(moveCoroutine);
@@ -106,6 +108,7 @@ public class Car : MonoBehaviour, IPoolable
     private void StopMoving(int carID)
     {
         if (carID != this.carID) return;
+        if (!isMoving) return;
         isMoving = false;
         isTurning = false;
         LeanTween.pause(moveTweenID);
@@ -343,6 +346,7 @@ public class Car : MonoBehaviour, IPoolable
     public void ShowControllerPanel()
     {
         UIManager.Instance.ShowControllerPanel();
+        PathPicker.Instance.ShowAssignedPath();
     }
     #endregion
 

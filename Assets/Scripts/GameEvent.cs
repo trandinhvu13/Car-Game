@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameEvent : MonoBehaviour
@@ -46,9 +47,9 @@ public class GameEvent : MonoBehaviour
     {
         OnUnHighlightAssignedTile?.Invoke(tileID);
     }
-    public event Action<Vector2Int,string[]> OnShowDirectionArrow;
+    public event Action<Vector2Int,List<string>> OnShowDirectionArrow;
 
-    public void ShowDirectionArrow(Vector2Int tileID, string[] arrows)
+    public void ShowDirectionArrow(Vector2Int tileID, List<string> arrows)
     {
         OnShowDirectionArrow?.Invoke(tileID,arrows);
     }

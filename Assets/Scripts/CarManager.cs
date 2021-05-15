@@ -31,7 +31,7 @@ public class CarManager : MonoBehaviour
     #region Variables
 
     [SerializeField] private int carAmount = 0;
-    public List<Car> cars = new List<Car>(96);
+    public List<Car> cars = new List<Car>(150);
 
     #endregion
 
@@ -57,6 +57,15 @@ public class CarManager : MonoBehaviour
         for (int i = 0; i < carAmount;i++)
         {
             GameEvent.Instance.StartMoving(i);
+        }
+    }
+    
+    public void StopAllCar()
+    {
+        TilesManager.Instance.ResetAllHighlight();
+        for (int i = 0; i < carAmount;i++)
+        {
+            GameEvent.Instance.StopMoving(i);
         }
     }
     #endregion

@@ -17,7 +17,6 @@ public class Tile : MonoBehaviour
     [Header("Stats")] [SerializeField] private bool isAvailable;
 
     [SerializeField] private bool isSelected;
-    [SerializeField] private bool isGate;
     [SerializeField] private bool isParkingSlot;
     [SerializeField] private bool canMoveLeft;
     [SerializeField] private bool canMoveRight;
@@ -37,6 +36,10 @@ public class Tile : MonoBehaviour
     [Header("Car")] [SerializeField] private GameObject car;
     [SerializeField] private string carSpawnDir;
     [SerializeField] private Transform carParent;
+    
+    [Header("Gate")] [SerializeField] private bool canExitToGate;
+    [SerializeField] private Gate gate;
+    [SerializeField] private string gateDir;
 
     [Header("Other Components")] [SerializeField]
     private BoxCollider2D col;
@@ -129,32 +132,34 @@ public class Tile : MonoBehaviour
         shape.settings.fillColor = color;
     }
 
-    private void ShowAvailablePathArrow(Vector2Int id,string[] arrows)
+    private void ShowAvailablePathArrow(Vector2Int id, List<string> arrows)
     {
         if (id != this.id) return;
-   
+
         HideAvailablePathArrow(this.id);
-        for (int i = 0; i < arrows.Length; i++)
+        for (int i = 0; i < arrows.Count; i++)
         {
             if (arrows[i] == "Left")
             {
                 if (!canMoveLeft) continue;
                 leftArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x-1,id.y));
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x - 1, id.y));
                 continue;
             }
+
             if (arrows[i] == "Right")
             {
                 if (!canMoveRight) continue;
                 rightArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x+1,id.y));
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x + 1, id.y));
                 continue;
             }
+
             if (arrows[i] == "Up")
             {
                 if (!canMoveUp) continue;
                 upArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x,id.y+1));
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x, id.y + 1));
                 continue;
             }
 
@@ -162,12 +167,37 @@ public class Tile : MonoBehaviour
             {
                 if (!canMoveDown) continue;
                 downArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x,id.y-1));
+                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x, id.y - 1));
                 continue;
             }
         }
+
+        if (canExitToGate)
+        {
+            ShowArrowToGate();
+        }
+        
     }
 
+    private void ShowArrowToGate()
+    {
+        if (gateDir == "Left")
+        {
+            leftArrow.SetActive(true);
+        }
+        if (gateDir == "Right")
+        {
+            rightArrow.SetActive(true);
+        }
+        if (gateDir == "Up")
+        {
+            upArrow.SetActive(true);
+        }
+        if (gateDir == "Down")
+        {
+            downArrow.SetActive(true);
+        }
+    }
     private void HideAvailablePathArrow(Vector2Int id)
     {
         if (id != this.id) return;
@@ -189,11 +219,10 @@ public class Tile : MonoBehaviour
         if (id != this.id) return;
         this.canBeRemovedFromPath = canBeRemovedFromPath;
     }
-    
+
     public void OnSelectedPathPicker()
     {
-       
-       // if (!canBeSelected) return;
+        // if (!canBeSelected) return;
         if (!isAvailable) return;
         if (canBeAddedToPath)
         {
@@ -205,7 +234,6 @@ public class Tile : MonoBehaviour
         {
             PathPicker.Instance.RemoveFromPath(id);
         }
-       
     }
 
     private void ResetTilePathStatus()

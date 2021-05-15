@@ -34,7 +34,11 @@ public class PathPicker : MonoBehaviour
     private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
     private List<Vector2Int> selectedCarPath;
     private bool isChangingPath = false;
-
+    [Header("Gates")] 
+    [SerializeField] private Vector2Int tileToLeftGate;
+    [SerializeField] private Vector2Int tileToRightGate;
+    [SerializeField] private Vector2Int tileToUpGate;
+    [SerializeField] private Vector2Int tileToDownGate;
     #endregion
 
     #region Methods
@@ -79,34 +83,33 @@ public class PathPicker : MonoBehaviour
 
     public void ShowAssignedPath()
     {
+        selectedCarPath = CarManager.Instance.cars[currentSelectedCar].GetCurrentPath();
         for (int tileID = 0; tileID < selectedCarPath.Count; tileID++)
         {
             GameEvent.Instance.HighlightAssignedTile(selectedCarPath[tileID]);
         }
     }
-
     
-
     public void SetAvailablePath()
     {
         HideCurrentAvailablePathArrow();
         Car selectedCar = CarManager.Instance.cars[currentSelectedCar];
-        List<Vector2Int> path = selectedCar.GetCurrentPath();
-        if (path.Count <= 0)
+        //List<Vector2Int> path = selectedCar.GetCurrentPath();
+        if (selectedCarPath.Count <= 0)
         {
             currentTileHasArrow = selectedCar.GetCurrentTileID();
             ShowDirectionArrow(currentTileHasArrow);
         }
         else
         {
-            currentTileHasArrow = path[path.Count - 1];
+            currentTileHasArrow = selectedCarPath[selectedCarPath.Count - 1];
             ShowDirectionArrow(currentTileHasArrow);
         }
     }
 
     public void ShowDirectionArrow(Vector2Int currentTileHasArrow)
     {
-        string[] arrows = new string[4];
+        List<string> arrows = new List<string>();
         Vector2Int[] surroundTile =
         {
             new Vector2Int(currentTileHasArrow.x - 1, currentTileHasArrow.y),
@@ -115,16 +118,16 @@ public class PathPicker : MonoBehaviour
             new Vector2Int(currentTileHasArrow.x, currentTileHasArrow.y - 1)
         };
         for (int i = 0; i < surroundTile.Length; i++)
-        {
+        {   
             if(surroundTile[i].x<0 || surroundTile[i].x>22 || surroundTile[i].y<0 || surroundTile[i].y>10) continue;
             if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i])) continue;
             if(selectedCarPath.Contains(surroundTile[i])) continue;
-            if (i == 0) arrows[i] = "Left";
-            if (i == 1) arrows[i] = "Right";
-            if (i == 2) arrows[i] = "Up";
-            if (i == 3) arrows[i] = "Down";
+            if (i == 0) arrows.Add("Left");
+            if (i == 1) arrows.Add("Right");
+            if (i == 2) arrows.Add("Up");
+            if (i == 3) arrows.Add("Down");
         }
-        
+
         GameEvent.Instance.ShowDirectionArrow(currentTileHasArrow,arrows);
     }
 
