@@ -31,7 +31,7 @@ public class CarManager : MonoBehaviour
     #region Variables
 
     [SerializeField] private int carAmount = 0;
-    public Car[] cars = new Car[96];
+    public List<Car> cars = new List<Car>(96);
 
     #endregion
 
