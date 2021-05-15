@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PathPicker : MonoBehaviour
@@ -32,6 +33,7 @@ public class PathPicker : MonoBehaviour
     [SerializeField] private int currentSelectedCar;
     private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
     private List<Vector2Int> selectedCarPath;
+    private bool isChangingPath = false;
 
     #endregion
 
@@ -41,6 +43,7 @@ public class PathPicker : MonoBehaviour
 
     public void UpdateTileStatus()
     {
+        isChangingPath = true;
         selectedCarPath = CarManager.Instance.cars[currentSelectedCar].GetCurrentPath();
         ShowAssignedPath();
         SetAvailablePath();
@@ -51,6 +54,21 @@ public class PathPicker : MonoBehaviour
                 TilesManager.Instance.MakeTilesRemovableFromPath(tileID);
             }
         }
+    }
+
+    public void DoneChangePath()
+    {
+        isChangingPath = false;
+        TilesManager.Instance.ResetTilePathStatus();
+        GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
+    }
+
+    public void CloseControllerPanel()
+    {
+        isChangingPath = false;
+        TilesManager.Instance.ResetAllHighlight();
+        TilesManager.Instance.ResetTilePathStatus();
+        GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
     }
 
     public void OnChangeToPath()
@@ -67,17 +85,7 @@ public class PathPicker : MonoBehaviour
         }
     }
 
-    public void ResetAllHighlight()
-    {
-        for (int x = 0; x < 23; x++)
-        {
-            for (int y = 0; y < 11; y++)
-            {
-                Vector2Int tileID = new Vector2Int(x, y);
-                GameEvent.Instance.UnHighlightAssignedTile(tileID);
-            }
-        }
-    }
+    
 
     public void SetAvailablePath()
     {
@@ -128,7 +136,7 @@ public class PathPicker : MonoBehaviour
     public void AddToPath(Vector2Int tileID)
     {
         CarManager.Instance.cars[currentSelectedCar].AddToPath(tileID);
-        TilesManager.Instance.SetTileCanBeSelected(tileID, false);
+        //TilesManager.Instance.SetTileCanBeSelected(tileID, false);
         OnChangeToPath();
     }
 

@@ -26,7 +26,6 @@ public class Tile : MonoBehaviour
 
     [SerializeField] private bool canBeAddedToPath;
     [SerializeField] private bool canBeRemovedFromPath;
-    [SerializeField] private bool canBeSelected;
 
     [Header("Visual")] [SerializeField] private Shape shape;
 
@@ -54,9 +53,9 @@ public class Tile : MonoBehaviour
         GameEvent.Instance.OnChangeCanBeAddedToPath += ChangeCanBeAddedToPath;
         GameEvent.Instance.OnHideDirectionArrow += HideAvailablePathArrow;
         GameEvent.Instance.OnResetTilePathStatus += ResetTilePathStatus;
-        GameEvent.Instance.OnChangeCanBeSelected += SetCanBeSelected;
         GameEvent.Instance.OnChangeCanBeRemovedFromPath += ChangeCanBeRemovedFromPath;
         GameEvent.Instance.OnSpawnCar += SpawnCar;
+        GameEvent.Instance.OnChangeColliderEnabled += SetCollider;
     }
 
     private void OnDisable()
@@ -67,9 +66,9 @@ public class Tile : MonoBehaviour
         GameEvent.Instance.OnChangeCanBeAddedToPath -= ChangeCanBeAddedToPath;
         GameEvent.Instance.OnHideDirectionArrow -= HideAvailablePathArrow;
         GameEvent.Instance.OnResetTilePathStatus -= ResetTilePathStatus;
-        GameEvent.Instance.OnChangeCanBeSelected -= SetCanBeSelected;
         GameEvent.Instance.OnChangeCanBeRemovedFromPath -= ChangeCanBeRemovedFromPath;
         GameEvent.Instance.OnSpawnCar -= SpawnCar;
+        GameEvent.Instance.OnChangeColliderEnabled -= SetCollider;
     }
 
     #endregion
@@ -80,31 +79,6 @@ public class Tile : MonoBehaviour
     {
         id.x = x;
         id.y = y;
-    }
-
-    public bool CanMoveDirection(string dir)
-    {
-        if (dir == "left")
-        {
-            return canMoveLeft;
-        }
-
-        if (dir == "right")
-        {
-            return canMoveRight;
-        }
-
-        if (dir == "up")
-        {
-            return canMoveUp;
-        }
-
-        if (dir == "down")
-        {
-            return canMoveDown;
-        }
-
-        return false;
     }
 
     public void SpawnCar()
@@ -126,7 +100,6 @@ public class Tile : MonoBehaviour
         carScript.SetCurrentRotation(currentRotation);
         carScript.SetUpCar();
         SetTileAvailable(false);
-        SetCanBeSelected(id, false);
     }
 
     private void HightlightTile(Vector2Int tileID)
@@ -216,15 +189,7 @@ public class Tile : MonoBehaviour
         if (id != this.id) return;
         this.canBeRemovedFromPath = canBeRemovedFromPath;
     }
-
-    private void SetCanBeSelected(Vector2Int id, bool canBeSelected)
-    {
-        if (id != this.id) return;
-        if (!isAvailable) return;
-        this.canBeSelected = canBeSelected;
-        col.enabled = canBeSelected;
-    }
-
+    
     public void OnSelectedPathPicker()
     {
        
@@ -245,7 +210,6 @@ public class Tile : MonoBehaviour
 
     private void ResetTilePathStatus()
     {
-        canBeSelected = false;
         canBeAddedToPath = false;
         canBeRemovedFromPath = false;
     }
@@ -262,7 +226,12 @@ public class Tile : MonoBehaviour
     public void SetTileAvailable(bool isAvailable)
     {
         this.isAvailable = isAvailable;
-    
+    }
+
+    public void SetCollider(Vector2Int id, bool isEnabled)
+    {
+        if (id != this.id) return;
+        col.enabled = isEnabled;
     }
 
     public void SetTileIsSelected(bool isSelected)

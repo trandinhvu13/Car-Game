@@ -97,10 +97,20 @@ public class TilesManager : MonoBehaviour
     {
         GameEvent.Instance.ResetTilePathStatus();
     }
-
-    public void SetTileCanBeSelected(Vector2Int tileID,bool canBeSelected)
+    public void ResetAllHighlight()
     {
-        GameEvent.Instance.ChangeCanBeSelected(tileID, canBeSelected);
+        for (int x = 0; x < 23; x++)
+        {
+            for (int y = 0; y < 11; y++)
+            {
+                Vector2Int tileID = new Vector2Int(x, y);
+                GameEvent.Instance.UnHighlightAssignedTile(tileID);
+            }
+        }
+    }
+    public void SetTileCanBeSelected(Vector2Int tileID,bool isEnabled)
+    {
+        GameEvent.Instance.ChangeColliderEnabled(tileID, isEnabled);
     }
 
     public void MakeTilesAddableToPath(Vector2Int tileID)

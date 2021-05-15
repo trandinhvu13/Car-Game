@@ -58,11 +58,11 @@ public class GameEvent : MonoBehaviour
     {
         OnHideDirectionArrow?.Invoke(tileID);
     }
-    public event Action<Vector2Int,bool> OnChangeCanBeSelected;
+    public event Action<Vector2Int,bool> OnChangeColliderEnabled;
 
-    public void ChangeCanBeSelected(Vector2Int tileID,bool canBeSelected)
+    public void ChangeColliderEnabled(Vector2Int tileID,bool isEnabled)
     {
-        OnChangeCanBeSelected?.Invoke(tileID,canBeSelected);
+        OnChangeColliderEnabled?.Invoke(tileID,isEnabled);
     }
     public event Action<Vector2Int,bool> OnChangeCanBeAddedToPath;
 

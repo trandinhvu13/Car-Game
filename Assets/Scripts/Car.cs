@@ -97,6 +97,7 @@ public class Car : MonoBehaviour, IPoolable
     private void StartMoving(int carID)
     {
         if (carID != this.carID) return;
+        if (path.Count <= 0) return;
         isMoving = true;
         moveCoroutine = Move();
         StartCoroutine(moveCoroutine);
@@ -336,6 +337,7 @@ public class Car : MonoBehaviour, IPoolable
     public void SetCurrentSelectedCar()
     {
         PathPicker.Instance.SetCurrentSelectedCar(carID);
+        TilesManager.Instance.ResetAllHighlight();
     }
 
     public void ShowControllerPanel()

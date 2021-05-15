@@ -50,7 +50,15 @@ public class CarManager : MonoBehaviour
     {
         GameEvent.Instance.StopMoving(carID);
     }
-    
+
+    public void StartAllCar()
+    {
+        TilesManager.Instance.ResetAllHighlight();
+        for (int i = 0; i < carAmount;i++)
+        {
+            GameEvent.Instance.StartMoving(i);
+        }
+    }
     #endregion
 
     #region Getter/Setter
