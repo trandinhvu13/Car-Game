@@ -14,6 +14,9 @@ public class Tile : MonoBehaviour
     #region Variables
 
     [Header("Pos")] [SerializeField] private Vector2Int id;
+    [Header("Gate")] [SerializeField] private bool isGate;
+    [SerializeField] private bool isWall;
+    [SerializeField] private string gateType;
     [Header("Stats")] [SerializeField] private bool isAvailable;
 
     [SerializeField] private bool isSelected;
@@ -36,10 +39,6 @@ public class Tile : MonoBehaviour
     [Header("Car")] [SerializeField] private GameObject car;
     [SerializeField] private string carSpawnDir;
     [SerializeField] private Transform carParent;
-
-    [Header("Gate")] [SerializeField] private bool canExitToGate;
-    [SerializeField] private Gate gate;
-    [SerializeField] private int gateNum;
 
     [Header("Other Components")] [SerializeField]
     private BoxCollider2D col;
@@ -108,14 +107,23 @@ public class Tile : MonoBehaviour
     private void HightlightTile(Vector2Int tileID)
     {
         if (tileID != id) return;
-        //if(isSelected) return;
+        if (isWall) return;
+        if (isGate)
+        {
+            return;
+        }
+
         ChangeColor(EffectData.Instance.tileHighlightColor);
     }
 
     private void UnHighlightTile(Vector2Int tileID)
     {
         if (tileID != id) return;
-        //if (!isSelected) return;
+        if (isWall) return;
+        if (isGate)
+        {
+            return;
+        }
 
         if (isParkingSlot)
         {
@@ -135,8 +143,9 @@ public class Tile : MonoBehaviour
     private void ShowAvailablePathArrow(Vector2Int id, List<string> arrows)
     {
         if (id != this.id) return;
-
+        if (isWall) return;
         HideAvailablePathArrow(this.id);
+
         for (int i = 0; i < arrows.Count; i++)
         {
             if (arrows[i] == "Left")
@@ -171,44 +180,12 @@ public class Tile : MonoBehaviour
                 continue;
             }
         }
-
-        if (canExitToGate)
-        {
-            ShowArrowToGate();
-        }
-    }
-
-    private void ShowArrowToGate()
-    {
-        TilesManager.Instance.MakeGateAddableToPath(gateNum, "In");
-        if (gateNum == 0)
-        {
-            leftArrow.SetActive(true);
-            return;
-        }
-
-        if (gateNum == 2)
-        {
-            rightArrow.SetActive(true);
-            return;
-        }
-
-        if (gateNum == 1)
-        {
-            upArrow.SetActive(true);
-            return;
-        }
-
-        if (gateNum == 3)
-        {
-            downArrow.SetActive(true);
-            return;
-        }
     }
 
     private void HideAvailablePathArrow(Vector2Int id)
     {
         if (id != this.id) return;
+        if (isWall) return;
         upArrow.SetActive(false);
         downArrow.SetActive(false);
         leftArrow.SetActive(false);
@@ -232,6 +209,7 @@ public class Tile : MonoBehaviour
     {
         // if (!canBeSelected) return;
         if (!isAvailable) return;
+        if (isWall) return;
         if (canBeAddedToPath)
         {
             PathPicker.Instance.AddToPath(id);
@@ -246,6 +224,7 @@ public class Tile : MonoBehaviour
 
     private void ResetTilePathStatus()
     {
+        if (isWall) return;
         canBeAddedToPath = false;
         canBeRemovedFromPath = false;
     }
@@ -267,6 +246,7 @@ public class Tile : MonoBehaviour
     public void SetCollider(Vector2Int id, bool isEnabled)
     {
         if (id != this.id) return;
+        if (isWall) return;
         col.enabled = isEnabled;
     }
 
@@ -303,6 +283,16 @@ public class Tile : MonoBehaviour
     public bool GetIsParkingSpot()
     {
         return isParkingSlot;
+    }
+
+    public bool GetIsGate()
+    {
+        return isGate;
+    }
+
+    public Vector2Int GetTileID()
+    {
+        return id;
     }
 
     #endregion

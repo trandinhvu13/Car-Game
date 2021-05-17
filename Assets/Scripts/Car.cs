@@ -43,12 +43,14 @@ public class Car : MonoBehaviour, IPoolable
     {
         GameEvent.Instance.OnStartMoving += StartMoving;
         GameEvent.Instance.OnStopMoving += StopMoving;
+        GameEvent.Instance.OnCarExitGate += ExitGate;
     }
 
     public void OnDespawn()
     {
         GameEvent.Instance.OnStartMoving -= StartMoving;
         GameEvent.Instance.OnStopMoving -= StopMoving;
+        GameEvent.Instance.OnCarExitGate -= ExitGate;
 
         //reset car stats
     }
@@ -167,7 +169,7 @@ public class Car : MonoBehaviour, IPoolable
             }
 
             canContinue = false;
-            moveTweenID = LeanTween.move(gameObject, TilesManager.Instance.GetTileCurrentTransform(path[0]).position,
+            moveTweenID = LeanTween.move(gameObject, TilesManager.Instance.GetTileCurrentTransform(nextTileID).position,
                     carSpeed)
                 .setEase
                     (EffectData.Instance.carMoveTween).setSpeed(carSpeed)
@@ -180,7 +182,13 @@ public class Car : MonoBehaviour, IPoolable
                         currentTileID = nextTileID;
                         TilesManager.Instance.SetTileSelected(currentTileID, true);
                         TilesManager.Instance.SetTileAvailable(currentTileID, false);
-                        GameEvent.Instance.UnHighlightAssignedTile(path[0]);
+                        GameEvent.Instance.UnHighlightAssignedTile(nextTileID);
+                        if (TilesManager.Instance.CheckIsGateOut(nextTileID))
+                        {
+                            CarManager.Instance.CarExit(carID);
+                            TilesManager.Instance.SetTileSelected(nextTileID, false);
+                            TilesManager.Instance.SetTileAvailable(nextTileID, true);
+                        }
                         path.RemoveAt(0);
                     }).id;
             yield return new WaitUntil(() => canContinue);
@@ -369,6 +377,11 @@ public class Car : MonoBehaviour, IPoolable
         }
     }
 
+    public void ExitGate(int carID)
+    {
+        if(carID != this.carID) return;
+        LeanPool.Despawn(gameObject);
+    }
     public void SetCurrentSelectedCar()
     {
         PathPicker.Instance.SetCurrentSelectedCar(carID);

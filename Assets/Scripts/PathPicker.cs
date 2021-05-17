@@ -34,11 +34,11 @@ public class PathPicker : MonoBehaviour
     private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
     private List<Vector2Int> selectedCarPath;
     private bool isChangingPath = false;
-    [Header("Gates")] 
-    [SerializeField] private Vector2Int tileToLeftGate;
+    [Header("Gates")] [SerializeField] private Vector2Int tileToLeftGate;
     [SerializeField] private Vector2Int tileToRightGate;
     [SerializeField] private Vector2Int tileToUpGate;
     [SerializeField] private Vector2Int tileToDownGate;
+
     #endregion
 
     #region Methods
@@ -89,7 +89,7 @@ public class PathPicker : MonoBehaviour
             GameEvent.Instance.HighlightAssignedTile(selectedCarPath[tileID]);
         }
     }
-    
+
     public void SetAvailablePath()
     {
         HideCurrentAvailablePathArrow();
@@ -118,17 +118,18 @@ public class PathPicker : MonoBehaviour
             new Vector2Int(currentTileHasArrow.x, currentTileHasArrow.y - 1)
         };
         for (int i = 0; i < surroundTile.Length; i++)
-        {   
-            if(surroundTile[i].x<0 || surroundTile[i].x>22 || surroundTile[i].y<0 || surroundTile[i].y>10) continue;
+        {
+            if (surroundTile[i].x < 0 || surroundTile[i].x > 24 || surroundTile[i].y < 0 ||
+                surroundTile[i].y > 12) continue;
             if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i])) continue;
-            if(selectedCarPath.Contains(surroundTile[i])) continue;
+            if (selectedCarPath.Contains(surroundTile[i])) continue;
             if (i == 0) arrows.Add("Left");
             if (i == 1) arrows.Add("Right");
             if (i == 2) arrows.Add("Up");
             if (i == 3) arrows.Add("Down");
         }
 
-        GameEvent.Instance.ShowDirectionArrow(currentTileHasArrow,arrows);
+        GameEvent.Instance.ShowDirectionArrow(currentTileHasArrow, arrows);
     }
 
     public void HideCurrentAvailablePathArrow()

@@ -110,6 +110,13 @@ public class GameEvent : MonoBehaviour
     {
         OnStopMoving?.Invoke(carID);
     }
+    
+    public event Action<int> OnCarExitGate;
+
+    public void CarExitGate(int carID)
+    {
+        OnCarExitGate?.Invoke(carID);
+    }
 
     #endregion
 }

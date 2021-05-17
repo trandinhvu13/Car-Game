@@ -10,10 +10,12 @@ public class TilesManager : MonoBehaviour
 
     [Header("Initialize")] [SerializeField]
     private Transform grid;
-
+    [SerializeField] private int gridX;
+    [SerializeField] private int gridY;
+    
     private Tile[,] tileScripts;
-    [SerializeField] private Gate[] inGates;
-    [SerializeField] private Gate[] outGates;
+    [SerializeField] private Tile[] gateOut;
+    [SerializeField] private Tile[] gateIn;
 
     #endregion
 
@@ -55,12 +57,12 @@ public class TilesManager : MonoBehaviour
 
     private void InitializeGrid()
     {
-        tileScripts = new Tile[23, 11];
+        tileScripts = new Tile[gridX, gridY];
         int x = 0;
         int y = 0;
         foreach (Transform Child in grid.transform)
         {
-            if (x >= 23)
+            if (x >= gridX)
             {
                 y++;
                 x = 0;
@@ -97,9 +99,9 @@ public class TilesManager : MonoBehaviour
     public void ResetTilePathStatus()
     {
         GameEvent.Instance.ResetTilePathStatus();
-        for (int x = 0; x < 23; x++)
+        for (int x = 0; x < gridX; x++)
         {
-            for (int y = 0; y < 11; y++)
+            for (int y = 0; y < gridY; y++)
             {
                 Vector2Int tileID = new Vector2Int(x, y);
                 SetTileCanBeSelected(tileID,false);
@@ -109,9 +111,9 @@ public class TilesManager : MonoBehaviour
 
     public void ResetAllHighlight()
     {
-        for (int x = 0; x < 23; x++)
+        for (int x = 0; x < gridX; x++)
         {
-            for (int y = 0; y < 11; y++)
+            for (int y = 0; y < gridY; y++)
             {
                 Vector2Int tileID = new Vector2Int(x, y);
                 GameEvent.Instance.UnHighlightAssignedTile(tileID);
@@ -150,6 +152,39 @@ public class TilesManager : MonoBehaviour
     {
         GameEvent.Instance.ToggleGateSelectable(gateNum, type, true);
     }
+    
+    public void ResetGate(int gateNum, string type)
+    {
+        GameEvent.Instance.ToggleGateSelectable(gateNum, type, false);
+    }
 
+    public bool CheckIsGateOut(Vector2Int tileID)
+    {
+        bool isGateOut = false;
+        for (int i = 0; i < 4; i++)
+        {
+            if (tileID == gateOut[i].GetTileID())
+            {
+                isGateOut = true;
+                break;
+            }
+        }
+
+        return isGateOut;
+    }
     #endregion
+
+    #region Getter/Setter
+
+    public int GetGridXSize()
+    {
+        return gridX;
+    }
+    public int GetGridYSize()
+    {
+        return gridY;
+    }
+
+
+#endregion
 }

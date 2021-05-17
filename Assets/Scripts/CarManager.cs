@@ -68,6 +68,12 @@ public class CarManager : MonoBehaviour
             GameEvent.Instance.StopMoving(i);
         }
     }
+    
+    public void CarExit(int carID)
+    {
+        carAmount--;
+        GameEvent.Instance.CarExitGate(carID);
+    }
     #endregion
 
     #region Getter/Setter
