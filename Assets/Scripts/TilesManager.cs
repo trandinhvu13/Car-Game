@@ -12,6 +12,8 @@ public class TilesManager : MonoBehaviour
     private Transform grid;
 
     private Tile[,] tileScripts;
+    [SerializeField] private Gate[] inGates;
+    [SerializeField] private Gate[] outGates;
 
     #endregion
 
@@ -46,7 +48,6 @@ public class TilesManager : MonoBehaviour
     {
         GameEvent.Instance.SpawnCar();
     }
-    
 
     #endregion
 
@@ -69,6 +70,7 @@ public class TilesManager : MonoBehaviour
             tileScripts[x, y].AssignPos(x, y);
             x++;
         }
+
         GameEvent.Instance.ResetTilePathStatus();
     }
 
@@ -84,7 +86,6 @@ public class TilesManager : MonoBehaviour
 
     public void SetTileAvailable(Vector2Int tileID, bool isAvailable)
     {
-        
         tileScripts[tileID.x, tileID.y].SetTileAvailable(isAvailable);
     }
 
@@ -96,7 +97,16 @@ public class TilesManager : MonoBehaviour
     public void ResetTilePathStatus()
     {
         GameEvent.Instance.ResetTilePathStatus();
+        for (int x = 0; x < 23; x++)
+        {
+            for (int y = 0; y < 11; y++)
+            {
+                Vector2Int tileID = new Vector2Int(x, y);
+                SetTileCanBeSelected(tileID,false);
+            }
+        }
     }
+
     public void ResetAllHighlight()
     {
         for (int x = 0; x < 23; x++)
@@ -108,31 +118,38 @@ public class TilesManager : MonoBehaviour
             }
         }
     }
-    public void SetTileCanBeSelected(Vector2Int tileID,bool isEnabled)
+
+    public void SetTileCanBeSelected(Vector2Int tileID, bool isEnabled)
     {
         GameEvent.Instance.ChangeColliderEnabled(tileID, isEnabled);
     }
 
     public void MakeTilesAddableToPath(Vector2Int tileID)
     {
-       GameEvent.Instance.ChangeCanBeAddedToPath(tileID,true);
-       SetTileCanBeSelected(tileID,true);
+        GameEvent.Instance.ChangeCanBeAddedToPath(tileID, true);
+        SetTileCanBeSelected(tileID, true);
     }
 
     public void MakeTilesRemovableFromPath(Vector2Int tileID)
     {
         GameEvent.Instance.ChangeCanBeRemovedFromPath(tileID, true);
-        SetTileCanBeSelected(tileID,true);
+        SetTileCanBeSelected(tileID, true);
     }
 
     public void UnHighlightTile(Vector2Int tileID)
     {
-      GameEvent.Instance.UnHighlightAssignedTile(tileID);
+        GameEvent.Instance.UnHighlightAssignedTile(tileID);
     }
 
     public bool GetTileIsAvailable(Vector2Int tileID)
     {
-       return tileScripts[tileID.x, tileID.y].GetIsAvailable();
+        return tileScripts[tileID.x, tileID.y].GetIsAvailable();
     }
+
+    public void MakeGateAddableToPath(int gateNum, string type)
+    {
+        GameEvent.Instance.ToggleGateSelectable(gateNum, type, true);
+    }
+
     #endregion
 }

@@ -85,6 +85,16 @@ public class GameEvent : MonoBehaviour
     }
     #endregion
 
+    #region Gate
+
+    public event Action<int, string, bool> OnToggleGateSelectable;
+
+    public void ToggleGateSelectable(int gateNum, string gateType, bool isSelectable)
+    {
+        OnToggleGateSelectable?.Invoke(gateNum, gateType, isSelectable);
+    }
+
+    #endregion
     #region Car
 
     public event Action<int> OnStartMoving;

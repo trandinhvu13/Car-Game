@@ -34,6 +34,7 @@ public class Car : MonoBehaviour, IPoolable
     [SerializeField] private float currentRotation;
     [SerializeField] private float nextRotation;
 
+    [Header("Gate")] [SerializeField] private int GateNum;
     #endregion
 
     #region Mono
@@ -42,17 +43,48 @@ public class Car : MonoBehaviour, IPoolable
     {
         GameEvent.Instance.OnStartMoving += StartMoving;
         GameEvent.Instance.OnStopMoving += StopMoving;
-        
-   
-       
     }
 
     public void OnDespawn()
     {
         GameEvent.Instance.OnStartMoving -= StartMoving;
         GameEvent.Instance.OnStopMoving -= StopMoving;
-        
+
         //reset car stats
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Car"))
+        {
+            Car otherCarScript = other.gameObject.GetComponent<Car>();
+            Vector2Int otherCarCurrentTileID = otherCarScript.GetCurrentTileID();
+
+            if (currentDirection == Direction.Left && otherCarCurrentTileID.x < currentTileID.x)
+            {
+                StopMoving(carID);
+                return;
+            }
+
+            if (currentDirection == Direction.Right && otherCarCurrentTileID.x > currentTileID.x)
+            {
+                StopMoving(carID);
+                return;
+            }
+
+            if (currentDirection == Direction.Up && otherCarCurrentTileID.y > currentTileID.y)
+            {
+                StopMoving(carID);
+                return;
+            }
+
+            if (currentDirection == Direction.Down && otherCarCurrentTileID.y < currentTileID.y)
+            {
+                StopMoving(carID);
+                return;
+            }
+            StopMoving(carID);
+        }
     }
 
     private void Awake()
@@ -60,7 +92,7 @@ public class Car : MonoBehaviour, IPoolable
         CarManager.Instance.ChangeCarAmount(1);
         carID = CarManager.Instance.GetCarAmount();
         CarManager.Instance.cars[carID] = this;
-        
+
         path = new List<Vector2Int>();
     }
 
@@ -99,7 +131,7 @@ public class Car : MonoBehaviour, IPoolable
         if (carID != this.carID) return;
         if (path.Count <= 0) return;
         if (isMoving) return;
-        if(path.Count<=0) return;
+        if (path.Count <= 0) return;
         isMoving = true;
         moveCoroutine = Move();
         StartCoroutine(moveCoroutine);
@@ -325,7 +357,7 @@ public class Car : MonoBehaviour, IPoolable
         {
             if (path[i] == tileID)
             {
-                startIndex = i+1;
+                startIndex = i + 1;
             }
         }
 
@@ -348,6 +380,7 @@ public class Car : MonoBehaviour, IPoolable
         UIManager.Instance.ShowControllerPanel();
         PathPicker.Instance.ShowAssignedPath();
     }
+
     #endregion
 
     #region Getter/Setter
@@ -356,7 +389,7 @@ public class Car : MonoBehaviour, IPoolable
     {
         return currentTileID;
     }
-    
+
     public void SetCurrentTileID(Vector2Int currentTileID)
     {
         this.currentTileID = currentTileID;
@@ -379,5 +412,6 @@ public class Car : MonoBehaviour, IPoolable
     {
         currentRotation = rotation;
     }
+
     #endregion
 }

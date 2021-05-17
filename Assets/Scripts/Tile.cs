@@ -36,10 +36,10 @@ public class Tile : MonoBehaviour
     [Header("Car")] [SerializeField] private GameObject car;
     [SerializeField] private string carSpawnDir;
     [SerializeField] private Transform carParent;
-    
+
     [Header("Gate")] [SerializeField] private bool canExitToGate;
     [SerializeField] private Gate gate;
-    [SerializeField] private string gateDir;
+    [SerializeField] private int gateNum;
 
     [Header("Other Components")] [SerializeField]
     private BoxCollider2D col;
@@ -176,28 +176,36 @@ public class Tile : MonoBehaviour
         {
             ShowArrowToGate();
         }
-        
     }
 
     private void ShowArrowToGate()
     {
-        if (gateDir == "Left")
+        TilesManager.Instance.MakeGateAddableToPath(gateNum, "In");
+        if (gateNum == 0)
         {
             leftArrow.SetActive(true);
+            return;
         }
-        if (gateDir == "Right")
+
+        if (gateNum == 2)
         {
             rightArrow.SetActive(true);
+            return;
         }
-        if (gateDir == "Up")
+
+        if (gateNum == 1)
         {
             upArrow.SetActive(true);
+            return;
         }
-        if (gateDir == "Down")
+
+        if (gateNum == 3)
         {
             downArrow.SetActive(true);
+            return;
         }
     }
+
     private void HideAvailablePathArrow(Vector2Int id)
     {
         if (id != this.id) return;

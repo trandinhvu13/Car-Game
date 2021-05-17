@@ -139,14 +139,13 @@ public class PathPicker : MonoBehaviour
     public void AddToPath(Vector2Int tileID)
     {
         CarManager.Instance.cars[currentSelectedCar].AddToPath(tileID);
-        //TilesManager.Instance.SetTileCanBeSelected(tileID, false);
+
         OnChangeToPath();
     }
 
     public void RemoveFromPath(Vector2Int tileID)
     {
         CarManager.Instance.cars[currentSelectedCar].RemoveFromPath(tileID);
-        //TilesManager.Instance.SetTileCanBeSelected(tileID, true);
         OnChangeToPath();
     }
 
