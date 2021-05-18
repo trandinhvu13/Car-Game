@@ -185,6 +185,10 @@ public class TilesManager : MonoBehaviour
         return gridY;
     }
 
+    public Tile GetTileScript(Vector2Int tileID)
+    {
+        return tileScripts[tileID.x, tileID.y];
+    }
 
-#endregion
+    #endregion
 }

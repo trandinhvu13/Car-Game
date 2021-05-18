@@ -45,6 +45,7 @@ public class Tile : MonoBehaviour
 
     #endregion
 
+   
     #region Mono
 
     private void OnEnable()
@@ -144,13 +145,12 @@ public class Tile : MonoBehaviour
     {
         if (id != this.id) return;
         if (isWall) return;
-        HideAvailablePathArrow(this.id);
-
+        //HideAvailablePathArrow(this.id);
+       
         for (int i = 0; i < arrows.Count; i++)
         {
             if (arrows[i] == "Left")
             {
-                if (!canMoveLeft) continue;
                 leftArrow.SetActive(true);
                 TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x - 1, id.y));
                 continue;
@@ -158,7 +158,6 @@ public class Tile : MonoBehaviour
 
             if (arrows[i] == "Right")
             {
-                if (!canMoveRight) continue;
                 rightArrow.SetActive(true);
                 TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x + 1, id.y));
                 continue;
@@ -166,7 +165,6 @@ public class Tile : MonoBehaviour
 
             if (arrows[i] == "Up")
             {
-                if (!canMoveUp) continue;
                 upArrow.SetActive(true);
                 TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x, id.y + 1));
                 continue;
@@ -174,7 +172,6 @@ public class Tile : MonoBehaviour
 
             if (arrows[i] == "Down")
             {
-                if (!canMoveDown) continue;
                 downArrow.SetActive(true);
                 TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x, id.y - 1));
                 continue;
@@ -289,11 +286,12 @@ public class Tile : MonoBehaviour
     {
         return isGate;
     }
-
     public Vector2Int GetTileID()
     {
         return id;
     }
+
+  
 
     #endregion
 }
