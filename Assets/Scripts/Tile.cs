@@ -223,15 +223,16 @@ public class Tile : MonoBehaviour
             PathPicker.Instance.AddToPath(id);
             return;
         }*/
-        Debug.Log($"click {id}");
         if (canBeAddedToPath)
         {
+            canBeAddedToPath = false;
             PathPicker.Instance.AddToPath(id);
             return;
         }
 
         if (canBeRemovedFromPath)
         {
+            canBeRemovedFromPath = false;
             PathPicker.Instance.RemoveFromPath(id);
         }
     }
@@ -335,6 +336,10 @@ public class Tile : MonoBehaviour
         return id;
     }
 
+    public bool GetTileIsParkingSlot()
+    {
+        return isParkingSlot;
+    }
   
 
     #endregion

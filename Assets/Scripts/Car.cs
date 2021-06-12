@@ -391,20 +391,23 @@ public class Car : MonoBehaviour, IPoolable
     {
         //int startIndex = path.Count;
         int startIndex = middleTiles.Count;
-        for (int i = 0; i < path.Count; i++)
+        for (int i = 0; i < middleTiles.Count; i++)
         {
-            if (path[i] == tileID)
+            if (middleTiles[i] == tileID)
             {
-                startIndex = i + 1;
+                startIndex = i;
             }
         }
 
-        int timeHaveToRemove = path.Count - startIndex;
+        int timeHaveToRemove = middleTiles.Count - startIndex;
+        Debug.Log($"Start at {startIndex} and delete {timeHaveToRemove} times");
         for (int i = 0; i < timeHaveToRemove; i++)
         {
-            TilesManager.Instance.UnHighlightTile(path[path.Count - 1]);
-            path.RemoveAt(path.Count - 1);
+            TilesManager.Instance.UnHighlightTile(middleTiles[middleTiles.Count - 1]);
+            middleTiles.RemoveAt(middleTiles.Count - 1);
         }
+        path = new List<Vector2Int>(PathPicker.Instance.MakeFinalPath(middleTiles));
+        
     }
 
     public void ExitGate(int carID)

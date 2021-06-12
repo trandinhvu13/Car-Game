@@ -186,6 +186,11 @@ public class TilesManager : MonoBehaviour
     {
         return tileScripts[tileID.x, tileID.y];
     }
+    
+    public bool GetTileIsParkingSlot(Vector2Int tileID)
+    {
+        return tileScripts[tileID.x, tileID.y].GetTileIsParkingSlot();
+    }
 
     #endregion
 }

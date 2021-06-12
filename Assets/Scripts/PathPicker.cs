@@ -300,7 +300,9 @@ public class PathPicker : MonoBehaviour
             if (surroundTile[i].x < 0 || surroundTile[i].x > TilesManager.Instance.GetGridXSize() - 1 ||
                 surroundTile[i].y < 0 ||
                 surroundTile[i].y > TilesManager.Instance.GetGridYSize() - 1) continue;
-            if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i])) continue;
+            if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i])&&TilesManager.Instance.GetTileIsParkingSlot
+            (surroundTile[i])
+            ) continue;
             //if (selectedCarPath.Contains(surroundTile[i])) continue;
             if (i == 0 && TilesManager.Instance.GetTileScript(currentTileHasArrow).GetCanMoveLeft())
             {
@@ -345,7 +347,7 @@ public class PathPicker : MonoBehaviour
         Debug.Log("middle path: " + middleTiles.Count);
         if (middleTiles.Count <= 1)
         {
-            return null;
+            return new List<Vector2Int>();
         }
         for (int i = 0; i < middleTiles.Count-1; i++)
         {
