@@ -24,7 +24,10 @@ public class Car : MonoBehaviour, IPoolable
 
     [Header("Move")] [SerializeField] private bool isMoving = false;
     private Coroutine move;
+    [SerializeField]
     private List<Vector2Int> path;
+    [SerializeField]
+    private List<Vector2Int> middleTiles;
     [SerializeField] private float carSpeed;
     private int moveTweenID;
 
@@ -35,6 +38,7 @@ public class Car : MonoBehaviour, IPoolable
     [SerializeField] private float nextRotation;
 
     [Header("Gate")] [SerializeField] private int GateNum;
+
     #endregion
 
     #region Mono
@@ -85,6 +89,7 @@ public class Car : MonoBehaviour, IPoolable
                 StopMoving(carID);
                 return;
             }
+
             StopMoving(carID);
         }
     }
@@ -96,6 +101,7 @@ public class Car : MonoBehaviour, IPoolable
         CarManager.Instance.cars[carID] = this;
 
         path = new List<Vector2Int>();
+        middleTiles = new List<Vector2Int>();
     }
 
     private void Update()
@@ -106,9 +112,8 @@ public class Car : MonoBehaviour, IPoolable
 
     #region BFS stuffs
 
-    
-
     #endregion
+
     #region Methods
 
     public void SetUpCar()
@@ -150,6 +155,10 @@ public class Car : MonoBehaviour, IPoolable
         if (!isMoving) return;
         isMoving = false;
         isTurning = false;
+        if (middleTiles.Count > 0)
+        {
+            middleTiles.Insert(0,currentTileID);
+        }
         LeanTween.pause(moveTweenID);
         StopCoroutine(moveCoroutine);
     }
@@ -182,6 +191,7 @@ public class Car : MonoBehaviour, IPoolable
                     () =>
                     {
                         canContinue = true;
+                        if (middleTiles[0] == currentTileID) middleTiles.RemoveAt(0);
                         TilesManager.Instance.SetTileSelected(currentTileID, false);
                         TilesManager.Instance.SetTileAvailable(currentTileID, true);
                         currentTileID = nextTileID;
@@ -194,6 +204,7 @@ public class Car : MonoBehaviour, IPoolable
                             TilesManager.Instance.SetTileSelected(nextTileID, false);
                             TilesManager.Instance.SetTileAvailable(nextTileID, true);
                         }
+
                         path.RemoveAt(0);
                     }).id;
             yield return new WaitUntil(() => canContinue);
@@ -360,12 +371,26 @@ public class Car : MonoBehaviour, IPoolable
 
     public void AddToPath(Vector2Int tileID)
     {
-        path.Add(tileID);
+        Debug.Log($"Select {tileID}");
+
+        if (middleTiles.Count > 0)
+        {
+            middleTiles[0] = currentTileID;
+        }
+        else
+        {
+            middleTiles.Add(currentTileID);
+        }
+        
+        middleTiles.Add(tileID);
+        TilesManager.Instance.SetTileMiddleMiddlePath(tileID,true);
+        path = new List<Vector2Int>(PathPicker.Instance.MakeFinalPath(middleTiles));
     }
 
     public void RemoveFromPath(Vector2Int tileID)
     {
-        int startIndex = path.Count;
+        //int startIndex = path.Count;
+        int startIndex = middleTiles.Count;
         for (int i = 0; i < path.Count; i++)
         {
             if (path[i] == tileID)
@@ -384,9 +409,10 @@ public class Car : MonoBehaviour, IPoolable
 
     public void ExitGate(int carID)
     {
-        if(carID != this.carID) return;
+        if (carID != this.carID) return;
         LeanPool.Despawn(gameObject);
     }
+
     public void SetCurrentSelectedCar()
     {
         PathPicker.Instance.SetCurrentSelectedCar(carID);
@@ -418,6 +444,10 @@ public class Car : MonoBehaviour, IPoolable
         return path;
     }
 
+    public List<Vector2Int> GetCurrentMiddlePath()
+    {
+        return middleTiles;
+    }
     public void SetCurrentDirection(string dir)
     {
         if (dir == "Left") currentDirection = Direction.Left;
@@ -429,6 +459,11 @@ public class Car : MonoBehaviour, IPoolable
     public void SetCurrentRotation(float rotation)
     {
         currentRotation = rotation;
+    }
+
+    public List<Vector2Int> GetCurrentMiddleTiles()
+    {
+        return middleTiles;
     }
 
     #endregion

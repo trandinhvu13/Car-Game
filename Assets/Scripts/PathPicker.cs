@@ -64,21 +64,21 @@ public class PathPicker : MonoBehaviour
     [SerializeField] private int currentSelectedCar;
     private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
     private List<Vector2Int> selectedCarPath;
-    private Node[,] map = new Node[24, 12];
+    private List<Vector2Int> selectedCarMiddlePath;
+    //private Node[,] map = new Node[24, 12];
 
-    private bool isChangingPath = false;
+    public bool isChangingPath = false;
     [Header("Gates")] [SerializeField] private Vector2Int tileToLeftGate;
     [SerializeField] private Vector2Int tileToRightGate;
     [SerializeField] private Vector2Int tileToUpGate;
     [SerializeField] private Vector2Int tileToDownGate;
-
+    private List<Tile> middleTiles;
     #endregion
 
     #region Methods
 
     #region Path Finding
-
-    List<Tile> middleTiles;
+    
 
     public List<Vector2Int> FindPath(Vector2Int startTileID, Vector2Int finishTileID)
     {
@@ -163,7 +163,7 @@ public class PathPicker : MonoBehaviour
         List<Node> possibleNodes = new List<Node>();
 
         List<string> availableTiles = new List<string>();
-        availableTiles = ShowDirectionArrow(new Vector2Int(currentNode.X,currentNode.Y), false);
+        availableTiles = ShowAvailableDirection(new Vector2Int(currentNode.X,currentNode.Y), false);
 
         for (int i = 0; i < availableTiles.Count; i++)
         {
@@ -208,12 +208,30 @@ public class PathPicker : MonoBehaviour
     public void UpdateTileStatus()
     {
         isChangingPath = true;
+        
         selectedCarPath = CarManager.Instance.cars[currentSelectedCar].GetCurrentPath();
-        ShowAssignedPath();
-        SetAvailablePath();
-        if (selectedCarPath.Count > 0)
+        selectedCarMiddlePath = CarManager.Instance.cars[currentSelectedCar].GetCurrentMiddlePath();
+        
+        for (int x = 0; x < TilesManager.Instance.GetGridXSize(); x++)
         {
-            foreach (Vector2Int tileID in selectedCarPath)
+            for (int y = 0; y <  TilesManager.Instance.GetGridYSize(); y++)
+            {
+                Vector2Int tileID = new Vector2Int(x, y);
+                TilesManager.Instance.SetTileMiddleMiddlePath(tileID,false);
+            }
+        }
+        
+        foreach (Vector2Int tile in selectedCarMiddlePath)
+        {
+            TilesManager.Instance.SetTileMiddleMiddlePath(tile,true);
+        }
+        
+        TilesManager.Instance.ResetTilePathStatus();
+        ShowAssignedPath();
+        //SetAvailablePath();
+        if (selectedCarMiddlePath.Count > 0)
+        {
+            foreach (Vector2Int tileID in selectedCarMiddlePath)
             {
                 TilesManager.Instance.MakeTilesRemovableFromPath(tileID);
             }
@@ -252,22 +270,22 @@ public class PathPicker : MonoBehaviour
 
     public void SetAvailablePath()
     {
-        HideCurrentAvailablePathArrow();
+        //HideCurrentAvailablePathArrow();
         Car selectedCar = CarManager.Instance.cars[currentSelectedCar];
         //List<Vector2Int> path = selectedCar.GetCurrentPath();
         if (selectedCarPath.Count <= 0)
         {
             currentTileHasArrow = selectedCar.GetCurrentTileID();
-            ShowDirectionArrow(currentTileHasArrow, true);
+            ShowAvailableDirection(currentTileHasArrow, true);
         }
         else
         {
             currentTileHasArrow = selectedCarPath[selectedCarPath.Count - 1];
-            ShowDirectionArrow(currentTileHasArrow, true);
+            ShowAvailableDirection(currentTileHasArrow, true);
         }
     }
 
-    public List<string> ShowDirectionArrow(Vector2Int currentTileHasArrow, bool isShowArrow)
+    public List<string> ShowAvailableDirection(Vector2Int currentTileHasArrow, bool isShowArrow)
     {
         List<string> arrows = new List<string>();
         Vector2Int[] surroundTile =
@@ -321,9 +339,35 @@ public class PathPicker : MonoBehaviour
     {
         GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
     }
-
+    public List<Vector2Int> MakeFinalPath(List<Vector2Int> middleTiles)
+    {
+        List<Vector2Int> finalPath = new List<Vector2Int>();
+        Debug.Log("middle path: " + middleTiles.Count);
+        if (middleTiles.Count <= 1)
+        {
+            return null;
+        }
+        for (int i = 0; i < middleTiles.Count-1; i++)
+        {
+            Debug.Log($"start from {middleTiles[i]} to {middleTiles[i+1]}");
+            List<Vector2Int> path = FindPath(middleTiles[i], middleTiles[i + 1]);
+            
+            for (int j = 0; j < path.Count; j++)
+            {
+                finalPath.Add(path[j]);
+                Debug.Log($"{j} - {path[j]}");
+            }
+        }
+        Debug.Log("Final Pathhhh ");
+        for (int i = 0; i < finalPath.Count; i++)
+        {
+            Debug.Log(finalPath[i]);
+        }
+        return finalPath;
+    }
     public void AddToPath(Vector2Int tileID)
     {
+        if (!isChangingPath) return;
         CarManager.Instance.cars[currentSelectedCar].AddToPath(tileID);
 
         OnChangeToPath();

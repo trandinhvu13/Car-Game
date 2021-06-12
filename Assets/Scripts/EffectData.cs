@@ -40,6 +40,7 @@ public class EffectData : MonoBehaviour
 
     [Header("Tile")] 
     public Color32 tileHighlightColor;
+    public Color32 tileMiddlePathColor;
     public Color32 tileNormalColor;
     public Color32 tileParkingSlotColor;
 

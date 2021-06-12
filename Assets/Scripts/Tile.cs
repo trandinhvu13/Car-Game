@@ -21,6 +21,7 @@ public class Tile : MonoBehaviour
 
     [SerializeField] private bool isSelected;
     [SerializeField] private bool isParkingSlot;
+    [SerializeField] private bool isMiddlePath =false;
     [SerializeField] private bool canMoveLeft;
     [SerializeField] private bool canMoveRight;
     [SerializeField] private bool canMoveUp;
@@ -47,6 +48,11 @@ public class Tile : MonoBehaviour
 
    
     #region Mono
+
+    private void Awake()
+    {
+        col.enabled = false;
+    }
 
     private void OnEnable()
     {
@@ -109,12 +115,16 @@ public class Tile : MonoBehaviour
     {
         if (tileID != id) return;
         if (isWall) return;
-        if (isGate)
+        if (isGate) return;
+        if (isMiddlePath)
         {
-            return;
+            ChangeColor(EffectData.Instance.tileMiddlePathColor);
         }
-
-        ChangeColor(EffectData.Instance.tileHighlightColor);
+        else
+        {
+            ChangeColor(EffectData.Instance.tileHighlightColor);
+        }
+        
     }
 
     private void UnHighlightTile(Vector2Int tileID)
@@ -205,8 +215,15 @@ public class Tile : MonoBehaviour
     public void OnSelectedPathPicker()
     {
         // if (!canBeSelected) return;
-        if (!isAvailable) return;
         if (isWall) return;
+        /*if (!isAvailable) return;
+       
+        if (canBeAddedToPath)
+        {
+            PathPicker.Instance.AddToPath(id);
+            return;
+        }*/
+        Debug.Log($"click {id}");
         if (canBeAddedToPath)
         {
             PathPicker.Instance.AddToPath(id);
@@ -223,13 +240,40 @@ public class Tile : MonoBehaviour
     {
         if (isWall) return;
         canBeAddedToPath = false;
-        canBeRemovedFromPath = false;
+        
+        if (isMiddlePath)
+        {
+            canBeAddedToPath = false;
+            canBeRemovedFromPath = true;
+        }
+        else
+        {
+            canBeAddedToPath = true;
+            canBeRemovedFromPath = false;
+        }
+        
+        if (PathPicker.Instance.isChangingPath)
+        {
+            col.enabled = true;
+        }
+        else
+        {
+            col.enabled = false;
+        }
     }
 
     #endregion
 
     #region Getter/Setter
 
+    public void SetTileIsMiddlePath(bool isMiddlePath)
+    {
+        this.isMiddlePath = isMiddlePath;
+    }
+    public bool GetTileIsMiddlePath()
+    {
+        return isMiddlePath;
+    }
     public Transform GetCurrentTransform()
     {
         return gameObject.transform;

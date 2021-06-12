@@ -99,14 +99,6 @@ public class TilesManager : MonoBehaviour
     public void ResetTilePathStatus()
     {
         GameEvent.Instance.ResetTilePathStatus();
-        for (int x = 0; x < gridX; x++)
-        {
-            for (int y = 0; y < gridY; y++)
-            {
-                Vector2Int tileID = new Vector2Int(x, y);
-                SetTileCanBeSelected(tileID,false);
-            }
-        }
     }
 
     public void ResetAllHighlight()
@@ -171,6 +163,11 @@ public class TilesManager : MonoBehaviour
         }
 
         return isGateOut;
+    }
+
+    public void SetTileMiddleMiddlePath(Vector2Int tileID, bool isMiddlePath)
+    {
+        tileScripts[tileID.x,tileID.y].SetTileIsMiddlePath(isMiddlePath);
     }
     #endregion
 
