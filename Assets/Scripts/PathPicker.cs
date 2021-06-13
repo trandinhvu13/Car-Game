@@ -13,9 +13,7 @@ class Node
     public int Distance { get; set; }
     public int CostDistance => Cost + Distance;
     public Node Parent { get; set; }
-
-    //The distance is essentially the estimated distance, ignoring walls to our target. 
-    //So how many tiles left and right, up and down, ignoring walls, to get there. 
+    
     public void SetDistance(int targetX, int targetY)
     {
         this.Distance = Math.Abs(targetX - X) + Math.Abs(targetY - Y);
@@ -45,18 +43,6 @@ public class PathPicker : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            List<Vector2Int> result = FindPath(new Vector2Int(1, 1), new Vector2Int(13, 12));
-            foreach (Vector2Int tile in result)
-            {
-                GameEvent.Instance.HighlightAssignedTile(tile);
-            }
-        }
-    }
-
     #endregion
 
     #region Variables
@@ -64,9 +50,7 @@ public class PathPicker : MonoBehaviour
     [SerializeField] private int currentSelectedCar;
     private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
     private List<Vector2Int> selectedCarPath;
-
     private List<Vector2Int> selectedCarMiddlePath;
-    //private Node[,] map = new Node[24, 12];
 
     public bool isChangingPath = false;
     [Header("Gates")] [SerializeField] private Vector2Int tileToLeftGate;
@@ -98,34 +82,23 @@ public class PathPicker : MonoBehaviour
         activeNodes.Add(startNode);
         List<Node> visitedNodes = new List<Node>();
 
-        //This is where we created the map from our previous step etc. 
-
         while (activeNodes.Any())
         {
             var checkNode = activeNodes.OrderBy(x => x.CostDistance).First();
 
             if (checkNode.X == finishNode.X && checkNode.Y == finishNode.Y)
             {
-                Debug.Log("We are at the destination!");
-                //We can actually loop through the parents of each tile to find our exact path which we will show shortly. 
-                //We found the destination and we can be sure (Because the the OrderBy above)
-                //That it's the most low cost option. 
                 Node node = checkNode;
                 int num = checkNode.Cost;
-                Debug.Log("cost la " + num);
                 for (int i = 0; i < num; i++)
                 {
                     Vector2Int tileID = new Vector2Int(node.X, node.Y);
                     finalPath.Add(tileID);
-                    Debug.Log(tileID + "start " + startTileID);
                     node = node.Parent;
                 }
-
                 finalPath.Reverse();
-
                 return finalPath;
             }
-
             visitedNodes.Add(checkNode);
             activeNodes.Remove(checkNode);
 
@@ -133,11 +106,8 @@ public class PathPicker : MonoBehaviour
 
             foreach (var walkableNode in walkableNodes)
             {
-                //We have already visited this tile so we don't need to do so again!
                 if (visitedNodes.Any(x => x.X == walkableNode.X && x.Y == walkableNode.Y))
                     continue;
-
-                //It's already in the active list, but that's OK, maybe this new tile has a better value (e.g. We might zigzag earlier but this is now straighter). 
                 if (activeNodes.Any(x => x.X == walkableNode.X && x.Y == walkableNode.Y))
                 {
                     var existingTile = activeNodes.First(x => x.X == walkableNode.X && x.Y == walkableNode.Y);
@@ -149,13 +119,11 @@ public class PathPicker : MonoBehaviour
                 }
                 else
                 {
-                    //We've never seen this tile before so add it to the list. 
                     activeNodes.Add(walkableNode);
                 }
             }
         }
-
-        Debug.Log("No Path Found!");
+        
         return null;
     }
 
@@ -232,7 +200,6 @@ public class PathPicker : MonoBehaviour
 
         TilesManager.Instance.ResetTilePathStatus();
         ShowAssignedPath();
-        //SetAvailablePath();
         if (selectedCarMiddlePath.Count > 0)
         {
             foreach (Vector2Int tileID in selectedCarMiddlePath)
@@ -270,23 +237,6 @@ public class PathPicker : MonoBehaviour
         for (int tileID = 0; tileID < selectedCarPath.Count; tileID++)
         {
             GameEvent.Instance.HighlightAssignedTile(selectedCarPath[tileID]);
-        }
-    }
-
-    public void SetAvailablePath()
-    {
-        //HideCurrentAvailablePathArrow();
-        Car selectedCar = CarManager.Instance.cars[currentSelectedCar];
-        //List<Vector2Int> path = selectedCar.GetCurrentPath();
-        if (selectedCarPath.Count <= 0)
-        {
-            currentTileHasArrow = selectedCar.GetCurrentTileID();
-            ShowAvailableDirection(currentTileHasArrow, true);
-        }
-        else
-        {
-            currentTileHasArrow = selectedCarPath[selectedCarPath.Count - 1];
-            ShowAvailableDirection(currentTileHasArrow, true);
         }
     }
 
@@ -333,24 +283,12 @@ public class PathPicker : MonoBehaviour
                 continue;
             }
         }
-
-        if (isShowArrow)
-        {
-            GameEvent.Instance.ShowDirectionArrow(currentTileHasArrow, arrows);
-        }
-
         return arrows;
     }
-
-    public void HideCurrentAvailablePathArrow()
-    {
-        GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
-    }
-
+    
     public List<Vector2Int> MakeFinalPath(List<Vector2Int> middleTiles)
     {
         List<Vector2Int> finalPath = new List<Vector2Int>();
-        Debug.Log("middle path: " + middleTiles.Count);
         if (middleTiles.Count <= 1)
         {
             return new List<Vector2Int>();
@@ -358,22 +296,13 @@ public class PathPicker : MonoBehaviour
 
         for (int i = 0; i < middleTiles.Count - 1; i++)
         {
-            Debug.Log($"start from {middleTiles[i]} to {middleTiles[i + 1]}");
             List<Vector2Int> path = FindPath(middleTiles[i], middleTiles[i + 1]);
 
             for (int j = 0; j < path.Count; j++)
             {
                 finalPath.Add(path[j]);
-                Debug.Log($"{j} - {path[j]}");
             }
         }
-
-        Debug.Log("Final Pathhhh ");
-        for (int i = 0; i < finalPath.Count; i++)
-        {
-            Debug.Log(finalPath[i]);
-        }
-
         return finalPath;
     }
 

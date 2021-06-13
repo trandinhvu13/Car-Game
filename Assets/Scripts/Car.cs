@@ -371,8 +371,6 @@ public class Car : MonoBehaviour, IPoolable
 
     public void AddToPath(Vector2Int tileID)
     {
-        Debug.Log($"Select {tileID}");
-
         if (middleTiles.Count > 0)
         {
             middleTiles[0] = currentTileID;
@@ -389,7 +387,6 @@ public class Car : MonoBehaviour, IPoolable
 
     public void RemoveFromPath(Vector2Int tileID)
     {
-        //int startIndex = path.Count;
         int startIndex = middleTiles.Count;
         for (int i = 0; i < middleTiles.Count; i++)
         {
@@ -400,7 +397,6 @@ public class Car : MonoBehaviour, IPoolable
         }
 
         int timeHaveToRemove = middleTiles.Count - startIndex;
-        Debug.Log($"Start at {startIndex} and delete {timeHaveToRemove} times");
         for (int i = 0; i < timeHaveToRemove; i++)
         {
             TilesManager.Instance.UnHighlightTile(middleTiles[middleTiles.Count - 1]);

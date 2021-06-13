@@ -21,7 +21,7 @@ public class Tile : MonoBehaviour
 
     [SerializeField] private bool isSelected;
     [SerializeField] private bool isParkingSlot;
-    [SerializeField] private bool isMiddlePath =false;
+    [SerializeField] private bool isMiddlePath = false;
     [SerializeField] private bool canMoveLeft;
     [SerializeField] private bool canMoveRight;
     [SerializeField] private bool canMoveUp;
@@ -32,11 +32,6 @@ public class Tile : MonoBehaviour
 
     [Header("Visual")] [SerializeField] private Shape shape;
 
-    [SerializeField] private GameObject upArrow;
-    [SerializeField] private GameObject downArrow;
-    [SerializeField] private GameObject leftArrow;
-    [SerializeField] private GameObject rightArrow;
-
     [Header("Car")] [SerializeField] private GameObject car;
     [SerializeField] private string carSpawnDir;
     [SerializeField] private Transform carParent;
@@ -46,11 +41,15 @@ public class Tile : MonoBehaviour
 
     #endregion
 
-   
+
     #region Mono
 
     private void Awake()
     {
+        if (isGate && gateType == "In")
+        {
+            return;
+        }
         col.enabled = false;
     }
 
@@ -58,9 +57,7 @@ public class Tile : MonoBehaviour
     {
         GameEvent.Instance.OnHighlightAssignedTile += HightlightTile;
         GameEvent.Instance.OnUnHighlightAssignedTile += UnHighlightTile;
-        GameEvent.Instance.OnShowDirectionArrow += ShowAvailablePathArrow;
         GameEvent.Instance.OnChangeCanBeAddedToPath += ChangeCanBeAddedToPath;
-        GameEvent.Instance.OnHideDirectionArrow += HideAvailablePathArrow;
         GameEvent.Instance.OnResetTilePathStatus += ResetTilePathStatus;
         GameEvent.Instance.OnChangeCanBeRemovedFromPath += ChangeCanBeRemovedFromPath;
         GameEvent.Instance.OnSpawnCar += SpawnCar;
@@ -71,9 +68,7 @@ public class Tile : MonoBehaviour
     {
         GameEvent.Instance.OnHighlightAssignedTile -= HightlightTile;
         GameEvent.Instance.OnUnHighlightAssignedTile -= UnHighlightTile;
-        GameEvent.Instance.OnShowDirectionArrow -= ShowAvailablePathArrow;
         GameEvent.Instance.OnChangeCanBeAddedToPath -= ChangeCanBeAddedToPath;
-        GameEvent.Instance.OnHideDirectionArrow -= HideAvailablePathArrow;
         GameEvent.Instance.OnResetTilePathStatus -= ResetTilePathStatus;
         GameEvent.Instance.OnChangeCanBeRemovedFromPath -= ChangeCanBeRemovedFromPath;
         GameEvent.Instance.OnSpawnCar -= SpawnCar;
@@ -93,6 +88,8 @@ public class Tile : MonoBehaviour
     public void SpawnCar()
     {
         if (!isParkingSlot) return;
+        if (!isAvailable) return;
+
         Quaternion rotation = new Quaternion();
         float currentRotation = 0;
 
@@ -124,7 +121,6 @@ public class Tile : MonoBehaviour
         {
             ChangeColor(EffectData.Instance.tileHighlightColor);
         }
-        
     }
 
     private void UnHighlightTile(Vector2Int tileID)
@@ -151,54 +147,6 @@ public class Tile : MonoBehaviour
         shape.settings.fillColor = color;
     }
 
-    private void ShowAvailablePathArrow(Vector2Int id, List<string> arrows)
-    {
-        if (id != this.id) return;
-        if (isWall) return;
-        //HideAvailablePathArrow(this.id);
-       
-        for (int i = 0; i < arrows.Count; i++)
-        {
-            if (arrows[i] == "Left")
-            {
-                leftArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x - 1, id.y));
-                continue;
-            }
-
-            if (arrows[i] == "Right")
-            {
-                rightArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x + 1, id.y));
-                continue;
-            }
-
-            if (arrows[i] == "Up")
-            {
-                upArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x, id.y + 1));
-                continue;
-            }
-
-            if (arrows[i] == "Down")
-            {
-                downArrow.SetActive(true);
-                TilesManager.Instance.MakeTilesAddableToPath(new Vector2Int(id.x, id.y - 1));
-                continue;
-            }
-        }
-    }
-
-    private void HideAvailablePathArrow(Vector2Int id)
-    {
-        if (id != this.id) return;
-        if (isWall) return;
-        upArrow.SetActive(false);
-        downArrow.SetActive(false);
-        leftArrow.SetActive(false);
-        rightArrow.SetActive(false);
-    }
-
     private void ChangeCanBeAddedToPath(Vector2Int id, bool canBeAddedToPath)
     {
         if (id != this.id) return;
@@ -214,15 +162,8 @@ public class Tile : MonoBehaviour
 
     public void OnSelectedPathPicker()
     {
-        // if (!canBeSelected) return;
         if (isWall) return;
-        /*if (!isAvailable) return;
-       
-        if (canBeAddedToPath)
-        {
-            PathPicker.Instance.AddToPath(id);
-            return;
-        }*/
+
         if (canBeAddedToPath)
         {
             canBeAddedToPath = false;
@@ -237,11 +178,32 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void ResetTilePathStatus()
+    public void OnGateInClicked()
+    {
+        if (!isAvailable) return;
+        
+        Quaternion rotation = new Quaternion();
+        float currentRotation = 0;
+
+        if (carSpawnDir == "Up") currentRotation = -90;
+        if (carSpawnDir == "Down") currentRotation = 90;
+        if (carSpawnDir == "Left") currentRotation = 0;
+        if (carSpawnDir == "Right") currentRotation = 180;
+
+        rotation = Quaternion.Euler(0, 0, currentRotation);
+        GameObject spawnedCar = LeanPool.Spawn(car, transform.position, rotation, carParent);
+        Car carScript = spawnedCar.GetComponent<Car>();
+        carScript.SetCurrentTileID(id);
+        carScript.SetCurrentDirection(carSpawnDir);
+        carScript.SetCurrentRotation(currentRotation);
+        carScript.SetUpCar();
+        SetTileAvailable(false);
+    }
+private void ResetTilePathStatus()
     {
         if (isWall) return;
-        canBeAddedToPath = false;
-        
+        if(isGate && gateType == "In") return;
+
         if (isMiddlePath)
         {
             canBeAddedToPath = false;
@@ -252,7 +214,7 @@ public class Tile : MonoBehaviour
             canBeAddedToPath = true;
             canBeRemovedFromPath = false;
         }
-        
+
         if (PathPicker.Instance.isChangingPath)
         {
             col.enabled = true;
@@ -271,10 +233,12 @@ public class Tile : MonoBehaviour
     {
         this.isMiddlePath = isMiddlePath;
     }
+
     public bool GetTileIsMiddlePath()
     {
         return isMiddlePath;
     }
+
     public Transform GetCurrentTransform()
     {
         return gameObject.transform;
@@ -331,6 +295,7 @@ public class Tile : MonoBehaviour
     {
         return isGate;
     }
+
     public Vector2Int GetTileID()
     {
         return id;
@@ -340,7 +305,6 @@ public class Tile : MonoBehaviour
     {
         return isParkingSlot;
     }
-  
 
     #endregion
 }
