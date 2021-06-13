@@ -64,6 +64,7 @@ public class PathPicker : MonoBehaviour
     [SerializeField] private int currentSelectedCar;
     private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
     private List<Vector2Int> selectedCarPath;
+
     private List<Vector2Int> selectedCarMiddlePath;
     //private Node[,] map = new Node[24, 12];
 
@@ -73,12 +74,12 @@ public class PathPicker : MonoBehaviour
     [SerializeField] private Vector2Int tileToUpGate;
     [SerializeField] private Vector2Int tileToDownGate;
     private List<Tile> middleTiles;
+
     #endregion
 
     #region Methods
 
     #region Path Finding
-    
 
     public List<Vector2Int> FindPath(Vector2Int startTileID, Vector2Int finishTileID)
     {
@@ -163,7 +164,7 @@ public class PathPicker : MonoBehaviour
         List<Node> possibleNodes = new List<Node>();
 
         List<string> availableTiles = new List<string>();
-        availableTiles = ShowAvailableDirection(new Vector2Int(currentNode.X,currentNode.Y), false);
+        availableTiles = ShowAvailableDirection(new Vector2Int(currentNode.X, currentNode.Y), false);
 
         for (int i = 0; i < availableTiles.Count; i++)
         {
@@ -176,23 +177,26 @@ public class PathPicker : MonoBehaviour
 
             if (availableTiles[i] == "Down")
             {
-                possibleNodes.Add(new Node {X = currentNode.X, Y = currentNode.Y - 1, Parent = currentNode, Cost = currentNode.Cost + 1});
+                possibleNodes.Add(new Node
+                    {X = currentNode.X, Y = currentNode.Y - 1, Parent = currentNode, Cost = currentNode.Cost + 1});
                 continue;
             }
 
             if (availableTiles[i] == "Left")
             {
-                possibleNodes.Add(new Node {X = currentNode.X - 1, Y = currentNode.Y, Parent = currentNode, Cost = currentNode.Cost + 1});
+                possibleNodes.Add(new Node
+                    {X = currentNode.X - 1, Y = currentNode.Y, Parent = currentNode, Cost = currentNode.Cost + 1});
                 continue;
             }
 
             if (availableTiles[i] == "Right")
             {
-                possibleNodes.Add( new Node {X = currentNode.X+1, Y = currentNode.Y, Parent = currentNode, Cost = currentNode.Cost + 1});
+                possibleNodes.Add(new Node
+                    {X = currentNode.X + 1, Y = currentNode.Y, Parent = currentNode, Cost = currentNode.Cost + 1});
                 continue;
             }
         }
-        
+
         foreach (Node node in possibleNodes)
         {
             node.SetDistance(targetNode.X, targetNode.Y);
@@ -208,24 +212,24 @@ public class PathPicker : MonoBehaviour
     public void UpdateTileStatus()
     {
         isChangingPath = true;
-        
+
         selectedCarPath = CarManager.Instance.cars[currentSelectedCar].GetCurrentPath();
         selectedCarMiddlePath = CarManager.Instance.cars[currentSelectedCar].GetCurrentMiddlePath();
-        
+
         for (int x = 0; x < TilesManager.Instance.GetGridXSize(); x++)
         {
-            for (int y = 0; y <  TilesManager.Instance.GetGridYSize(); y++)
+            for (int y = 0; y < TilesManager.Instance.GetGridYSize(); y++)
             {
                 Vector2Int tileID = new Vector2Int(x, y);
-                TilesManager.Instance.SetTileMiddleMiddlePath(tileID,false);
+                TilesManager.Instance.SetTileMiddleMiddlePath(tileID, false);
             }
         }
-        
+
         foreach (Vector2Int tile in selectedCarMiddlePath)
         {
-            TilesManager.Instance.SetTileMiddleMiddlePath(tile,true);
+            TilesManager.Instance.SetTileMiddleMiddlePath(tile, true);
         }
-        
+
         TilesManager.Instance.ResetTilePathStatus();
         ShowAssignedPath();
         //SetAvailablePath();
@@ -261,6 +265,7 @@ public class PathPicker : MonoBehaviour
 
     public void ShowAssignedPath()
     {
+        TilesManager.Instance.ResetAllHighlight();
         selectedCarPath = CarManager.Instance.cars[currentSelectedCar].GetCurrentPath();
         for (int tileID = 0; tileID < selectedCarPath.Count; tileID++)
         {
@@ -300,8 +305,8 @@ public class PathPicker : MonoBehaviour
             if (surroundTile[i].x < 0 || surroundTile[i].x > TilesManager.Instance.GetGridXSize() - 1 ||
                 surroundTile[i].y < 0 ||
                 surroundTile[i].y > TilesManager.Instance.GetGridYSize() - 1) continue;
-            if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i])&&TilesManager.Instance.GetTileIsParkingSlot
-            (surroundTile[i])
+            if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i]) && TilesManager.Instance.GetTileIsParkingSlot
+                (surroundTile[i])
             ) continue;
             //if (selectedCarPath.Contains(surroundTile[i])) continue;
             if (i == 0 && TilesManager.Instance.GetTileScript(currentTileHasArrow).GetCanMoveLeft())
@@ -341,6 +346,7 @@ public class PathPicker : MonoBehaviour
     {
         GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
     }
+
     public List<Vector2Int> MakeFinalPath(List<Vector2Int> middleTiles)
     {
         List<Vector2Int> finalPath = new List<Vector2Int>();
@@ -349,24 +355,28 @@ public class PathPicker : MonoBehaviour
         {
             return new List<Vector2Int>();
         }
-        for (int i = 0; i < middleTiles.Count-1; i++)
+
+        for (int i = 0; i < middleTiles.Count - 1; i++)
         {
-            Debug.Log($"start from {middleTiles[i]} to {middleTiles[i+1]}");
+            Debug.Log($"start from {middleTiles[i]} to {middleTiles[i + 1]}");
             List<Vector2Int> path = FindPath(middleTiles[i], middleTiles[i + 1]);
-            
+
             for (int j = 0; j < path.Count; j++)
             {
                 finalPath.Add(path[j]);
                 Debug.Log($"{j} - {path[j]}");
             }
         }
+
         Debug.Log("Final Pathhhh ");
         for (int i = 0; i < finalPath.Count; i++)
         {
             Debug.Log(finalPath[i]);
         }
+
         return finalPath;
     }
+
     public void AddToPath(Vector2Int tileID)
     {
         if (!isChangingPath) return;
