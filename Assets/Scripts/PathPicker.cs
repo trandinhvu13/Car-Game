@@ -254,9 +254,9 @@ public class PathPicker : MonoBehaviour
             if (surroundTile[i].x < 0 || surroundTile[i].x > TilesManager.Instance.GetGridXSize() - 1 ||
                 surroundTile[i].y < 0 ||
                 surroundTile[i].y > TilesManager.Instance.GetGridYSize() - 1) continue;
-            /*if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i]) && TilesManager.Instance.GetTileIsParkingSlot
+            if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i]) && TilesManager.Instance.GetTileIsParkingSlot
                 (surroundTile[i])
-            ) continue;*/
+            ) continue;
             //if (selectedCarPath.Contains(surroundTile[i])) continue;
             if (i == 0 && TilesManager.Instance.GetTileScript(currentTileHasArrow).GetCanMoveLeft())
             {

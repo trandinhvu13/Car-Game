@@ -50,6 +50,7 @@ public class Tile : MonoBehaviour
         {
             return;
         }
+
         col.enabled = false;
     }
 
@@ -112,7 +113,7 @@ public class Tile : MonoBehaviour
     {
         if (tileID != id) return;
         if (isWall) return;
-        if (isGate) return;
+        if (isGate && gateType == "In") return;
         if (isMiddlePath)
         {
             ChangeColor(EffectData.Instance.tileMiddlePathColor);
@@ -127,10 +128,7 @@ public class Tile : MonoBehaviour
     {
         if (tileID != id) return;
         if (isWall) return;
-        if (isGate)
-        {
-            return;
-        }
+        if (isGate && gateType == "In") return;
 
         if (isParkingSlot)
         {
@@ -163,11 +161,10 @@ public class Tile : MonoBehaviour
     public void OnSelectedPathPicker()
     {
         if (isWall) return;
-
+        if (canBeAddedToPath && !isAvailable && isParkingSlot) return;
         if (canBeAddedToPath)
         {
             canBeAddedToPath = false;
-            Debug.Log("add "+id);
             PathPicker.Instance.AddToPath(id);
             return;
         }
@@ -182,7 +179,7 @@ public class Tile : MonoBehaviour
     public void OnGateInClicked()
     {
         if (!isAvailable) return;
-        
+
         Quaternion rotation = new Quaternion();
         float currentRotation = 0;
 
@@ -200,10 +197,11 @@ public class Tile : MonoBehaviour
         carScript.SetUpCar();
         SetTileAvailable(false);
     }
-private void ResetTilePathStatus()
+
+    private void ResetTilePathStatus()
     {
         if (isWall) return;
-        if(isGate && gateType == "In") return;
+        if (isGate && gateType == "In") return;
 
         if (isMiddlePath)
         {
