@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Lean.Pool;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Car : MonoBehaviour, IPoolable
 {
@@ -16,6 +17,9 @@ public class Car : MonoBehaviour, IPoolable
         Down
     };
 
+    [Header("Car Model")] 
+    [SerializeField]
+    private List<GameObject> carModels;
     [Header("Info")] [SerializeField] private int carID;
     [SerializeField] private Direction currentDirection;
     [SerializeField] private Vector2Int currentTileID;
@@ -29,15 +33,13 @@ public class Car : MonoBehaviour, IPoolable
     [SerializeField]
     private List<Vector2Int> middleTiles;
     [SerializeField] private float carSpeed;
-    private int moveTweenID;
+    private int moveTweenID = -1;
 
     private IEnumerator moveCoroutine;
-    [Header("Turn")] [SerializeField] private bool isTurning = false;
+    [Header("Turn")]
     private int turnTweenID;
     [SerializeField] private float currentRotation;
     [SerializeField] private float nextRotation;
-
-    [Header("Gate")] [SerializeField] private int GateNum;
 
     #endregion
 
@@ -57,6 +59,7 @@ public class Car : MonoBehaviour, IPoolable
         GameEvent.Instance.OnCarExitGate -= ExitGate;
 
         //reset car stats
+        ResetCar();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -102,6 +105,7 @@ public class Car : MonoBehaviour, IPoolable
 
         path = new List<Vector2Int>();
         middleTiles = new List<Vector2Int>();
+        RandomCarModel();
     }
 
     private void Update()
@@ -109,19 +113,28 @@ public class Car : MonoBehaviour, IPoolable
     }
 
     #endregion
-
-    #region BFS stuffs
-
-    #endregion
+    
 
     #region Methods
 
+    public void RandomCarModel()
+    {
+        int rand = Random.Range(0, carModels.Count);
+        carModels[rand].SetActive(true);
+    }
     public void SetUpCar()
     {
         TilesManager.Instance.SetTileAvailable(currentTileID, false);
         TilesManager.Instance.SetTileSelected(currentTileID, true);
     }
 
+    public void ResetCar()
+    {
+        isMoving = false;
+        path = new List<Vector2Int>();
+        middleTiles = new List<Vector2Int>();
+        carSpeed = 2;
+    }
     private void AddPointToPath(int carID, Vector2Int tilePos)
     {
         if (carID == this.carID)
@@ -153,8 +166,9 @@ public class Car : MonoBehaviour, IPoolable
     {
         if (carID != this.carID) return;
         if (!isMoving) return;
+        if (moveTweenID==-1) return;    
         isMoving = false;
-        isTurning = false;
+
         if (middleTiles.Count > 0)
         {
             middleTiles.Insert(0,currentTileID);
@@ -205,7 +219,11 @@ public class Car : MonoBehaviour, IPoolable
                             TilesManager.Instance.SetTileAvailable(nextTileID, true);
                         }
 
-                        path.RemoveAt(0);
+                        if (path.Count>=1)
+                        {
+                            path.RemoveAt(0); 
+                        }
+                        
                     }).id;
             yield return new WaitUntil(() => canContinue);
         }
@@ -247,7 +265,6 @@ public class Car : MonoBehaviour, IPoolable
 
     private void CarTurn(string direction)
     {
-        isTurning = true;
         float turnDelay = 0;
 
         if (turnTweenID != 0 && LeanTween.isPaused(turnTweenID))
@@ -337,7 +354,6 @@ public class Car : MonoBehaviour, IPoolable
         turnTweenID = LeanTween.rotateZ(gameObject, nextRotation, EffectData.Instance.carTurnTweenTime)
             .setEase(EffectData.Instance.carTurnTween).setDelay(delay).setOnComplete(() =>
             {
-                isTurning = false;
                 currentRotation = nextRotation;
                 currentDirection = nextDirection;
             }).id;
@@ -345,12 +361,10 @@ public class Car : MonoBehaviour, IPoolable
 
     private void TurnRight(float delay, Direction nextDirection)
     {
-        //currentRotation = transform.rotation.z;
         nextRotation = currentRotation - 90;
         turnTweenID = LeanTween.rotateZ(gameObject, nextRotation, EffectData.Instance.carTurnTweenTime)
             .setEase(EffectData.Instance.carMoveTween).setDelay(delay).setOnComplete(() =>
             {
-                isTurning = false;
                 currentRotation = nextRotation;
                 currentDirection = nextDirection;
             }).id;
@@ -363,7 +377,6 @@ public class Car : MonoBehaviour, IPoolable
         turnTweenID = LeanTween.rotateZ(gameObject, nextRotation, EffectData.Instance.carTurnTweenTime)
             .setEase(EffectData.Instance.carMoveTween).setDelay(delay).setOnComplete(() =>
             {
-                isTurning = false;
                 currentRotation = nextRotation;
                 currentDirection = nextDirection;
             }).id;
@@ -414,12 +427,14 @@ public class Car : MonoBehaviour, IPoolable
 
     public void SetCurrentSelectedCar()
     {
+        if (PathPicker.Instance.isChangingPath) return;
         PathPicker.Instance.SetCurrentSelectedCar(carID);
         TilesManager.Instance.ResetAllHighlight();
     }
 
     public void ShowControllerPanel()
     {
+        if (PathPicker.Instance.isChangingPath) return;
         UIManager.Instance.ShowControllerPanel();
         PathPicker.Instance.ShowAssignedPath();
     }

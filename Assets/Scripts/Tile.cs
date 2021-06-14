@@ -167,6 +167,7 @@ public class Tile : MonoBehaviour
         if (canBeAddedToPath)
         {
             canBeAddedToPath = false;
+            Debug.Log("add "+id);
             PathPicker.Instance.AddToPath(id);
             return;
         }

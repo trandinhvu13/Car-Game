@@ -123,7 +123,6 @@ public class PathPicker : MonoBehaviour
                 }
             }
         }
-        
         return null;
     }
 
@@ -255,9 +254,9 @@ public class PathPicker : MonoBehaviour
             if (surroundTile[i].x < 0 || surroundTile[i].x > TilesManager.Instance.GetGridXSize() - 1 ||
                 surroundTile[i].y < 0 ||
                 surroundTile[i].y > TilesManager.Instance.GetGridYSize() - 1) continue;
-            if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i]) && TilesManager.Instance.GetTileIsParkingSlot
+            /*if (!TilesManager.Instance.GetTileIsAvailable(surroundTile[i]) && TilesManager.Instance.GetTileIsParkingSlot
                 (surroundTile[i])
-            ) continue;
+            ) continue;*/
             //if (selectedCarPath.Contains(surroundTile[i])) continue;
             if (i == 0 && TilesManager.Instance.GetTileScript(currentTileHasArrow).GetCanMoveLeft())
             {
@@ -296,8 +295,11 @@ public class PathPicker : MonoBehaviour
 
         for (int i = 0; i < middleTiles.Count - 1; i++)
         {
+            Debug.Log($"From {middleTiles[i]} to {middleTiles[i+1]}");
             List<Vector2Int> path = FindPath(middleTiles[i], middleTiles[i + 1]);
-
+            Debug.Log(path);
+            Debug.Log(path.Count);
+            if (path.Count < 1) return new List<Vector2Int>();
             for (int j = 0; j < path.Count; j++)
             {
                 finalPath.Add(path[j]);
