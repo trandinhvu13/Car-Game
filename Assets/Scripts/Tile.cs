@@ -105,7 +105,10 @@ public class Tile : MonoBehaviour
         carScript.SetCurrentTileID(id);
         carScript.SetCurrentDirection(carSpawnDir);
         carScript.SetCurrentRotation(currentRotation);
+        carScript.AddMiddlePoint(id);
+        carScript.AddPointToPath(id);
         carScript.SetUpCar();
+
         SetTileAvailable(false);
     }
 
@@ -161,6 +164,14 @@ public class Tile : MonoBehaviour
     public void OnSelectedPathPicker()
     {
         if (isWall) return;
+        if (PathPicker.Instance.FindPath(PathPicker.Instance
+        .selectedCarMiddlePath[PathPicker.Instance
+            .selectedCarMiddlePath.Count - 1],id).Count == 0)
+        {
+            Debug.Log("no path cant select");
+            return;
+            
+        }
         if (canBeAddedToPath && !isAvailable && isParkingSlot) return;
         if (canBeAddedToPath)
         {
@@ -194,6 +205,8 @@ public class Tile : MonoBehaviour
         carScript.SetCurrentTileID(id);
         carScript.SetCurrentDirection(carSpawnDir);
         carScript.SetCurrentRotation(currentRotation);
+        carScript.AddMiddlePoint(id);
+        carScript.AddPointToPath(id);
         carScript.SetUpCar();
         SetTileAvailable(false);
     }

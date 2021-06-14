@@ -45,6 +45,10 @@ public class EffectData : MonoBehaviour
     public Color32 tileParkingSlotColor;
 
     [Header("Path Picker")] public float tileHighlightGradualSpeed;
+    [Header("UI")] public Vector3 panelExpandScale;
+    public float panelExpandTime;
+    public LeanTweenType panelExpandTween;
+    
 
     #endregion
 }

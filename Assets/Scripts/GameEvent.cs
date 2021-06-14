@@ -117,6 +117,11 @@ public class GameEvent : MonoBehaviour
     {
         OnCarExitGate?.Invoke(carID);
     }
+    public event Action<int,bool> OnHighlightCar;
 
+    public void HighlightCar(int carID,bool isHighlighted)
+    {
+        OnHighlightCar?.Invoke(carID,isHighlighted);
+    }
     #endregion
 }

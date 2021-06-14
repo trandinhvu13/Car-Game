@@ -17,27 +17,25 @@ public class Car : MonoBehaviour, IPoolable
         Down
     };
 
-    [Header("Car Model")] 
-    [SerializeField]
-    private List<GameObject> carModels;
+    [Header("Line")] [SerializeField] private float lineWidth;
+    [SerializeField] private LineRenderer lineRenderer;
+    [Header("Car Model")] [SerializeField] private List<GameObject> carModels;
     [Header("Info")] [SerializeField] private int carID;
     [SerializeField] private Direction currentDirection;
     [SerializeField] private Vector2Int currentTileID;
     [SerializeField] private Vector2Int nextTileID;
-
+    [SerializeField] private Outline[] outlines;
+    [SerializeField] private int carModelID;
 
     [Header("Move")] [SerializeField] private bool isMoving = false;
     private Coroutine move;
-    [SerializeField]
-    private List<Vector2Int> path;
-    [SerializeField]
-    private List<Vector2Int> middleTiles;
+    [SerializeField] private List<Vector2Int> path;
+    [SerializeField] private List<Vector2Int> middleTiles;
     [SerializeField] private float carSpeed;
     private int moveTweenID = -1;
 
     private IEnumerator moveCoroutine;
-    [Header("Turn")]
-    private int turnTweenID;
+    [Header("Turn")] private int turnTweenID;
     [SerializeField] private float currentRotation;
     [SerializeField] private float nextRotation;
 
@@ -50,6 +48,7 @@ public class Car : MonoBehaviour, IPoolable
         GameEvent.Instance.OnStartMoving += StartMoving;
         GameEvent.Instance.OnStopMoving += StopMoving;
         GameEvent.Instance.OnCarExitGate += ExitGate;
+        GameEvent.Instance.OnHighlightCar += HighlightCar;
     }
 
     public void OnDespawn()
@@ -57,6 +56,7 @@ public class Car : MonoBehaviour, IPoolable
         GameEvent.Instance.OnStartMoving -= StartMoving;
         GameEvent.Instance.OnStopMoving -= StopMoving;
         GameEvent.Instance.OnCarExitGate -= ExitGate;
+        GameEvent.Instance.OnHighlightCar -= HighlightCar;
 
         //reset car stats
         ResetCar();
@@ -106,6 +106,7 @@ public class Car : MonoBehaviour, IPoolable
         path = new List<Vector2Int>();
         middleTiles = new List<Vector2Int>();
         RandomCarModel();
+        HighlightCar(carID, false);
     }
 
     private void Update()
@@ -113,15 +114,16 @@ public class Car : MonoBehaviour, IPoolable
     }
 
     #endregion
-    
+
 
     #region Methods
 
     public void RandomCarModel()
     {
-        int rand = Random.Range(0, carModels.Count);
-        carModels[rand].SetActive(true);
+        carModelID = Random.Range(0, carModels.Count);
+        carModels[carModelID].SetActive(true);
     }
+
     public void SetUpCar()
     {
         TilesManager.Instance.SetTileAvailable(currentTileID, false);
@@ -135,20 +137,30 @@ public class Car : MonoBehaviour, IPoolable
         middleTiles = new List<Vector2Int>();
         carSpeed = 2;
     }
-    private void AddPointToPath(int carID, Vector2Int tilePos)
+
+    public void AddPointToPath(Vector2Int tilePos)
+    {
+        path.Add(tilePos);
+    }
+
+    public void DrawLine(bool isDrawn)
+    {
+        return;
+       
+    }
+
+
+    public void DeletePointInPath(int carID, int pointIndex)
     {
         if (carID == this.carID)
         {
-            path.Add(tilePos);
+            middleTiles.RemoveRange(pointIndex, middleTiles.Count - pointIndex);
         }
     }
 
-    private void DeletePointInPath(int carID, int pointIndex)
+    public void AddMiddlePoint(Vector2Int tile)
     {
-        if (carID == this.carID)
-        {
-            path.RemoveRange(pointIndex, path.Count - pointIndex);
-        }
+        middleTiles.Add(tile);
     }
 
     private void StartMoving(int carID)
@@ -166,15 +178,22 @@ public class Car : MonoBehaviour, IPoolable
     {
         if (carID != this.carID) return;
         if (!isMoving) return;
-        if (moveTweenID==-1) return;    
+        if (moveTweenID == -1) return;
         isMoving = false;
 
         if (middleTiles.Count > 0)
         {
-            middleTiles.Insert(0,currentTileID);
+            middleTiles.Insert(0, currentTileID);
         }
+
         LeanTween.pause(moveTweenID);
         StopCoroutine(moveCoroutine);
+    }
+
+    private void HighlightCar(int id, bool isHighlighted)
+    {
+        if (id != carID) return;
+        outlines[carModelID].enabled = isHighlighted;
     }
 
     IEnumerator Move()
@@ -197,7 +216,8 @@ public class Car : MonoBehaviour, IPoolable
             }
 
             canContinue = false;
-            moveTweenID = LeanTween.move(gameObject, TilesManager.Instance.GetTileCurrentTransform(nextTileID).position,
+            moveTweenID = LeanTween.move(gameObject,
+                    TilesManager.Instance.GetTileCurrentTransform(nextTileID).position,
                     carSpeed)
                 .setEase
                     (EffectData.Instance.carMoveTween).setSpeed(carSpeed)
@@ -209,6 +229,7 @@ public class Car : MonoBehaviour, IPoolable
                         TilesManager.Instance.SetTileSelected(currentTileID, false);
                         TilesManager.Instance.SetTileAvailable(currentTileID, true);
                         currentTileID = nextTileID;
+                       
                         TilesManager.Instance.SetTileSelected(currentTileID, true);
                         TilesManager.Instance.SetTileAvailable(currentTileID, false);
                         GameEvent.Instance.UnHighlightAssignedTile(nextTileID);
@@ -219,11 +240,10 @@ public class Car : MonoBehaviour, IPoolable
                             TilesManager.Instance.SetTileAvailable(nextTileID, true);
                         }
 
-                        if (path.Count>=1)
+                        if (path.Count >= 1)
                         {
-                            path.RemoveAt(0); 
+                            path.RemoveAt(0);
                         }
-                        
                     }).id;
             yield return new WaitUntil(() => canContinue);
         }
@@ -392,9 +412,9 @@ public class Car : MonoBehaviour, IPoolable
         {
             middleTiles.Add(currentTileID);
         }
-        
+
         middleTiles.Add(tileID);
-        TilesManager.Instance.SetTileMiddleMiddlePath(tileID,true);
+        TilesManager.Instance.SetTileMiddleMiddlePath(tileID, true);
         path = new List<Vector2Int>(PathPicker.Instance.MakeFinalPath(middleTiles));
     }
 
@@ -415,8 +435,8 @@ public class Car : MonoBehaviour, IPoolable
             TilesManager.Instance.UnHighlightTile(middleTiles[middleTiles.Count - 1]);
             middleTiles.RemoveAt(middleTiles.Count - 1);
         }
+
         path = new List<Vector2Int>(PathPicker.Instance.MakeFinalPath(middleTiles));
-        
     }
 
     public void ExitGate(int carID)
@@ -430,13 +450,16 @@ public class Car : MonoBehaviour, IPoolable
         if (PathPicker.Instance.isChangingPath) return;
         PathPicker.Instance.SetCurrentSelectedCar(carID);
         TilesManager.Instance.ResetAllHighlight();
+        CarManager.Instance.UnHighlightAllCars();
+        HighlightCar(carID, true);
+        PathPicker.Instance.ShowAssignedPath();
     }
 
     public void ShowControllerPanel()
     {
         if (PathPicker.Instance.isChangingPath) return;
-        UIManager.Instance.ShowControllerPanel();
-        PathPicker.Instance.ShowAssignedPath();
+        SpecificCarUI.Instance.Init();
+        
     }
 
     #endregion
@@ -462,6 +485,7 @@ public class Car : MonoBehaviour, IPoolable
     {
         return middleTiles;
     }
+
     public void SetCurrentDirection(string dir)
     {
         if (dir == "Left") currentDirection = Direction.Left;
@@ -480,5 +504,24 @@ public class Car : MonoBehaviour, IPoolable
         return middleTiles;
     }
 
+    public void IncreaseCarSpeed()
+    {
+        carSpeed++;
+    }
+
+    public void DecreaseCarSpeed()
+    {
+        carSpeed--;
+    }
+
+    public float GetCarSpeed()
+    {
+        return carSpeed;
+    }
+
+    public bool GetCarIsMoving()
+    {
+        return isMoving;
+    }
     #endregion
 }

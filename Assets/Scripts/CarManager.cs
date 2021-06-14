@@ -68,11 +68,45 @@ public class CarManager : MonoBehaviour
             GameEvent.Instance.StopMoving(i);
         }
     }
-    
+
+    public void DeleteAllLine()
+    {
+        foreach (Car car in cars)
+        {
+            //car.DrawLine(false);
+        }
+    }
     public void CarExit(int carID)
     {
         carAmount--;
         GameEvent.Instance.CarExitGate(carID);
+    }
+
+    public void UnHighlightAllCars()
+    {
+        for (int i = 0; i < carAmount;i++)
+        {
+            GameEvent.Instance.HighlightCar(i,false);
+        }
+    }
+
+    public float  GetCarSpeed(int id)
+    {
+       return cars[id].GetCarSpeed();
+    }
+
+    public void IncreaseCarSpeed(int id)
+    {
+        cars[id].IncreaseCarSpeed();
+    }
+    public void DecreaseCarSpeed(int id)
+    {
+        cars[id].DecreaseCarSpeed();
+    }
+
+    public bool GetCarIsMoving(int id)
+    {
+       return cars[id].GetCarIsMoving();
     }
     #endregion
 

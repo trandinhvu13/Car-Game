@@ -49,8 +49,8 @@ public class PathPicker : MonoBehaviour
 
     [SerializeField] private int currentSelectedCar;
     private Vector2Int currentTileHasArrow = new Vector2Int(-1, -1);
-    private List<Vector2Int> selectedCarPath;
-    private List<Vector2Int> selectedCarMiddlePath;
+    public List<Vector2Int> selectedCarPath;
+    public List<Vector2Int> selectedCarMiddlePath;
 
     public bool isChangingPath = false;
     [Header("Gates")] [SerializeField] private Vector2Int tileToLeftGate;
@@ -123,7 +123,7 @@ public class PathPicker : MonoBehaviour
                 }
             }
         }
-        return null;
+        return new List<Vector2Int>();
     }
 
     private List<Node> GetWalkableNodes(Node currentNode, Node targetNode)
@@ -220,6 +220,7 @@ public class PathPicker : MonoBehaviour
         isChangingPath = false;
         TilesManager.Instance.ResetAllHighlight();
         TilesManager.Instance.ResetTilePathStatus();
+        CarManager.Instance.UnHighlightAllCars();
         GameEvent.Instance.HideDirectionArrow(currentTileHasArrow);
     }
 
@@ -237,6 +238,8 @@ public class PathPicker : MonoBehaviour
         {
             GameEvent.Instance.HighlightAssignedTile(selectedCarPath[tileID]);
         }
+        CarManager.Instance.DeleteAllLine();
+        CarManager.Instance.cars[currentSelectedCar].DrawLine(true);
     }
 
     public List<string> ShowAvailableDirection(Vector2Int currentTileHasArrow, bool isShowArrow)
@@ -297,8 +300,7 @@ public class PathPicker : MonoBehaviour
         {
             Debug.Log($"From {middleTiles[i]} to {middleTiles[i+1]}");
             List<Vector2Int> path = FindPath(middleTiles[i], middleTiles[i + 1]);
-            Debug.Log(path);
-            Debug.Log(path.Count);
+
             if (path.Count < 1) return new List<Vector2Int>();
             for (int j = 0; j < path.Count; j++)
             {
@@ -329,8 +331,13 @@ public class PathPicker : MonoBehaviour
     public void SetCurrentSelectedCar(int carID)
     {
         currentSelectedCar = carID;
+        selectedCarMiddlePath = CarManager.Instance.cars[currentSelectedCar].GetCurrentMiddlePath();
     }
 
+    public int GetCurrentSelectedCar()
+    {
+        return currentSelectedCar;
+    }
     public void StartSelectedCar()
     {
         CarManager.Instance.StartSelectedCar(currentSelectedCar);
@@ -341,6 +348,14 @@ public class PathPicker : MonoBehaviour
         CarManager.Instance.StopSelectedCar(currentSelectedCar);
     }
 
+    public void IncreaseSpeedSelectedCar()
+    {
+        CarManager.Instance.IncreaseCarSpeed(currentSelectedCar);
+    }
+    public void DecreaseSpeedSelectedCar()
+    {
+        CarManager.Instance.DecreaseCarSpeed(currentSelectedCar);
+    }
     #endregion
 
     #endregion
