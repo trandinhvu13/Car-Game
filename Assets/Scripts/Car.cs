@@ -146,7 +146,6 @@ public class Car : MonoBehaviour, IPoolable
     public void DrawLine(bool isDrawn)
     {
         return;
-       
     }
 
 
@@ -229,10 +228,24 @@ public class Car : MonoBehaviour, IPoolable
                         TilesManager.Instance.SetTileSelected(currentTileID, false);
                         TilesManager.Instance.SetTileAvailable(currentTileID, true);
                         currentTileID = nextTileID;
-                       
+
                         TilesManager.Instance.SetTileSelected(currentTileID, true);
                         TilesManager.Instance.SetTileAvailable(currentTileID, false);
-                        GameEvent.Instance.UnHighlightAssignedTile(nextTileID);
+
+                        int count = 0;
+                        for (int i = 0; i < path.Count; i++)
+                        {
+                            if (path[i] == nextTileID)
+                            {
+                                count++;
+                            }
+                        }
+
+                        if (count < 2)
+                        {
+                            GameEvent.Instance.UnHighlightAssignedTile(nextTileID);
+                        }
+
                         if (TilesManager.Instance.CheckIsGateOut(nextTileID))
                         {
                             CarManager.Instance.CarExit(carID);
@@ -247,8 +260,8 @@ public class Car : MonoBehaviour, IPoolable
                     }).id;
             yield return new WaitUntil(() => canContinue);
         }
-
         isMoving = false;
+        SpecificCarUI.Instance.Init();
         yield return null;
     }
 
@@ -442,6 +455,10 @@ public class Car : MonoBehaviour, IPoolable
     public void ExitGate(int carID)
     {
         if (carID != this.carID) return;
+        if (carID == PathPicker.Instance.GetCurrentSelectedCar())
+        {
+            SpecificCarUI.Instance.ResetToNone();
+        }
         LeanPool.Despawn(gameObject);
     }
 
@@ -459,7 +476,6 @@ public class Car : MonoBehaviour, IPoolable
     {
         if (PathPicker.Instance.isChangingPath) return;
         SpecificCarUI.Instance.Init();
-        
     }
 
     #endregion
@@ -523,5 +539,6 @@ public class Car : MonoBehaviour, IPoolable
     {
         return isMoving;
     }
+
     #endregion
 }

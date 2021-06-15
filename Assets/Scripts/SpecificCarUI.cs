@@ -126,7 +126,17 @@ public class SpecificCarUI : MonoBehaviour
             (EffectData.Instance.panelExpandTween).setDelay(EffectData.Instance.panelExpandTime);
     }
 
-
+    public void ResetToNone()
+    {
+        startButton.interactable = false;
+        changeButton.interactable = false;
+        decreaseSpeedButton.interactable = false;
+        increaseSpeedButton.interactable = false;
+        startButtonText.text = "Start";
+        changeButtonText.text = "Change";
+        carSpeedText.text = "Speed";
+        carTitle.text = "No Car";
+    }
     public void StartButton()
     {
         if (isMoving)
@@ -145,6 +155,10 @@ public class SpecificCarUI : MonoBehaviour
         }
     }
 
+    public void QuitGameButton()
+    {
+        Application.Quit();
+    }
     public void ChangeButton()
     {
         if (isChanging)

@@ -39,6 +39,9 @@ public class Tile : MonoBehaviour
     [Header("Other Components")] [SerializeField]
     private BoxCollider2D col;
 
+    public GameObject normalHighlightGO;
+    public GameObject middleHhighlightGO;
+
     #endregion
 
 
@@ -119,11 +122,13 @@ public class Tile : MonoBehaviour
         if (isGate && gateType == "In") return;
         if (isMiddlePath)
         {
-            ChangeColor(EffectData.Instance.tileMiddlePathColor);
+            ///ChangeColor(EffectData.Instance.tileMiddlePathColor);
+            middleHhighlightGO.SetActive(true);
         }
         else
         {
-            ChangeColor(EffectData.Instance.tileHighlightColor);
+            //ChangeColor(EffectData.Instance.tileHighlightColor);
+            normalHighlightGO.SetActive(true);
         }
     }
 
@@ -135,11 +140,13 @@ public class Tile : MonoBehaviour
 
         if (isParkingSlot)
         {
-            ChangeColor(EffectData.Instance.tileParkingSlotColor);
+            //ChangeColor(EffectData.Instance.tileParkingSlotColor);
         }
         else
         {
-            ChangeColor(EffectData.Instance.tileNormalColor);
+            //ChangeColor(EffectData.Instance.tileNormalColor);
+            middleHhighlightGO.SetActive(false);
+            normalHighlightGO.SetActive(false);
         }
     }
 
